@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История штрафов и поощрений работников</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="list.html" class="active">История работников</a>
+        <a href="index.html">Управление работниками</a>
+    </nav>
+    <h1>История штрафов и поощрений работников</h1>
+    <table id="listTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID Работника</th>
+                <th>Действия</th>
+                <th>Сумма</th>
+                <th>Дата</th>
+                <th>Действия</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <select name="workers_id" class="input-field" required>
+                        <option value="">Выберите работника</option>
+                        <!-- Работники будут загружены здесь -->
+                    </select>
+                </td>
+                <td>
+                    <select name="actions_id" class="input-field" required>
+                        <option value="">Выберите действие</option>
+                        <!-- Действия будут загружены здесь -->
+                    </select>
+                </td>
+                <td><input type="number" name="sum" placeholder="Сумма" class="input-field"></td>
+                <td><input type="date" name="date" class="input-field"></td>
+                <td><button id="addListButton">Добавить</button></td>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Данные списка будут добавлены сюда с помощью JavaScript -->
+        </tbody>
+    </table>
+    <script>
+        const listTableBody = document.getElementById('listTable').getElementsByTagName('tbody')[0];
+        const addListButton = document.getElementById('addListButton');
+        let editingListId = null; // Переменная для хранения ID редактируемого элемента списка
+
+        // Функция для загрузки работников в выпадающий список
+        function loadWorkers() {
+            fetch('http://localhost:3000/workers')
+                .then(response => {
+                    if (!response.ok) throw new Error('Ошибка загрузки работников');
+                    return response.json();
+                })
+                .then(data => {
+                    const workersSelect = document.querySelector('select[name="workers_id"]');
+                    data.forEach(worker => {
+                        const option = document.createElement('option');
+                        option.value = worker.id;
+                        option.textContent = `${worker.id}` ; // Предполагая, что у вас есть поля name и fam
+                        workersSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
+
+        let actionsData = []; // Переменная для хранения данных о действиях
+
+function loadActions() {
+    fetch('http://localhost:3000/actions')
+        .then(response => {
+            if (!response.ok) throw new Error('Ошибка загрузки действий');
+            return response.json();
+        })
+        .then(data => {
+            actionsData = data; // Сохраняем данные о действиях
+            const actionsSelect = document.querySelector('select[name="actions_id"]');
+            data.forEach(action => {
+                const option = document.createElement('option');
+                option.value = action.id; // ID действия
+                option.textContent = action.name; // Имя действия
+                actionsSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}
+
+// Функция для загрузки элементов списка
+function loadList() {
+    fetch('http://localhost:3000/list')
+        .then(response => response.json())
+        .then(data => {
+            listTableBody.innerHTML = ''; // Очистка таблицы
+            data.forEach(item => {
+                const row = listTableBody.insertRow();
+                row.setAttribute('data-id', item.id); // Сохраняем ID элемента в data-атрибуте
+                
+                // Находим имя действия по ID
+                const action = actionsData.find(a => a.id === item.actions_id);
+                const actionName = action ? action.name : 'Не указано'; // Если действие не найдено, показываем 'Не указано'
+
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.workers_id}</td>
+                    <td>${actionName}</td> <!-- Здесь отображаем имя действия -->
+                    <td>${item.sum || 0} руб.</td>
+                    <td>${item.date ? new Date(item.date).toLocaleDateString('ru-RU') : 'Не указана'}</td>
+                    <td>
+                        <button onclick="editListItem(${item.id})">Изменить</button>
+                        <button class="delete-button" onclick="deleteListItem(${item.id})">Удалить</button>
+                    </td>
+                `;
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}
+
+        // Функция для добавления или обновления элемента списка
+        function saveListItem() {
+            const workers_id = document.querySelector('select[name="workers_id"]').value;
+            const actions_id = document.querySelector('select[name="actions_id"]').value;
+            const sum = document.querySelector('input[name="sum"]').value || null;
+            const date = document.querySelector('input[name="date"]').value || null;
+
+            const listData = {
+                workers_id,
+                actions_id,
+                sum,
+                date
+            };
+
+            const method = editingListId ? 'PUT' : 'POST';
+            const url = editingListId ? `http://localhost:3000/list/${editingListId}` : 'http://localhost:3000/list';
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(listData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка при добавлении/обновлении элемента');
+                }
+                return response.json();
+            })
+            .then(() => {
+                clearForm();
+                loadList();
+                editingListId = null; // Сбрасываем ID редактируемого элемента
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        }
+
+        // Функция для очистки формы
+        function clearForm() {
+            document.querySelector('select[name="workers_id"]').value = '';
+            document.querySelector('select[name="actions_id"]').value = '';
+            document.querySelector('input[name="sum"]').value = '';
+            document.querySelector('input[name="date"]').value = '';
+            addListButton.textContent = 'Добавить'; // Сменить текст кнопки обратно
+        }
+
+        // Функция для удаления элемента списка
+        function deleteListItem(id) {
+            fetch(`http://localhost:3000/list/${id}`, {
+                method: 'DELETE'
+            }).then(() => loadList());
+        }
+
+        // Функция для редактирования элемента списка
+        function editListItem(id) {
+            const row = listTableBody.querySelector(`tr[data-id="${id}"]`); // Получаем строку по data-id
+            const workers_id = row.cells[1].innerText;
+            const actions_id = row.cells[2].innerText;
+            const sum = row.cells[3].innerText.replace(' руб.', '');
+            const date = row.cells[4].innerText === 'Не указана' ? '' : row.cells[4].innerText;
+
+            // Заполнение формы данными элемента списка
+            document.querySelector('select[name="workers_id"]').value = workers_id;
+            document.querySelector('select[name="actions_id"]').value = actions_id;
+            document.querySelector('input[name="sum"]').value = sum;
+            document.querySelector('input[name="date"]').value = date;
+
+            editingListId = id; // Устанавливаем ID редактируемого элемента
+            addListButton.textContent = 'Сохранить'; // Меняем текст кнопки на "Сохранить"
+        }
+
+        // Загрузка данных при загрузке страницы
+        loadWorkers();
+        loadActions();
+        loadList();
+
+        // Добавляем обработчик события на кнопку добавления/сохранения элемента списка
+        addListButton.addEventListener('click', function (event) {
+            event.preventDefault(); // Предотвращаем отправку формы
+            saveListItem(); // Вызываем функцию сохранения
+        });
+    </script>
+</body>
+</html>
