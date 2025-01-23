@@ -44,7 +44,7 @@ app.get('/workers', (req, res) => {
     });
 });
 
-app.get('/actions', (req, res) => {
+app.get('/api/actions', (req, res) => {
     db.query('SELECT * FROM actions', (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
