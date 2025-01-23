@@ -74,7 +74,7 @@
         let actionsData = []; // Переменная для хранения данных о действиях
 
 function loadActions() {
-    fetch('http://localhost:3000/actions')
+    fetch('http://localhost:3000/api/actions')
         .then(response => {
             if (!response.ok) throw new Error('Ошибка загрузки действий');
             return response.json();
@@ -85,7 +85,7 @@ function loadActions() {
             data.forEach(action => {
                 const option = document.createElement('option');
                 option.value = action.id; // ID действия
-                option.textContent = action.name; // Имя действия
+                option.textContent = `${action.name}` ; // Имя действия
                 actionsSelect.appendChild(option);
             });
         })
