@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
--- Host: localhost    Database: ok
+-- Host: 127.0.0.1    Database: ok
 -- ------------------------------------------------------
--- Server version	8.0.26
+-- Server version	8.0.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `actions`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `actions` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `action` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -59,7 +59,7 @@ CREATE TABLE `education` (
 
 LOCK TABLES `education` WRITE;
 /*!40000 ALTER TABLE `education` DISABLE KEYS */;
-INSERT INTO `education` VALUES (1,'Среднее профессиональное'),(2,'Высшее l степени '),(3,'Высшее ll степени'),(4,'Высшее lll степени'),(5,'Дополнительное профессиональное');
+INSERT INTO `education` VALUES (1,'Среднее профессиональное'),(2,'Высшее '),(3,'Дополнительное профессиональное');
 /*!40000 ALTER TABLE `education` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,14 +95,15 @@ DROP TABLE IF EXISTS `list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `list` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `workers_id` int DEFAULT NULL,
   `actions_id` int DEFAULT NULL,
+  `sum` decimal(10,0) DEFAULT NULL,
   `date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_st_actions_idx` (`actions_id`),
   CONSTRAINT `fk_l_actions` FOREIGN KEY (`actions_id`) REFERENCES `actions` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,6 +112,7 @@ CREATE TABLE `list` (
 
 LOCK TABLES `list` WRITE;
 /*!40000 ALTER TABLE `list` DISABLE KEYS */;
+INSERT INTO `list` VALUES (1,11,1,4,'2024-12-30'),(2,12,1,8,'2025-01-16'),(3,11,1,39,'2025-01-09'),(4,12,2,3,'2025-01-15'),(5,12,1,6,'2025-01-10');
 /*!40000 ALTER TABLE `list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,31 +160,8 @@ CREATE TABLE `prof` (
 
 LOCK TABLES `prof` WRITE;
 /*!40000 ALTER TABLE `prof` DISABLE KEYS */;
-INSERT INTO `prof` VALUES (1,'rytrygrt5y'),(2,'tryty');
+INSERT INTO `prof` VALUES (1,'Инженер'),(2,'Менеджер');
 /*!40000 ALTER TABLE `prof` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `salary`
---
-
-DROP TABLE IF EXISTS `salary`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `salary` (
-  `id` int NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `salary`
---
-
-LOCK TABLES `salary` WRITE;
-/*!40000 ALTER TABLE `salary` DISABLE KEYS */;
-/*!40000 ALTER TABLE `salary` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -214,7 +193,7 @@ CREATE TABLE `workers` (
   CONSTRAINT `fk_w_gender` FOREIGN KEY (`gender_id`) REFERENCES `gender` (`id`),
   CONSTRAINT `fk_w_position` FOREIGN KEY (`position_id`) REFERENCES `position` (`id`),
   CONSTRAINT `fk_w_prof` FOREIGN KEY (`prof_id`) REFERENCES `prof` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +202,7 @@ CREATE TABLE `workers` (
 
 LOCK TABLES `workers` WRITE;
 /*!40000 ALTER TABLE `workers` DISABLE KEYS */;
-INSERT INTO `workers` VALUES (7,'y6t','dgdfrg','fdgdrfg',1,1,1,444444,1,'2024-12-05','2024-12-17','2024-12-19'),(8,'y6t','dgdfrg','fdgdrfg',1,1,1,4444,1,'2024-12-12','2024-12-17','2024-12-18'),(10,'арипе','авива','пеикапе',1,1,1,55555,1,'2024-12-20','2024-12-21','2024-12-22');
+INSERT INTO `workers` VALUES (11,'Иван','Иванов','Иванович',2,2,1,13,3,'2024-12-30','2025-01-06','2025-01-06'),(12,'ААА','ААА','АА',1,1,1,7,1,'2025-01-06','2025-01-06','2025-01-06');
 /*!40000 ALTER TABLE `workers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -236,4 +215,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-24 10:39:15
+-- Dump completed on 2025-01-23 14:14:27
