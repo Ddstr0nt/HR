@@ -1,129 +1,130 @@
+/* Общие стили */
 
-    /* Простейшее стилизованное меню */
-    nav {
-        font-family: 'Roboto', sans-serif; /* Шрифт для ячеек таблицы */
-        background-color: #ffffff;
-        overflow: hidden;
-        text-align: center; /* Центрируем содержимое меню */
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    nav a {
-        display: inline-block; /* Меняем на inline-block для центрирования */
-        color: #6699CC;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        border: 0.0025rem solid #6699CC;
-    }
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f9f9f9;
+}
 
-    nav a:hover {
-        background-color: #6699CC;
-        color: rgb(255, 255, 255);
-    }
+h1 {
+  text-align: center;
+  margin: 20px auto;
+}
 
-    nav a.active {
-        background-color: #6699CC ;
-        color: white;
-    }
+/* Стили для навигации */
 
-    h1 {
-        text-align: center;
-        font-family: 'Montserrat', sans-serif; /* Шрифт для заголовка */
-        color: #333; /* Цвет текста заголовка */
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-        
-    }
+nav {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 17px 20px;
+  font-size: 18px;
 
-    th, td {
-        font-family: 'Roboto', sans-serif; /* Шрифт для ячеек таблицы */
-        border: 1px solid #6699CC;
-        padding:5px;
-        text-align: left;
-        
-    }
+}
 
-    th {
-        background-color: #6699CC;
-        border: 1px solid #ffffff;
-        color: white;
-        
-    }
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 15px 15px;
+}
 
-    tr {
-        height: 50px;
-    }
+nav a:hover {
+  color: #333;
+  background-color: #ffffff;
+}
 
-    tr:hover {
-        background-color: #e9f5ff;
-    }
+.active {
+  background-color: #ffffff;
+  color: #000000;
+}
 
-    .input-field {
-        width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
-    }
+/* Стили для таблицы */
 
-    #addListButton {
-        padding: 8px 16px;
-    }
-    button {
-        background-color: #6699CC; /* Зеленый фон */
-        color: white; /* Белый текст */
-        border: none; /* Убираем границы */
-        padding: 10px 15px; /* Внутренние отступы */
-        text-align: center; /* Выравнивание текста по центру */
-        text-decoration: none; /* Убираем подчеркивание */
-        display: inline-block; /* Инлайн-блок для кнопок */
-        font-size: 16px; /* Размер шрифта */
-        margin: 4px 2px; /* Отступы между кнопками */
-        cursor: pointer; /* Курсор в виде указателя */
-        border-radius: 3px; /* Закругленные углы */
-        transition: background-color 0.3s, transform 0.2s; /* Плавные переходы */
-        border: 1px solid #6699CC;
-    }
-    
-    /* Эффект при наведении */
-    button:hover {
-        background-color: #ffffff; /* Темнее зеленый при наведении */
-        transform: scale(1.05); /* Увеличение кнопки при наведении */
-        color: #6699CC;
-        border: 1px solid #6699CC;
-    }
-    
-    /* Эффект при нажатии */
-    button:active {
-        transform: scale(0.95); /* Уменьшение кнопки при нажатии */
-    }
-    .delete-button {
-        background-color: #6699CC; /* Зеленый фон */
-        color: white; /* Белый текст */
-        border: none; /* Убираем границы */
-        padding: 10px 15px; /* Внутренние отступы */
-        text-align: center; /* Выравнивание текста по центру */
-        text-decoration: none; /* Убираем подчеркивание */
-        display: inline-block; /* Инлайн-блок для кнопок */
-        font-size: 16px; /* Размер шрифта */
-        margin: 4px 2px; /* Отступы между кнопками */
-        cursor: pointer; /* Курсор в виде указателя */
-        border-radius: 3px; /* Закругленные углы */
-        transition: background-color 0.3s, transform 0.2s; /* Плавные переходы */
-        border: 1px solid #6699CC;
-    }
-    
-    /* Эффект при наведении для кнопки удаления */
-    .delete-button:hover {
-        background-color: #ffffff; /* Темнее зеленый при наведении */
-        transform: scale(1.05); /* Увеличение кнопки при наведении */
-        color: #ff6060;
-        border: 1px solid #ff6060;
-    }
-    
-    /* Эффект при нажатии для кнопки удаления */
-    .delete-button:active {
-        transform: scale(0.95); /* Уменьшение кнопки при нажатии */
-    }
-    
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 0.5em;
+  text-align: left;
+}
+
+th {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Стили для форм */
+
+form {
+  margin: 1em 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+}
+
+/* Стили для ошибок */
+
+.error {
+  color: #f00;
+  font-size: 0.8em;
+  margin-bottom: 1em;
+}
+
+/* Стили для кнопок */
+
+button {
+
+  width: 100px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-bottom: 5px;
+  border: 1px solid #333;
+}
+
+button:hover {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid rgb(0, 0, 0);
+  padding: 10px 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: rgb(255, 255, 255);
+  color: #f00;
+  border: 1px solid #f00;
+  padding: 10px 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+td:last-child {
+  width: 100px;
+}
