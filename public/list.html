@@ -11,6 +11,7 @@
     <nav>
       <a href="list.html" class="active">История сотрудников</a>
       <a href="index.html">Данные сотрудников</a>
+      <a href="tables.html">Управление таблицами</a>
     </nav>
     <h1>История штрафов и поощрений работников</h1>
     <table id="listTable">
@@ -68,6 +69,7 @@
             return response.json();
           })
           .then((data) => {
+            workersData = data; // Сохраняем данные о действиях
             const workersSelect = document.querySelector(
               'select[name="workers_id"]'
             );
@@ -120,11 +122,14 @@
 
               // Находим имя действия по ID
               const action = actionsData.find((a) => a.id === item.actions_id);
-              const actionName = action ? action.name : "Не указано"; // Если действие не найдено, показываем 'Не указано'
+              const actionName = action ? action.name : "Не указано";
+               // Если действие не найдено, показываем 'Не указано'
+               const worker = workersData.find((w) => w.id === item.workers_id);
+               const workerName = worker ? `${worker.fam} ${worker.name} ${worker.otch}` : "Не указано";
 
               row.innerHTML = `
                     <td>${item.id}</td>
-                    <td>${item.workers_id}</td>
+                    <td>${workerName}</td>
                     <td>${actionName}</td> <!-- Здесь отображаем имя действия -->
                     <td>${item.sum || 0} руб.</td>
                     <td>${
