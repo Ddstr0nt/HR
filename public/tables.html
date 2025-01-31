@@ -37,7 +37,11 @@
 
         // Функция для загрузки профессий
         function loadProfessions() {
+<<<<<<< HEAD
             fetch("http://localhost:3000/api/professions")
+=======
+            fetch("http://localhost:3000/prof")
+>>>>>>> 2923eda (`Added new feature: table management and updated related code`)
                 .then((response) => {
                     if (!response.ok) throw new Error("Ошибка загрузки профессий");
                     return response.json();

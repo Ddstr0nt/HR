@@ -63,9 +63,15 @@ app.get('/api/genders', (req, res) => {
     });
 });
 
+<<<<<<< HEAD
 // Получение всех элементов списка
 app.get('/api/professions', (req, res) => {
     db.query('SELECT * FROM list', (err, results) => {
+=======
+// Получение всех профессий
+app.get('/prof', (req, res) => {
+    db.query('SELECT * FROM prof', (err, results) => {
+>>>>>>> 2923eda (`Added new feature: table management and updated related code`)
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -174,7 +180,11 @@ app.delete('/list/:id', (req, res) => {
 });
 
 // Добавление новой профессии
+<<<<<<< HEAD
 app.post('/professions', (req, res) => {
+=======
+app.post('/prof', (req, res) => {
+>>>>>>> 2923eda (`Added new feature: table management and updated related code`)
     const newProf = {
         id: professions.length + 1, // Простой способ генерировать ID
         name: req.body.name,
@@ -184,7 +194,11 @@ app.post('/professions', (req, res) => {
 });
 
 // Обновление профессии
+<<<<<<< HEAD
 app.put('/professions/:id', (req, res) => {
+=======
+app.put('/prof/:id', (req, res) => {
+>>>>>>> 2923eda (`Added new feature: table management and updated related code`)
     const id = parseInt(req.params.id);
     const prof = professions.find(p => p.id === id);
     if (prof) {
@@ -196,7 +210,11 @@ app.put('/professions/:id', (req, res) => {
 });
 
 // Удаление профессии
+<<<<<<< HEAD
 app.delete('/professions/:id', (req, res) => {
+=======
+app.delete('/prof/:id', (req, res) => {
+>>>>>>> 2923eda (`Added new feature: table management and updated related code`)
     const id = parseInt(req.params.id);
     const index = professions.findIndex(p => p.id === id);
     if (index !== -1) {
