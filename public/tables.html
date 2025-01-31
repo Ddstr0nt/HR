@@ -37,7 +37,7 @@
 
         // Функция для загрузки профессий
         function loadProfessions() {
-            fetch("http://localhost:3000/prof")
+            fetch("http://localhost:3000/api/professions")
                 .then((response) => {
                     if (!response.ok) throw new Error("Ошибка загрузки профессий");
                     return response.json();

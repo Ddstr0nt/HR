@@ -63,9 +63,9 @@ app.get('/api/genders', (req, res) => {
     });
 });
 
-// Получение всех профессий
-app.get('/prof', (req, res) => {
-    db.query('SELECT * FROM prof', (err, results) => {
+// Получение всех элементов списка
+app.get('/api/professions', (req, res) => {
+    db.query('SELECT * FROM list', (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -174,7 +174,7 @@ app.delete('/list/:id', (req, res) => {
 });
 
 // Добавление новой профессии
-app.post('/prof', (req, res) => {
+app.post('/professions', (req, res) => {
     const newProf = {
         id: professions.length + 1, // Простой способ генерировать ID
         name: req.body.name,
@@ -184,7 +184,7 @@ app.post('/prof', (req, res) => {
 });
 
 // Обновление профессии
-app.put('/prof/:id', (req, res) => {
+app.put('/professions/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const prof = professions.find(p => p.id === id);
     if (prof) {
@@ -196,7 +196,7 @@ app.put('/prof/:id', (req, res) => {
 });
 
 // Удаление профессии
-app.delete('/prof/:id', (req, res) => {
+app.delete('/professions/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const index = professions.findIndex(p => p.id === id);
     if (index !== -1) {
