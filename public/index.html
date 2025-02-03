@@ -124,7 +124,7 @@
         // Функция для загрузки профессий
         async function loadProfessions() {
             try {
-                const response = await fetch('http://localhost:3000/api/professions');
+                const response = await fetch('http://localhost:3000/prof');
                 if (!response.ok) throw new Error('Ошибка при загрузке профессий');
                 const data = await response.json();
                 const profSelect = document.querySelector('select[name="prof_id"]');
