@@ -125,7 +125,7 @@ button:hover {
 }
 
 #workersTable td:last-child {
-  width: 225px;
+  width: 100px;
 }
 
 #listTable {
