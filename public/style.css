@@ -11,7 +11,7 @@ body {
   font-size: 16px;
   line-height: 1.5;
   color: #333;
-  background-color: #ebebeb;
+  background-color: #f9f9f9;
 }
 
 h1 {
@@ -56,7 +56,7 @@ table {
 
 th,
 td {
-  border: 1px solid #808080;
+  border: 1px solid #ddd;
   padding: 0.5em;
   text-align: left;
 }
@@ -96,6 +96,7 @@ select {
 /* Стили для кнопок */
 
 button {
+
   width: 100px;
   background-color: #333;
   color: #fff;
@@ -125,7 +126,7 @@ button:hover {
 }
 
 #workersTable td:last-child {
-  width: 225px;
+  width: 100px;
 }
 
 #listTable {
@@ -151,8 +152,4 @@ button:hover {
 
 #listTable td:nth-child(5) {
   width: 100px;
-}
-
-#listTable td:last-child {
-  width: 225px;
 }
