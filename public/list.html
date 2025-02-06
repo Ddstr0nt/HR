@@ -74,7 +74,7 @@
             data.forEach((worker) => {
               const option = document.createElement("option");
               option.value = worker.id;
-              option.textContent = `${worker.fam} ${worker.name} ${worker.otch}`; // Предполагая, что у вас есть поля name и fam
+              option.textContent = `${worker.id}`; // Предполагая, что у вас есть поля name и fam
               workersSelect.appendChild(option);
             });
           })
