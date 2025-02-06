@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление должностями</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="list.html">История сотрудников</a>
+        <a href="index.html">Данные сотрудников</a>
+        <a href="tables.html" class="active">Управление таблицами</a>
+    </nav>
+    <h1>Управление должностями</h1>
+    <table id="positionsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название должности</th>
+                <th>Действия</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="text" name="name" placeholder="Название должности" class="input-field" required></td>
+                <td><button id="addPositionButton">Добавить</button></td>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Данные должностей будут добавлены сюда с помощью JavaScript -->
+        </tbody>
+    </table>
+    <script>
+        const positionsTableBody = document.getElementById('positionsTable').getElementsByTagName('tbody')[0];
+        const addPositionButton = document.getElementById('addPositionButton');
+        let editingPositionId = null; // Переменная для хранения ID редактируемой должности
+
+        // Функция для загрузки должностей
+        async function loadPositions() {
+            try {
+                const response = await fetch('http://localhost:3000/api/positions');
+                if (!response.ok) throw new Error('Ошибка при загрузке должностей');
+                const data = await response.json();
+                positionsTableBody.innerHTML = ''; // Очистка таблицы
+                data.forEach(position => {
+                    const row = positionsTableBody.insertRow();
+                    row.setAttribute('data-id', position.id); // Сохраняем ID должности в data-атрибуте
+                    row.innerHTML = `
+                        <td>${position.id}</td>
+                        <td>${position.name}</td>
+                        <td>
+                            <button onclick="editPosition(${position.id})">Изменить</button>
+                            <button class="delete-button" onclick="deletePosition(${position.id})">Удалить</button>
+                        </td>
+                    `;
+                });
+            } catch (error) {
+                alert(error.message); // Показываем сообщение об ошибке
+            }
+        }
+
+        // Функция для добавления или обновления должности
+        async function savePosition() {
+            const name = document.querySelector('input[name="name"]').value;
+
+            const positionData = {
+                name
+            };
+
+            const method = editingPositionId ? 'PUT' : 'POST';
+            const url = editingPositionId ? `http://localhost:3000/api/positions/${editingPositionId}` : 'http://localhost:3000/api/positions';
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(positionData)
+                });
+                if (!response.ok) throw new Error('Ошибка при сохранении должности');
+                clearForm();
+                loadPositions();
+                editingPositionId = null; // Сбрасываем ID редактируемой должности
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        // Функция для очистки формы
+        function clearForm() {
+            document.querySelector('input[name="name"]').value = '';
+            addPositionButton.textContent = 'Добавить'; // Сменить текст кнопки обратно
+        }
+
+        // Функция для удаления должности
+        async function deletePosition(id) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/positions/${id}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) throw new Error('Ошибка при удалении должности');
+                loadPositions();
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        // Функция для редактирования должности
+        function editPosition(id) {
+            const row = positionsTableBody.querySelector(`tr[data-id="${id}"]`); // Получаем строку по data-id
+            const name = row.cells[1].innerText;
+
+            // Заполнение формы данными должности
+            document.querySelector('input[name="name"]').value = name;
+
+            editingPositionId = id; // Устанавливаем ID редактируемой должности
+            addPositionButton.textContent = 'Сохранить'; // Меняем текст кнопки на "Сохранить"
+        }
+
+        // Загрузить должности при загрузке страницы
+        loadPositions();
+
+        // Добавляем обработчик события на кнопку добавления/сохранения должности
+        addPositionButton.addEventListener('click', function (event) {
+            event.preventDefault(); // Предотвращаем отправку формы
+            savePosition(); // Вызываем функцию сохранения
+        });
+    </script>
+</body>
+</html>
