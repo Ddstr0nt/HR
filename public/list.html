@@ -11,7 +11,6 @@
     <nav>
       <a href="list.html" class="active">История сотрудников</a>
       <a href="index.html">Данные сотрудников</a>
-      <a href="tables.html">Управление таблицами</a>
     </nav>
     <h1>История штрафов и поощрений работников</h1>
     <table id="listTable">
@@ -76,7 +75,7 @@
             data.forEach((worker) => {
               const option = document.createElement("option");
               option.value = worker.id;
-              option.textContent = `${worker.id}`; // Предполагая, что у вас есть поля name и fam
+              option.textContent = `${worker.fam} ${worker.name} ${worker.otch}`; // Предполагая, что у вас есть поля name и fam
               workersSelect.appendChild(option);
             });
           })
