@@ -73,15 +73,6 @@ app.get('/api/professions', (req, res) => {
     });
 });
 
-// Получение всех должностей
-app.get('/api/positions', (req, res) => {
-    db.query('SELECT * FROM position', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    });
-});
 
 // Получение всех образований
 app.get('/api/education', (req, res) => {
@@ -173,7 +164,53 @@ app.delete('/list/:id', (req, res) => {
     });
 });
 
+// Получение всех должностей
+app.get('/api/positions', (req, res) => {
+    db.query('SELECT * FROM position', (err, results) => {
+        if (err) {
+            console.error('Ошибка при получении должностей:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
 
+// Добавление новой должности
+app.post('/api/positions', (req, res) => {
+    const newPosition = req.body;
+    db.query('INSERT INTO position SET ?', newPosition, (err, results) => {
+        if (err) {
+            console.error('Ошибка при добавлении должности:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ id: results.insertId, ...newPosition });
+    });
+});
+
+// Обновление должности
+app.put('/api/positions/:id', (req, res) => {
+    const positionId = req.params.id;
+    const updatedPosition = req.body;
+    db.query('UPDATE position SET ? WHERE id = ?', [updatedPosition, positionId], (err) => {
+        if (err) {
+            console.error('Ошибка при обновлении должности:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ id: positionId, ...updatedPosition });
+    });
+});
+
+// Удаление должности
+app.delete('/api/positions/:id', (req, res) => {
+    const positionId = req.params.id;
+    db.query('DELETE FROM position WHERE id = ?', positionId, (err) => {
+        if (err) {
+            console.error('Ошибка при удалении должности:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(204).send();
+    });
+});
 // Запуск сервера
 app.listen(PORT, () => {
     console.log(`Сервер запущен на http://localhost:${PORT}`);

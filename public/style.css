@@ -128,6 +128,11 @@ button:hover {
   width: 225px;
 }
 
+#workersTable {
+  width: 95%;
+  margin: 0 auto;
+}
+
 #listTable {
   width: 45%;
   margin: 0 auto;
@@ -155,4 +160,21 @@ button:hover {
 
 #listTable td:last-child {
   width: 170px;
+}
+
+#positionsTable {
+  width: 20%;
+  margin: 0 auto;
+}
+
+#positionsTable td:nth-child(1) {
+  width: 5px;
+}
+
+#positionsTable td:nth-child(2) {
+  width: 100px;
+}
+
+#positionsTable td:nth-child(3) {
+  width: 100px;
 }
