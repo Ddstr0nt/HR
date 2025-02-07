@@ -1,49 +1,78 @@
+ <!DOCTYPE html>
+ <html lang="ru">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Управление таблицами</title>
+     <link rel="stylesheet" href="style.css">
+ </head>
+ <body>
+ <nav>
+     <a href="list.html">История сотрудников</a>
+     <a href="index.html">Данные сотрудников</a>
+     <a href="tables.html" class="active">Управление таблицами</a>
+ </nav>
+ <h1>Управление таблицами</h1>
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Управление таблицами</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<nav>
-    <a href="list.html">История сотрудников</a>
-    <a href="index.html">Данные сотрудников</a>
-    <a href="tables.html" class="active">Управление таблицами</a>
-</nav>
-<h1>Управление таблицами</h1>
-<table id="positionsTable">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Название должности</th>
-            <th>Действия</th>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="text" name="position_name" placeholder="Название должности" class="input-field" required></td>
-            <td><button id="addPositionButton">Добавить</button></td>
-        </tr>
-    </thead>
-    <tbody> <!-- Данные должностей будут добавлены сюда с помощью JavaScript --> </tbody>
-</table>
+ <div class="tables-container">
+     <div class="table-wrapper">
+         <!-- Positions Table -->
+         <table id="positionsTable">
+             <thead>
+                 <tr>
+                     <th>ID</th>
+                     <th>Название должности</th>
+                     <th>Действия</th>
+                 </tr>
+                 <tr>
+                     <td></td>
+                     <td><input type="text" name="position_name" placeholder="Название должности" class="input-field" required></td>
+                     <td><button id="addPositionButton">Добавить</button></td>
+                 </tr>
+             </thead>
+             <tbody> <!-- Данные должностей будут добавлены сюда с помощью JavaScript --> </tbody>
+         </table>
+     </div>
+
+     <div class="table-wrapper">
+         <!-- Professions Table -->
+         <table id="professionsTable">
+             <thead>
+                 <tr>
+                     <th>ID</th>
+                     <th>Название профессии</th>
+                     <th>Действия</th>
+                 </tr>
+                 <tr>
+                     <td></td>
+                     <td><input type="text" name="profession_name" placeholder="Название профессии" class="input-field" required></td>
+                     <td><button id="addProfessionButton">Добавить</button></td>
+                 </tr>
+             </thead>
+             <tbody> <!-- Данные профессий будут добавлены сюда с помощью JavaScript --> </tbody>
+         </table>
+     </div>
+ </div>
+
+ <!-- Остальной код остается без изменений -->
 <script>
     const positionsTableBody = document.getElementById('positionsTable').getElementsByTagName('tbody')[0];
     const addPositionButton = document.getElementById('addPositionButton');
-    let editingPositionId = null; // Переменная для хранения ID редактируемой должности
+    let editingPositionId = null;
 
+    const professionsTableBody = document.getElementById('professionsTable').getElementsByTagName('tbody')[0];
+    const addProfessionButton = document.getElementById('addProfessionButton');
+    let editingProfessionId = null;
     // Функция для загрузки должностей
     async function loadPositions() {
         try {
             const response = await fetch('http://localhost:3000/api/positions');
             if (!response.ok) throw new Error('Ошибка при загрузке должностей');
             const data = await response.json();
-            positionsTableBody.innerHTML = ''; // Очистка таблицы
+            positionsTableBody.innerHTML = '';
             data.forEach(position => {
                 const row = positionsTableBody.insertRow();
-                row.setAttribute('data-id', position.id); // Сохраняем ID должности в data-атрибуте
+                row.setAttribute('data-id', position.id);
                 row.innerHTML = `
                     <td>${position.id}</td>
                     <td>${position.name}</td>
@@ -54,16 +83,37 @@
                 `;
             });
         } catch (error) {
-            alert(error.message); // Показываем сообщение об ошибке
+            alert(error.message);
         }
     }
 
+    // Функция для загрузки профессий
+    async function loadProfessions() {
+        try {
+            const response = await fetch('http://localhost:3000/api/professions');
+            if (!response.ok) throw new Error('Ошибка при загрузке профессий');
+            const data = await response.json();
+            professionsTableBody.innerHTML = '';
+            data.forEach(profession => {
+                const row = professionsTableBody.insertRow();
+                row.setAttribute('data-id', profession.id);
+                row.innerHTML = `
+                    <td>${profession.id}</td>
+                    <td>${profession.name}</td>
+                    <td>
+                        <button onclick="editProfession(${profession.id})">Изменить</button>
+                        <button class="delete-button" onclick="deleteProfession(${profession.id})">Удалить</button>
+                    </td>
+                `;
+            });
+        } catch (error) {
+            alert(error.message);
+        }
+    }
     // Функция для добавления или обновления должности
     async function savePosition() {
         const name = document.querySelector('input[name="position_name"]').value;
-
         const positionData = { name };
-
         const method = editingPositionId ? 'PUT' : 'POST';
         const url = editingPositionId ? `http://localhost:3000/api/positions/${editingPositionId}` : 'http://localhost:3000/api/positions';
 
@@ -76,14 +126,37 @@
                 body: JSON.stringify(positionData)
             });
             if (!response.ok) throw new Error('Ошибка при сохранении должности');
-            clearForm();
+            clearPositionForm();
             loadPositions();
-            editingPositionId = null; // Сбрасываем ID редактируемой должности
+            editingPositionId = null;
         } catch (error) {
             alert(error.message);
         }
     }
 
+    // Функция для добавления или обновления профессии
+    async function saveProfession() {
+        const name = document.querySelector('input[name="profession_name"]').value;
+        const professionData = { name };
+        const method = editingProfessionId ? 'PUT' : 'POST';
+        const url = editingProfessionId ? `http://localhost:3000/api/professions/${editingProfessionId}` : 'http://localhost:3000/api/professions';
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(professionData)
+            });
+            if (!response.ok) throw new Error('Ошибка при сохранении профессии');
+            clearProfessionForm();
+            loadProfessions();
+            editingProfessionId = null;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
     // Функция для редактирования должности
     function editPosition(id) {
         const row = document.querySelector(`tr[data-id='${id}']`);
@@ -92,6 +165,13 @@
         editingPositionId = id;
     }
 
+    // Функция для редактирования профессии
+    function editProfession(id) {
+        const row = document.querySelector(`tr[data-id='${id}']`);
+        const name = row.children[1].textContent;
+        document.querySelector('input[name="profession_name"]').value = name;
+        editingProfessionId = id;
+    }
     // Функция для удаления должности
     async function deletePosition(id) {
         try {
@@ -105,17 +185,43 @@
         }
     }
 
-    // Функция для очистки формы
-    function clearForm() {
+    // Функция для удаления профессии
+    async function deleteProfession(id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/professions/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Ошибка при удалении профессии');
+            loadProfessions();
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    // Функция для очистки формы должности
+    function clearPositionForm() {
         document.querySelector('input[name="position_name"]').value = '';
     }
 
-    // Обработчик события для кнопки добавления
+    // Функция для очистки формы профессии
+    function clearProfessionForm() {
+        document.querySelector('input[name="profession_name"]').value = '';
+    }
+
+    // Обработчик события для кнопки добавления должности
     addPositionButton.addEventListener('click', savePosition);
 
-    // Загрузка должностей при загрузке страницы
-    window.onload = loadPositions;
+    // Обработчик события для кнопки добавления профессии
+    addProfessionButton.addEventListener('click', saveProfession);
+
+    // Загрузка должностей и профессий при загрузке страницы
+    window.onload = function() {
+        loadPositions();
+        loadProfessions();
+    };
 </script>
 </body>
 </html>
+
+
 

@@ -162,19 +162,31 @@ button:hover {
   width: 170px;
 }
 
-#positionsTable {
-  width: 20%;
-  margin: 0 auto;
+/* Добавляем новые стили для таблиц на странице tables.html */
+#positionsTable,
+#professionsTable {
+  width: 100%;
 }
 
-#positionsTable td:nth-child(1) {
-  width: 5px;
+#positionsTable th,
+#professionsTable th,
+#positionsTable td,
+#professionsTable td {
+  padding: 8px; /* Уменьшаем отступы в ячейках */
 }
-
-#positionsTable td:nth-child(2) {
-  width: 100px;
+/* Уменьшаем ширину столбца с действиями */
+#positionsTable td:last-child,
+#professionsTable td:last-child {
+  width: 225px;
 }
-
-#positionsTable td:nth-child(3) {
-  width: 100px;
+.tables-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 1200px; /* Добавляем максимальную ширину */
+  margin: 0 auto; /* Центрируем контейнер */
+}
+.table-wrapper {
+  flex: 1;
+  max-width: 45%; /* Ограничиваем ширину каждой таблицы */
 }
