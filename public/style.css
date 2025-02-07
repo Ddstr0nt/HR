@@ -163,18 +163,23 @@ button:hover {
 }
 
 /* Добавляем новые стили для таблиц на странице tables.html */
+
+#educationTable,
 #positionsTable,
 #professionsTable {
   width: 100%;
 }
-
+#educationTable th
 #positionsTable th,
 #professionsTable th,
+#educationTable th 
+#educationTable td,
 #positionsTable td,
 #professionsTable td {
   padding: 8px; /* Уменьшаем отступы в ячейках */
 }
 /* Уменьшаем ширину столбца с действиями */
+#educationTable td:last-child,
 #positionsTable td:last-child,
 #professionsTable td:last-child {
   width: 225px;
@@ -183,10 +188,10 @@ button:hover {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  max-width: 1200px; /* Добавляем максимальную ширину */
+  max-width: 1500px; /* Добавляем максимальную ширину */
   margin: 0 auto; /* Центрируем контейнер */
 }
 .table-wrapper {
   flex: 1;
-  max-width: 45%; /* Ограничиваем ширину каждой таблицы */
+  max-width: 70%; /* Ограничиваем ширину каждой таблицы */
 }

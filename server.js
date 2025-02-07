@@ -63,13 +63,36 @@ app.get('/api/genders', (req, res) => {
     });
 });
 
-// Получение всех образований
+// Маршруты для образования
 app.get('/api/education', (req, res) => {
     db.query('SELECT * FROM education', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
+        if (err) return res.status(500).json({ error: err.message });
         res.json(results);
+    });
+});
+
+app.post('/api/education', (req, res) => {
+    const { name } = req.body;
+    db.query('INSERT INTO education (name) VALUES (?)', [name], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ id: result.insertId, name });
+    });
+});
+
+app.put('/api/education/:id', (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    db.query('UPDATE education SET name = ? WHERE id = ?', [name, id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ id, name });
+    });
+});
+
+app.delete('/api/education/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM education WHERE id = ?', [id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: 'Образование удалено' });
     });
 });
 

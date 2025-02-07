@@ -6,7 +6,7 @@
      <title>Управление таблицами</title>
      <link rel="stylesheet" href="style.css">
  </head>
- <body>
+ <div>
  <nav>
      <a href="list.html">История сотрудников</a>
      <a href="index.html">Данные сотрудников</a>
@@ -52,7 +52,29 @@
              <tbody> <!-- Данные профессий будут добавлены сюда с помощью JavaScript --> </tbody>
          </table>
      </div>
- </div>
+
+ <div class="table-wrapper">
+    <!-- Education Table -->
+    <table id="educationTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название образования</th>
+                <th>Действия</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="text" name="education_name" placeholder="Название образования" class="input-field" required></td>
+                <td><button id="addEducationButton">Добавить</button></td>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Данные об образовании будут добавлены сюда с помощью JavaScript -->
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
 
  <!-- Остальной код остается без изменений -->
 <script>
@@ -63,6 +85,10 @@
     const professionsTableBody = document.getElementById('professionsTable').getElementsByTagName('tbody')[0];
     const addProfessionButton = document.getElementById('addProfessionButton');
     let editingProfessionId = null;
+
+    const educationTableBody = document.getElementById('educationTable').getElementsByTagName('tbody')[0];
+    const addEducationButton = document.getElementById('addEducationButton');
+    let editingEducationId = null;
     // Функция для загрузки должностей
     async function loadPositions() {
         try {
@@ -198,6 +224,75 @@
         }
     }
 
+    async function loadEducation() {
+        try {
+            const response = await fetch('http://localhost:3000/api/education');
+            if (!response.ok) throw new Error('Ошибка при загрузке образования');
+            const data = await response.json();
+            educationTableBody.innerHTML = '';
+            data.forEach(education => {
+                const row = educationTableBody.insertRow();
+                row.setAttribute('data-id', education.id);
+                row.innerHTML = `
+                    <td>${education.id}</td>
+                    <td>${education.name}</td>
+                    <td>
+                        <button onclick="editEducation(${education.id})">Изменить</button>
+                        <button class="delete-button" onclick="deleteEducation(${education.id})">Удалить</button>
+                    </td>
+                `;
+            });
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    async function saveEducation() {
+        const name = document.querySelector('input[name="education_name"]').value;
+        const educationData = { name };
+        const method = editingEducationId ? 'PUT' : 'POST';
+        const url = editingEducationId ? `http://localhost:3000/api/education/${editingEducationId}` : 'http://localhost:3000/api/education';
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(educationData)
+            });
+            if (!response.ok) throw new Error('Ошибка при сохранении образования');
+            clearEducationForm();
+            loadEducation();
+            editingEducationId = null;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    function editEducation(id) {
+        const row = document.querySelector(`#educationTable tr[data-id='${id}']`);
+        const name = row.children[1].textContent;
+        document.querySelector('input[name="education_name"]').value = name;
+        editingEducationId = id;
+    }
+
+    async function deleteEducation(id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/education/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Ошибка при удалении образования');
+            loadEducation();
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    function clearEducationForm() {
+        document.querySelector('input[name="education_name"]').value = '';
+    }
+
     // Функция для очистки формы должности
     function clearPositionForm() {
         document.querySelector('input[name="position_name"]').value = '';
@@ -214,10 +309,12 @@
     // Обработчик события для кнопки добавления профессии
     addProfessionButton.addEventListener('click', saveProfession);
 
+    addEducationButton.addEventListener('click', saveEducation);
     // Загрузка должностей и профессий при загрузке страницы
     window.onload = function() {
         loadPositions();
         loadProfessions();
+        loadEducation();
     };
 </script>
 </body>
