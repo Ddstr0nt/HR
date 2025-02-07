@@ -52,6 +52,10 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin: 1em 0;
+  border-radius: 2px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-spacing: 0;
 }
 
 th,
@@ -77,14 +81,41 @@ label {
   margin-bottom: 0.5em;
 }
 
-input,
+input[type="text"], 
+input[type="number"], 
+input[type="date"], 
 select {
-  width: 100%;
-  padding: 0.5em;
-  margin-bottom: 1em;
-  border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 14px;
+    transition: border-color 0.5s, box-shadow 0.3s; 
+    text-align: center;
 }
 
+input[type="text"]:focus, 
+input[type="number"]:focus, 
+input[type="date"]:focus, 
+select:focus {
+    outline: none;
+    border-color: #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #000;
+}
+
+/* Стили для select */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    text-align: center;
+}
 /* Стили для ошибок */
 
 .error {
@@ -188,7 +219,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  max-width: 1500px; /* Добавляем максимальную ширину */
+  max-width: 2000px; /* Добавляем максимальную ширину */
   margin: 0 auto; /* Центрируем контейнер */
 }
 .table-wrapper {
