@@ -123,9 +123,11 @@
               // Находим имя действия по ID
               const action = actionsData.find((a) => a.id === item.actions_id);
               const actionName = action ? action.name : "Не указано";
-               // Если действие не найдено, показываем 'Не указано'
-               const worker = workersData.find((w) => w.id === item.workers_id);
-               const workerName = worker ? `${worker.fam} ${worker.name} ${worker.otch}` : "Не указано";
+              // Если действие не найдено, показываем 'Не указано'
+              const worker = workersData.find((w) => w.id === item.workers_id);
+              const workerName = worker
+                ? `${worker.fam} ${worker.name} ${worker.otch}`
+                : "Не указано";
 
               row.innerHTML = `
                     <td>${item.id}</td>
@@ -217,7 +219,12 @@
 
       // Функция для редактирования элемента списка
       function editListItem(id) {
+        const previouslyHighlightedRow = document.querySelector(".highlight");
+        if (previouslyHighlightedRow) {
+          previouslyHighlightedRow.classList.remove("highlight");
+        }
         const row = listTableBody.querySelector(`tr[data-id="${id}"]`); // Получаем строку по data-id
+        row.classList.add("highlight"); // Add highlight to the current row
         const workers_id = row.cells[1].innerText;
         const actions_id = row.cells[2].innerText;
         const sum = row.cells[3].innerText.replace(" руб.", "");

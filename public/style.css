@@ -27,7 +27,6 @@ nav {
   text-align: center;
   padding: 17px 20px;
   font-size: 18px;
-
 }
 
 nav a {
@@ -62,7 +61,7 @@ th,
 td {
   border: 1px solid #808080;
   padding: 0.5em;
-  text-align: left;
+  text-align: center;
 }
 
 th {
@@ -81,40 +80,40 @@ label {
   margin-bottom: 0.5em;
 }
 
-input[type="text"], 
-input[type="number"], 
-input[type="date"], 
+input[type="text"],
+input[type="number"],
+input[type="date"],
 select {
-    width: 100%;
-    padding: 10px;
-    margin: 4px 0;
-    box-sizing: border-box;
-    border: 1px solid #000000;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-    font-size: 14px;
-    transition: border-color 0.5s, box-shadow 0.3s; 
-    text-align: center;
+  width: 100%;
+  padding: 10px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 14px;
+  transition: border-color 0.5s, box-shadow 0.3s;
+  text-align: center;
 }
 
-input[type="text"]:focus, 
-input[type="number"]:focus, 
-input[type="date"]:focus, 
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
 select:focus {
-    outline: none;
-    border-color: #000000;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    color: #000;
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: #000;
 }
 
 /* Стили для select */
 select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    text-align: center;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  text-align: center;
 }
 /* Стили для ошибок */
 
@@ -130,7 +129,7 @@ button {
   width: 100px;
   background-color: #333;
   color: #fff;
-  border-radius: 3px;
+  border-radius: 5px;
   cursor: pointer;
   padding: 10px 20px;
   margin-bottom: 5px;
@@ -200,11 +199,9 @@ button:hover {
 #professionsTable {
   width: 100%;
 }
-#educationTable th
-#positionsTable th,
+#educationTable th #positionsTable th,
 #professionsTable th,
-#educationTable th 
-#educationTable td,
+#educationTable th #educationTable td,
 #positionsTable td,
 #professionsTable td {
   padding: 8px; /* Уменьшаем отступы в ячейках */
@@ -225,4 +222,9 @@ button:hover {
 .table-wrapper {
   flex: 1;
   max-width: 70%; /* Ограничиваем ширину каждой таблицы */
+}
+
+.highlight {
+  background-color: #dadada; /* Light blue background */
+  color: #000000;
 }

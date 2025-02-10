@@ -186,7 +186,12 @@
     }
     // Функция для редактирования должности
     function editPosition(id) {
+        const previouslyHighlightedRow = document.querySelector('.highlight');
+    if (previouslyHighlightedRow) {
+        previouslyHighlightedRow.classList.remove('highlight');
+    }
         const row = document.querySelector(`tr[data-id='${id}']`);
+        row.classList.add('highlight');
         const name = row.children[1].textContent;
         document.querySelector('input[name="position_name"]').value = name;
         editingPositionId = id;
@@ -194,7 +199,12 @@
 
     // Функция для редактирования профессии
     function editProfession(id) {
+        const previouslyHighlightedRow = document.querySelector('.highlight');
+    if (previouslyHighlightedRow) {
+        previouslyHighlightedRow.classList.remove('highlight');
+    }
         const row = document.querySelector(`tr[data-id='${id}']`);
+        row.classList.add('highlight');
         const name = row.children[1].textContent;
         document.querySelector('input[name="profession_name"]').value = name;
         editingProfessionId = id;
@@ -272,7 +282,13 @@
     }
 
     function editEducation(id) {
+        const previouslyHighlightedRow = document.querySelector('.highlight');
+    if (previouslyHighlightedRow) {
+        previouslyHighlightedRow.classList.remove('highlight');
+    }
         const row = document.querySelector(`#educationTable tr[data-id='${id}']`);
+        row.classList.add('highlight'); // Add highlight to the current row
+        row.classList.add('highlight'); // Add highlight to the current row
         const name = row.children[1].textContent;
         document.querySelector('input[name="education_name"]').value = name;
         editingEducationId = id;
