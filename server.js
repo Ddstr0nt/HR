@@ -63,33 +63,36 @@ app.get('/api/genders', (req, res) => {
     });
 });
 
-// Получение всех профессий
-app.get('/api/professions', (req, res) => {
-    db.query('SELECT * FROM prof', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    });
-});
-
-// Получение всех должностей
-app.get('/api/positions', (req, res) => {
-    db.query('SELECT * FROM position', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    });
-});
-
-// Получение всех образований
+// Маршруты для образования
 app.get('/api/education', (req, res) => {
     db.query('SELECT * FROM education', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
+        if (err) return res.status(500).json({ error: err.message });
         res.json(results);
+    });
+});
+
+app.post('/api/education', (req, res) => {
+    const { name } = req.body;
+    db.query('INSERT INTO education (name) VALUES (?)', [name], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ id: result.insertId, name });
+    });
+});
+
+app.put('/api/education/:id', (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    db.query('UPDATE education SET name = ? WHERE id = ?', [name, id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ id, name });
+    });
+});
+
+app.delete('/api/education/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM education WHERE id = ?', [id], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: 'Образование удалено' });
     });
 });
 
@@ -173,6 +176,97 @@ app.delete('/list/:id', (req, res) => {
     });
 });
 
+// Получение всех должностей
+app.get('/api/positions', (req, res) => {
+    db.query('SELECT * FROM position', (err, results) => {
+        if (err) {
+            console.error('Ошибка при получении должностей:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
+
+// Добавление новой должности
+app.post('/api/positions', (req, res) => {
+    const newPosition = req.body;
+    db.query('INSERT INTO position SET ?', newPosition, (err, results) => {
+        if (err) {
+            console.error('Ошибка при добавлении должности:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ id: results.insertId, ...newPosition });
+    });
+});
+
+// Обновление должности
+app.put('/api/positions/:id', (req, res) => {
+    const positionId = req.params.id;
+    const updatedPosition = req.body;
+    db.query('UPDATE position SET ? WHERE id = ?', [updatedPosition, positionId], (err) => {
+        if (err) {
+            console.error('Ошибка при обновлении должности:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ id: positionId, ...updatedPosition });
+    });
+});
+
+// Удаление должности
+app.delete('/api/positions/:id', (req, res) => {
+    const positionId = req.params.id;
+    db.query('DELETE FROM position WHERE id = ?', positionId, (err) => {
+        if (err) {
+            console.error('Ошибка при удалении должности:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(204).send();
+    });
+});
+
+// Create a new profession
+app.post('/api/professions', (req, res) => {
+    const { name } = req.body;
+    db.query('INSERT INTO prof (name) VALUES (?)', [name], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ id: result.insertId, name });
+    });
+});
+
+// Read all professions
+app.get('/api/professions', (req, res) => {
+    db.query('SELECT * FROM prof', (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
+
+// Update a profession
+app.put('/api/professions/:id', (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    db.query('UPDATE prof SET name = ? WHERE id = ?', [name, id], (err) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ id, name });
+    });
+});
+
+// Delete a profession
+app.delete('/api/professions/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM prof WHERE id = ?', [id], (err) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(204).send();
+    });
+});
 
 // Запуск сервера
 app.listen(PORT, () => {

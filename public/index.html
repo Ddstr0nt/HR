@@ -1,298 +1,389 @@
 <!DOCTYPE html>
 <html lang="ru">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Управление работниками</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <nav>
-        <a href="list.html">История сотрудников</a>
-        <a href="index.html" class="active">Данные сотрудников</a>
+      <a href="list.html">История сотрудников</a>
+      <a href="index.html" class="active">Данные сотрудников</a>
+      <a href="tables.html">Управление таблицами</a>
     </nav>
     <h1>Данные сотрудников</h1>
     <table id="workersTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Пол</th>
-                <th>Профессия</th>
-                <th>Должность</th>
-                <th>Зарплата</th>
-                <th>Образование</th>
-                <th>Дата рождения</th>
-                <th>Дата приема</th>
-                <th>Дата увольнения</th>
-                <th>Действия</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="text" name="fam" placeholder="Фамилия" class="input-field" required></td>
-                <td><input type="text" name="name" placeholder="Имя" class="input-field" required></td>
-                <td><input type="text" name="otch" placeholder="Отчество" class="input-field" required></td>
-                <td> <select name="gender_id" class="input-field" required>
-                        <option value="">Выберите пол</option> <!-- Пол будет загружен здесь -->
-                    </select> </td>
-                <td> <select name="prof_id" class="input-field" required>
-                        <option value="">Выберите профессию</option> <!-- Профессии будут загружены здесь -->
-                    </select> </td>
-                <td> <select name="position_id" class="input-field" required>
-                        <option value="">Выберите должность</option> <!-- Должности будут загружены здесь -->
-                    </select> </td>
-                <td><input type="number" name="salary" placeholder="Зарплата" class="input-field" required></td>
-                <td> <select name="education_id" class="input-field" required>
-                        <option value="">Выберите образование</option> <!-- Образование будет загружено здесь -->
-                    </select> </td>
-                <td><input type="date" name="date_r" class="input-field" required></td>
-                <td><input type="date" name="date_hired" class="input-field" required></td>
-                <td><input type="date" name="date_fired" class="input-field"></td>
-                <td><button id="addWorkerButton">Добавить</button></td>
-            </tr>
-        </thead>
-        <tbody> <!-- Данные работников будут добавлены сюда с помощью JavaScript --> </tbody>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Фамилия</th>
+          <th>Имя</th>
+          <th>Отчество</th>
+          <th>Пол</th>
+          <th>Профессия</th>
+          <th>Должность</th>
+          <th>Зарплата</th>
+          <th>Образование</th>
+          <th>Дата рождения</th>
+          <th>Дата приема</th>
+          <th>Дата увольнения</th>
+          <th>Действия</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input
+              type="text"
+              name="fam"
+              placeholder="Фамилия"
+              class="input-field"
+              required
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="name"
+              placeholder="Имя"
+              class="input-field"
+              required
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="otch"
+              placeholder="Отчество"
+              class="input-field"
+              required
+            />
+          </td>
+          <td>
+            <select name="gender_id" class="input-field" required>
+              <option value="">Выберите пол</option>
+              <!-- Пол будет загружен здесь -->
+            </select>
+          </td>
+          <td>
+            <select name="prof_id" class="input-field" required>
+              <option value="">Выберите профессию</option>
+              <!-- Профессии будут загружены здесь -->
+            </select>
+          </td>
+          <td>
+            <select name="position_id" class="input-field" required>
+              <option value="">Выберите должность</option>
+              <!-- Должности будут загружены здесь -->
+            </select>
+          </td>
+          <td>
+            <input
+              type="number"
+              name="salary"
+              placeholder="Зарплата"
+              class="input-field"
+              required
+            />
+          </td>
+          <td>
+            <select name="education_id" class="input-field" required>
+              <option value="">Выберите образование</option>
+              <!-- Образование будет загружено здесь -->
+            </select>
+          </td>
+          <td>
+            <input type="date" name="date_r" class="input-field" required />
+          </td>
+          <td>
+            <input type="date" name="date_hired" class="input-field" required />
+          </td>
+          <td><input type="date" name="date_fired" class="input-field" /></td>
+          <td><button id="addWorkerButton">Добавить</button></td>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Данные работников будут добавлены сюда с помощью JavaScript -->
+      </tbody>
     </table>
     <script>
-        const workersTableBody = document.getElementById('workersTable').getElementsByTagName('tbody')[0];
-        const addWorkerButton = document.getElementById('addWorkerButton');
-        let editingWorkerId = null; // Переменная для хранения ID редактируемого работника
-    
-        // Функция для форматирования даты
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            return new Date(dateString).toLocaleDateString('ru-RU', options);
+      const workersTableBody = document
+        .getElementById("workersTable")
+        .getElementsByTagName("tbody")[0];
+      const addWorkerButton = document.getElementById("addWorkerButton");
+      let editingWorkerId = null; // Переменная для хранения ID редактируемого работника
+
+      // Функция для форматирования даты
+      function formatDate(dateString) {
+        const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+        return new Date(dateString).toLocaleDateString("ru-RU", options);
+      }
+
+      // Функция для загрузки работников
+      async function loadWorkers() {
+        try {
+          const response = await fetch("http://localhost:3000/workers");
+          if (!response.ok) throw new Error("Ошибка при загрузке работников");
+          const data = await response.json();
+          workersTableBody.innerHTML = ""; // Очистка таблицы
+          data.forEach((worker) => {
+            const row = workersTableBody.insertRow();
+            row.setAttribute("data-id", worker.id); // Сохраняем ID работника в data-атрибуте
+            row.innerHTML = `
+                <td>${worker.id}</td>
+                <td>${worker.fam}</td>
+                <td>${worker.name}</td>
+                <td>${worker.otch}</td>
+                <td>${worker.gender_name}</td>
+                <td>${worker.prof_name}</td>
+                <td>${worker.position_name}</td>
+                <td>${worker.salary} руб.</td>
+                <td>${worker.education_name}</td>
+                <td>${formatDate(worker.date_r)}</td>
+                <td>${formatDate(worker.date_hired)}</td>
+                <td>${
+                  worker.date_fired
+                    ? formatDate(worker.date_fired)
+                    : "Не указано"
+                }</td>
+                <td>
+                    <button onclick="editWorker(${worker.id})">Изменить</button>
+                    <button class="delete-button" onclick="deleteWorker(${
+                      worker.id
+                    })">Удалить</button>
+                </td>
+            `;
+          });
+        } catch (error) {
+          alert(error.message); // Показываем сообщение об ошибке
         }
-    
-        // Функция для загрузки работников
-        async function loadWorkers() {
-            try {
-                const response = await fetch('http://localhost:3000/workers');
-                if (!response.ok) throw new Error('Ошибка при загрузке работников');
-                const data = await response.json();
-                workersTableBody.innerHTML = ''; // Очистка таблицы
-                data.forEach(worker => {
-                    const row = workersTableBody.insertRow();
-                    row.setAttribute('data-id', worker.id); // Сохраняем ID работника в data-атрибуте
-                    row.innerHTML = `
-                        <td>${worker.id}</td>
-                        <td>${worker.fam}</td>
-                        <td>${worker.name}</td>
-                        <td>${worker.otch}</td>
-                        <td>${worker.gender_name}</td>
-                        <td>${worker.prof_name}</td>
-                        <td>${worker.position_name}</td>
-                        <td>${worker.salary} руб.</td>
-                        <td>${worker.education_name}</td>
-                        <td>${formatDate(worker.date_r)}</td>
-                        <td>${formatDate(worker.date_hired)}</td>
-                        <td>${worker.date_fired ? formatDate(worker.date_fired) : ''}</td>
-                        <td>
-                            <button onclick="editWorker(${worker.id})">Изменить</button>
-                            <button class="delete-button" onclick="deleteWorker(${worker.id})">Удалить</button>
-                        </td>
-                    `;
-                });
-            } catch (error) {
-                alert(error.message); // Показываем сообщение об ошибке
-            }
+      }
+
+      // Функция для загрузки полов
+      async function loadGenders() {
+        try {
+          const response = await fetch("http://localhost:3000/api/genders");
+          if (!response.ok) throw new Error("Ошибка при загрузке полов");
+          const data = await response.json();
+          const genderSelect = document.querySelector(
+            'select[name="gender_id"]'
+          );
+          data.forEach((gender) => {
+            const option = document.createElement("option");
+            option.value = gender.id;
+            option.textContent = gender.name;
+            genderSelect.appendChild(option);
+          });
+        } catch (error) {
+          alert(error.message);
         }
-    
-        // Функция для загрузки полов
-        async function loadGenders() {
-            try {
-                const response = await fetch('http://localhost:3000/api/genders');
-                if (!response.ok) throw new Error('Ошибка при загрузке полов');
-                const data = await response.json();
-                const genderSelect = document.querySelector('select[name="gender_id"]');
-                data.forEach(gender => {
-                    const option = document.createElement('option');
-                    option.value = gender.id;
-                    option.textContent = gender.name;
-                    genderSelect.appendChild(option);
-                });
-            } catch (error) {
-                alert(error.message);
-            }
+      }
+
+      // Функция для загрузки профессий
+      async function loadProfessions() {
+        try {
+          const response = await fetch("http://localhost:3000/api/professions");
+          if (!response.ok) throw new Error("Ошибка при загрузке профессий");
+          const data = await response.json();
+          const profSelect = document.querySelector('select[name="prof_id"]');
+          data.forEach((prof) => {
+            const option = document.createElement("option");
+            option.value = prof.id;
+            option.textContent = prof.name;
+            profSelect.appendChild(option);
+          });
+        } catch (error) {
+          alert(error.message);
         }
-    
-        // Функция для загрузки профессий
-        async function loadProfessions() {
-            try {
-                const response = await fetch('http://localhost:3000/api/professions');
-                if (!response.ok) throw new Error('Ошибка при загрузке профессий');
-                const data = await response.json();
-                const profSelect = document.querySelector('select[name="prof_id"]');
-                data.forEach(prof => {
-                    const option = document.createElement('option');
-                    option.value = prof.id;
-                    option.textContent = prof.name;
-                    profSelect.appendChild(option);
-                });
-            } catch (error) {
-                alert(error.message);
-            }
+      }
+
+      // Функция для загрузки должностей
+      async function loadPositions() {
+        try {
+          const response = await fetch("http://localhost:3000/api/positions");
+          if (!response.ok) throw new Error("Ошибка при загрузке должностей");
+          const data = await response.json();
+          const positionSelect = document.querySelector(
+            'select[name="position_id"]'
+          );
+          data.forEach((position) => {
+            const option = document.createElement("option");
+            option.value = position.id;
+            option.textContent = position.name;
+            positionSelect.appendChild(option);
+          });
+        } catch (error) {
+          alert(error.message);
         }
-    
-        // Функция для загрузки должностей
-        async function loadPositions() {
-            try {
-                const response = await fetch('http://localhost:3000/api/positions');
-                if (!response.ok) throw new Error('Ошибка при загрузке должностей');
-                const data = await response.json();
-                const positionSelect = document.querySelector('select[name="position_id"]');
-                data.forEach(position => {
-                    const option = document.createElement('option');
-                    option.value = position.id;
-                    option.textContent = position.name;
-                    positionSelect.appendChild(option);
-                });
-            } catch (error) {
-                alert(error.message);
-            }
+      }
+
+      // Функция для загрузки образования
+      async function loadEducation() {
+        try {
+          const response = await fetch("http://localhost:3000/api/education");
+          if (!response.ok) throw new Error("Ошибка при загрузке образования");
+          const data = await response.json();
+          const educationSelect = document.querySelector(
+            'select[name="education_id"]'
+          );
+          data.forEach((edu) => {
+            const option = document.createElement("option");
+            option.value = edu.id;
+            option.textContent = edu.name;
+            educationSelect.appendChild(option);
+          });
+        } catch (error) {
+          alert(error.message);
         }
-    
-        // Функция для загрузки образования
-        async function loadEducation() {
-            try {
-                const response = await fetch('http://localhost:3000/api/education');
-                if (!response.ok) throw new Error('Ошибка при загрузке образования');
-                const data = await response.json();
-                const educationSelect = document.querySelector('select[name="education_id"]');
-                data.forEach(edu => {
-                    const option = document.createElement('option');
-                    option.value = edu.id;
-                    option.textContent = edu.name;
-                    educationSelect.appendChild(option);
-                });
-            } catch (error) {
-                alert(error.message);
-            }
+      }
+
+      // Функция для добавления или обновления работника
+      async function saveWorker() {
+        const fam = document.querySelector('input[name="fam"]').value;
+        const name = document.querySelector('input[name="name"]').value;
+        const otch = document.querySelector('input[name="otch"]').value;
+        const gender_id = document.querySelector(
+          'select[name="gender_id"]'
+        ).value;
+        const prof_id = document.querySelector('select[name="prof_id"]').value;
+        const position_id = document.querySelector(
+          'select[name="position_id"]'
+        ).value;
+        const salary = document.querySelector('input[name="salary"]').value;
+        const education_id = document.querySelector(
+          'select[name="education_id"]'
+        ).value;
+        const date_r = document.querySelector('input[name="date_r"]').value;
+        const date_hired = document.querySelector(
+          'input[name="date_hired"]'
+        ).value;
+        const date_fired = document.querySelector(
+          'input[name="date_fired"]'
+        ).value;
+
+        const workerData = {
+          fam,
+          name,
+          otch,
+          gender_id,
+          prof_id,
+          position_id,
+          salary,
+          education_id,
+          date_r,
+          date_hired,
+        };
+
+        // Добавляем date_fired только если оно не пустое
+        if (date_fired) {
+          workerData.date_fired = date_fired;
         }
-    
-        // Функция для добавления или обновления работника
-        async function saveWorker() {
-            const fam = document.querySelector('input[name="fam"]').value;
-            const name = document.querySelector('input[name="name"]').value;
-            const otch = document.querySelector('input[name="otch"]').value;
-            const gender_id = document.querySelector('select[name="gender_id"]').value;
-            const prof_id = document.querySelector('select[name="prof_id"]').value;
-            const position_id = document.querySelector('select[name="position_id"]').value;
-            const salary = document.querySelector('input[name="salary"]').value;
-            const education_id = document.querySelector('select[name="education_id"]').value;
-            const date_r = document.querySelector('input[name="date_r"]').value;
-            const date_hired = document.querySelector('input[name="date_hired"]').value;
-            const date_fired = document.querySelector('input[name="date_fired"]').value;
-    
-            const workerData = {
-                fam,
-                name,
-                otch,
-                gender_id,
-                prof_id,
-                position_id,
-                salary,
-                education_id,
-                date_r,
-                date_hired,
-                date_fired
-            };
-    
-            const method = editingWorkerId ? 'PUT' : 'POST';
-            const url = editingWorkerId ? `http://localhost:3000/workers/${editingWorkerId}` : 'http://localhost:3000/workers';
-    
-            try {
-                const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(workerData)
-                });
-                if (!response.ok) throw new Error('Ошибка при сохранении работника');
-                clearForm();
-                loadWorkers();
-                editingWorkerId = null; // Сбрасываем ID редактируемого работника
-            } catch (error) {
-                alert(error.message);
-            }
+
+        const method = editingWorkerId ? "PUT" : "POST";
+        const url = editingWorkerId
+          ? `http://localhost:3000/workers/${editingWorkerId}`
+          : "http://localhost:3000/workers";
+
+        try {
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(workerData),
+          });
+          if (!response.ok) throw new Error("Ошибка при сохранении работника");
+          clearForm();
+          loadWorkers();
+          editingWorkerId = null;
+        } catch (error) {
+          alert(error.message);
         }
-    
-        // Функция для очистки формы
-        function clearForm() {
-            document.querySelector('input[name="fam"]').value = '';
-            document.querySelector('input[name="name"]').value = '';
-            document.querySelector('input[name="otch"]').value = '';
-            document.querySelector('select[name="gender_id"]').value = '';
-            document.querySelector('select[name="prof_id"]').value = '';
-            document.querySelector('select[name="position_id"]').value = '';
-            document.querySelector('input[name="salary"]').value = '';
-            document.querySelector('select[name="education_id"]').value = '';
-            document.querySelector('input[name="date_r"]').value = '';
-            document.querySelector('input[name="date_hired"]').value = '';
-            document.querySelector('input[name="date_fired"]').value = '';
-            addWorkerButton.textContent = 'Добавить'; // Сменить текст кнопки обратно
+      }
+
+      // Функция для очистки формы
+      function clearForm() {
+        document.querySelector('input[name="fam"]').value = "";
+        document.querySelector('input[name="name"]').value = "";
+        document.querySelector('input[name="otch"]').value = "";
+        document.querySelector('select[name="gender_id"]').value = "";
+        document.querySelector('select[name="prof_id"]').value = "";
+        document.querySelector('select[name="position_id"]').value = "";
+        document.querySelector('input[name="salary"]').value = "";
+        document.querySelector('select[name="education_id"]').value = "";
+        document.querySelector('input[name="date_r"]').value = "";
+        document.querySelector('input[name="date_hired"]').value = "";
+        document.querySelector('input[name="date_fired"]').value = "";
+        addWorkerButton.textContent = "Добавить"; // Сменить текст кнопки обратно
+      }
+
+      // Функция для удаления работника
+      async function deleteWorker(id) {
+        try {
+          const response = await fetch(`http://localhost:3000/workers/${id}`, {
+            method: "DELETE",
+          });
+          if (!response.ok) throw new Error("Ошибка при удалении работника");
+          loadWorkers();
+        } catch (error) {
+          alert(error.message);
         }
-    
-        // Функция для удаления работника
-        async function deleteWorker(id) {
-            try {
-                const response = await fetch(`http://localhost:3000/workers/${id}`, {
-                    method: 'DELETE'
-                });
-                if (!response.ok) throw new Error('Ошибка при удалении работника');
-                loadWorkers();
-            } catch (error) {
-                alert(error.message);
-            }
+      }
+
+      // Функция для редактирования работника
+      // Функция для редактирования работника
+      function editWorker(id) {
+        // Remove highlight from any previously highlighted row
+        const previouslyHighlightedRow = document.querySelector(".highlight");
+        if (previouslyHighlightedRow) {
+          previouslyHighlightedRow.classList.remove("highlight");
         }
-    
-        // Функция для редактирования работника
-        function editWorker(id) {
-            const row = workersTableBody.querySelector(`tr[data-id="${id}"]`); // Получаем строку по data-id
-            const fam = row.cells[1].innerText;
-            const name = row.cells[2].innerText;
-            const otch = row.cells[3].innerText;
-            const gender_name = row.cells[4].innerText; // Получаем текст пола
-            const prof_name = row.cells[5].innerText; // Получаем текст профессии
-            const position_name = row.cells[6].innerText; // Получаем текст должности
-            const salary = row.cells[7].innerText.replace(' руб.', ''); // Убираем " руб."
-            const education_name = row.cells[8].innerText; // Получаем текст образования
-            const date_r = row.cells[9].innerText;
-            const date_hired = row.cells[10].innerText;
-            const date_fired = row.cells[11].innerText;
-    
-            // Заполнение формы данными работника
-            document.querySelector('input[name="fam"]').value = fam;
-            document.querySelector('input[name="name"]').value = name;
-            document.querySelector('input[name="otch"]').value = otch;
-            document.querySelector('select[name="gender_id"]').value = gender_name; // Здесь нужно будет преобразовать текст в id
-            document.querySelector('select[name="prof_id"]').value = prof_name; // Здесь нужно будет преобразовать текст в id
-            document.querySelector('select[name="position_id"]').value = position_name; // Здесь нужно будет преобразовать текст в id
-            document.querySelector('input[name="salary"]').value = salary;
-            document.querySelector('select[name="education_id"]').value = education_name; // Здесь нужно будет преобразовать текст в id
-            document.querySelector('input[name="date_r"]').value = date_r;
-            document.querySelector('input[name="date_hired"]').value = date_hired;
-            document.querySelector('input[name="date_fired"]').value = date_fired;
-    
-            editingWorkerId = id; // Устанавливаем ID редактируемого работника
-            addWorkerButton.textContent = 'Сохранить'; // Меняем текст кнопки на "Сохранить"
-        }
-    
-        // Загрузить работников и данные для селектов при загрузке страницы
-        loadWorkers();
-        loadGenders(); // Загрузить полы
-        loadProfessions(); // Загрузить профессии
-        loadPositions(); // Загрузить должности
-        loadEducation(); // Загрузить образование
-    
-        // Добавляем обработчик события на кнопку добавления/сохранения работника
-        addWorkerButton.addEventListener('click', function (event) {
-            event.preventDefault(); // Предотвращаем отправку формы
-            saveWorker(); // Вызываем функцию сохранения
-        });
+        const row = workersTableBody.querySelector(`tr[data-id="${id}"]`); // Получаем строку по data-id
+        row.classList.add("highlight"); // Add highlight to the current row
+        const fam = row.cells[1].innerText;
+        const name = row.cells[2].innerText;
+        const otch = row.cells[3].innerText;
+        const gender_name = row.cells[4].innerText; // Получаем текст пола
+        const prof_name = row.cells[5].innerText; // Получаем текст профессии
+        const position_name = row.cells[6].innerText; // Получаем текст должности
+        const salary = row.cells[7].innerText.replace(" руб.", ""); // Убираем " руб."
+        const education_name = row.cells[8].innerText; // Получаем текст образования
+        const date_r = row.cells[9].innerText;
+        const date_hired = row.cells[10].innerText;
+        const date_fired = row.cells[11].innerText;
+
+        // Заполнение формы данными работника
+        document.querySelector('input[name="fam"]').value = fam;
+        document.querySelector('input[name="name"]').value = name;
+        document.querySelector('input[name="otch"]').value = otch;
+        document.querySelector('select[name="gender_id"]').value = gender_name; // Здесь нужно будет преобразовать текст в id
+        document.querySelector('select[name="prof_id"]').value = prof_name; // Здесь нужно будет преобразовать текст в id
+        document.querySelector('select[name="position_id"]').value =
+          position_name; // Здесь нужно будет преобразовать текст в id
+        document.querySelector('input[name="salary"]').value = salary;
+        document.querySelector('select[name="education_id"]').value =
+          education_name; // Здесь нужно будет преобразовать текст в id
+        document.querySelector('input[name="date_r"]').value = date_r;
+        document.querySelector('input[name="date_hired"]').value = date_hired;
+        document.querySelector('input[name="date_fired"]').value = date_fired;
+
+        editingWorkerId = id; // Устанавливаем ID редактируемого работника
+        addWorkerButton.textContent = "Сохранить"; // Меняем текст кнопки на "Сохранить"
+      }
+
+      // Загрузить работников и данные для селектов при загрузке страницы
+      loadWorkers();
+      loadGenders(); // Загрузить полы
+      loadProfessions(); // Загрузить профессии
+      loadPositions(); // Загрузить должности
+      loadEducation(); // Загрузить образование
+
+      // Добавляем обработчик события на кнопку добавления/сохранения работника
+      addWorkerButton.addEventListener("click", function (event) {
+        event.preventDefault(); // Предотвращаем отправку формы
+        saveWorker(); // Вызываем функцию сохранения
+      });
     </script>
+  </body>
+</html>
