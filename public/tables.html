@@ -282,17 +282,29 @@
     }
 
     function editEducation(id) {
-        const previouslyHighlightedRow = document.querySelector('.highlight');
-    if (previouslyHighlightedRow) {
-        previouslyHighlightedRow.classList.remove('highlight');
-    }
-        const row = document.querySelector(`#educationTable tr[data-id='${id}']`);
-        row.classList.add('highlight'); // Add highlight to the current row
-        row.classList.add('highlight'); // Add highlight to the current row
-        const name = row.children[1].textContent;
-        document.querySelector('input[name="education_name"]').value = name;
+        const row = document.querySelector(`#educationTable tr[data-id="${id}"]`);
+        const name = row.cells[1].innerText;
+        document.querySelector('#educationName').value = name;
         editingEducationId = id;
+        document.querySelector('#addEducationButton').textContent = 'Сохранить';
     }
+
+    function editPosition(id) {
+        const row = document.querySelector(`#positionsTable tr[data-id="${id}"]`);
+        const name = row.cells[1].innerText;
+        document.querySelector('#positionName').value = name;
+        editingPositionId = id;
+        document.querySelector('#addPositionButton').textContent = 'Сохранить';
+    }
+
+    function editProfession(id) {
+        const row = document.querySelector(`#professionsTable tr[data-id="${id}"]`);
+        const name = row.cells[1].innerText;
+        document.querySelector('#professionName').value = name;
+        editingProfessionId = id;
+        document.querySelector('#addProfessionButton').textContent = 'Сохранить';
+    }
+
 
     async function deleteEducation(id) {
         try {

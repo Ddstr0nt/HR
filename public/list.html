@@ -113,48 +113,42 @@
 
       // Функция для загрузки элементов списка
       function loadList() {
-        fetch("http://localhost:3000/list")
-          .then((response) => response.json())
-          .then((data) => {
-            listTableBody.innerHTML = ""; // Очистка таблицы
+    fetch("http://localhost:3000/list")
+        .then((response) => response.json())
+        .then((data) => {
+            listTableBody.innerHTML = "";
             data.forEach((item) => {
-              const row = listTableBody.insertRow();
-              row.setAttribute("data-id", item.id); // Сохраняем ID элемента в data-атрибуте
+                const row = listTableBody.insertRow();
+                row.setAttribute("data-id", item.id);
+                row.setAttribute("data-workers-id", item.workers_id);
+                row.setAttribute("data-actions-id", item.actions_id);
 
-              // Находим имя действия по ID
-              const action = actionsData.find((a) => a.id === item.actions_id);
-              const actionName = action ? action.name : "Не указано";
-              // Если действие не найдено, показываем 'Не указано'
-              const worker = workersData.find((w) => w.id === item.workers_id);
-              const workerName = worker
-                ? `${worker.fam} ${worker.name} ${worker.otch}`
-                : "Не указано";
+                const action = actionsData.find((a) => a.id === item.actions_id);
+                const actionName = action ? action.name : "Не указано";
+                const worker = workersData.find((w) => w.id === item.workers_id);
+                const workerName = worker
+                    ? `${worker.fam} ${worker.name} ${worker.otch}`
+                    : "Не указано";
 
-              row.innerHTML = `
+                row.innerHTML = `
                     <td>${item.id}</td>
                     <td>${workerName}</td>
-                    <td>${actionName}</td> <!-- Здесь отображаем имя действия -->
+                    <td>${actionName}</td>
                     <td>${item.sum || 0} руб.</td>
-                    <td>${
-                      item.date
+                    <td>${item.date
                         ? new Date(item.date).toLocaleDateString("ru-RU")
-                        : "Не указана"
-                    }</td>
+                        : "Не указана"}</td>
                     <td>
-                        <button onclick="editListItem(${
-                          item.id
-                        })">Изменить</button>
-                        <button class="delete-button" onclick="deleteListItem(${
-                          item.id
-                        })">Удалить</button>
+                        <button onclick="editListItem(${item.id})">Изменить</button>
+                        <button class="delete-button" onclick="deleteListItem(${item.id})">Удалить</button>
                     </td>
                 `;
             });
-          })
-          .catch((error) => {
+        })
+        .catch((error) => {
             console.error("Ошибка:", error);
-          });
-      }
+        });
+}
 
       // Функция для добавления или обновления элемента списка
       function saveListItem() {
@@ -220,27 +214,30 @@
 
       // Функция для редактирования элемента списка
       function editListItem(id) {
-        const previouslyHighlightedRow = document.querySelector(".highlight");
-        if (previouslyHighlightedRow) {
-          previouslyHighlightedRow.classList.remove("highlight");
-        }
-        const row = listTableBody.querySelector(`tr[data-id="${id}"]`); // Получаем строку по data-id
-        row.classList.add("highlight"); // Add highlight to the current row
-        const workers_id = row.cells[1].innerText;
-        const actions_id = row.cells[2].innerText;
-        const sum = row.cells[3].innerText.replace(" руб.", "");
-        const date =
-          row.cells[4].innerText === "Не указана" ? "" : row.cells[4].innerText;
+    const previouslyHighlightedRow = document.querySelector(".highlight");
+    if (previouslyHighlightedRow) {
+        previouslyHighlightedRow.classList.remove("highlight");
+    }
+    const row = listTableBody.querySelector(`tr[data-id="${id}"]`);
+    row.classList.add("highlight");
 
-        // Заполнение формы данными элемента списка
-        document.querySelector('select[name="workers_id"]').value = workers_id;
-        document.querySelector('select[name="actions_id"]').value = actions_id;
-        document.querySelector('input[name="sum"]').value = sum;
-        document.querySelector('input[name="date"]').value = date;
+    // Получаем данные из строки таблицы
+    const workers_id = row.getAttribute('data-workers-id');
+    const actions_id = row.getAttribute('data-actions-id');
+    const sum = row.cells[3].innerText.replace(" руб.", "").trim();
+    const date = row.cells[4].innerText !== "Не указана" 
+        ? new Date(row.cells[4].innerText.split('.').reverse().join('-')).toISOString().split('T')[0]
+        : "";
 
-        editingListId = id; // Устанавливаем ID редактируемого элемента
-        addListButton.textContent = "Сохранить"; // Меняем текст кнопки на "Сохранить"
-      }
+    // Заполняем форму данными элемента списка
+    document.querySelector('select[name="workers_id"]').value = workers_id;
+    document.querySelector('select[name="actions_id"]').value = actions_id;
+    document.querySelector('input[name="sum"]').value = sum;
+    document.querySelector('input[name="date"]').value = date;
+
+    editingListId = id;
+    addListButton.textContent = "Сохранить";
+}
 
       // Загрузка данных при загрузке страницы
       loadWorkers();
