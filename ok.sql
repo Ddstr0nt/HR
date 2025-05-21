@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: ok
 -- ------------------------------------------------------
--- Server version	8.0.40
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -167,6 +167,32 @@ INSERT INTO `prof` VALUES (1,'Инженер'),(2,'Программист'),(3,'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','editor','user') NOT NULL DEFAULT 'user',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','0192023a7bbd73250516f069df18b500','admin'),(2,'editor','50116a1a3b67657572a00ea8c6680cb9','editor'),(3,'user','6ad14ba9986e3615423dfca256d04e3f','user');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `workers`
 --
 
@@ -204,7 +230,7 @@ CREATE TABLE `workers` (
 
 LOCK TABLES `workers` WRITE;
 /*!40000 ALTER TABLE `workers` DISABLE KEYS */;
-INSERT INTO `workers` VALUES (21,'Иван','Иванов','Иванович',1,1,30,80000,2,'1985-02-15','2010-05-01',NULL),(22,'Анна','Петрова','Сергеевна',2,6,27,75000,2,'1985-03-28','2012-01-15',NULL),(23,'Алексей','Сидоров','Петрович',1,2,26,120000,2,'1992-06-11','2012-03-01',NULL),(24,'Екатерина','Козлова','Александровна',2,3,29,90000,2,'1988-08-10','2013-08-22',NULL),(25,'Дмитрий','Смирнов','Владимирович',1,7,32,70000,2,'1982-05-05','2011-11-01','2022-12-31'),(26,'Дмитрий','Васильев','Андреевич',1,1,33,70000,2,'1985-06-13','2013-10-09',NULL),(27,'Андрей','Ткачев','Владимирович',1,6,28,50000,1,'1994-02-14','2022-01-04',NULL),(29,'Евгений','Воробьев','Иванович',1,6,31,70000,2,'1981-01-22','2020-10-23',NULL);
+INSERT INTO `workers` VALUES (21,'Иван','Иванов','Иванович',1,1,30,80000,2,'1985-02-15','2010-05-01',NULL),(22,'Анна','Петрова','Сергеевна',2,6,27,75000,2,'1985-03-28','2012-01-15',NULL),(23,'Алексей','Сидоров','Петрович',1,2,26,120000,2,'1992-06-11','2012-03-01',NULL),(24,'Екатерина','Козлова','Александровна',2,3,29,90000,2,'1988-08-10','2013-08-22',NULL),(25,'Дмитрий','Смирнов','Владимирович',1,7,32,70000,2,'1982-05-05','2011-11-01','2022-12-31'),(26,'Дмитрий','Васильев','Андреевич',1,1,33,70000,2,'1985-06-13','2013-10-09',NULL),(27,'Андрей','Ткачев','Владимирович',1,6,28,50000,3,'1994-02-14','2022-01-04',NULL),(29,'Евгений','Воробьев','Иванович',1,6,31,70000,2,'1981-01-22','2020-10-23',NULL);
 /*!40000 ALTER TABLE `workers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -217,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-20 14:14:33
+-- Dump completed on 2025-05-21 20:14:54

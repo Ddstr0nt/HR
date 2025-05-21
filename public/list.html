@@ -12,6 +12,7 @@
       <a href="list.html" class="active">История сотрудников</a>
       <a href="index.html">Данные сотрудников</a>
       <a href="tables.html">Управление таблицами</a>
+      <button id="authButton" class="auth-button"></button>
     </nav>
     <h1>История штрафов и поощрений работников</h1>
     <table id="listTable">
@@ -55,11 +56,30 @@
       </tbody>
     </table>
     <script>
+          const authButton = document.getElementById('authButton');
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        authButton.textContent = 'Выйти';
+        authButton.onclick = () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            window.location.href = 'login.html';
+        };
+    } else {
+        authButton.textContent = 'Войти';
+        authButton.onclick = () => {
+            window.location.href = 'login.html';
+        };
+    }
+
       const listTableBody = document
         .getElementById("listTable")
         .getElementsByTagName("tbody")[0];
       const addListButton = document.getElementById("addListButton");
       let editingListId = null; // Переменная для хранения ID редактируемого элемента списка
+
+      let workersData = []; // Переменная для хранения данных о работниках
 
       // Функция для загрузки работников в выпадающий список
       function loadWorkers() {
@@ -69,7 +89,7 @@
             return response.json();
           })
           .then((data) => {
-            workersData = data; // Сохраняем данные о действиях
+            workersData = data; // Сохраняем данные о работниках
             const workersSelect = document.querySelector(
               'select[name="workers_id"]'
             );

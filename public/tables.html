@@ -6,11 +6,12 @@
      <title>Управление таблицами</title>
      <link rel="stylesheet" href="style.css">
  </head>
- <div>
+ <body>
  <nav>
      <a href="list.html">История сотрудников</a>
      <a href="index.html">Данные сотрудников</a>
      <a href="tables.html" class="active">Управление таблицами</a>
+     <button id="authButton" class="auth-button"></button>
  </nav>
  <h1>Управление таблицами</h1>
 
@@ -75,10 +76,26 @@
     </table>
 </div>
 </div>
-</div>
 
- <!-- Остальной код остается без изменений -->
 <script>
+    // Проверка роли пользователя
+        const authButton = document.getElementById('authButton');
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        authButton.textContent = 'Выйти';
+        authButton.onclick = () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            window.location.href = 'login.html';
+        };
+    } else {
+        authButton.textContent = 'Войти';
+        authButton.onclick = () => {
+            window.location.href = 'login.html';
+        };
+    }
+
     const positionsTableBody = document.getElementById('positionsTable').getElementsByTagName('tbody')[0];
     const addPositionButton = document.getElementById('addPositionButton');
     let editingPositionId = null;

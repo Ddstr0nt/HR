@@ -1,9 +1,11 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = 3000;
+const SECRET_KEY = '111'; // Замените на свой секретный ключ
 
 // Middleware
 app.use(cors());
@@ -266,6 +268,37 @@ app.delete('/api/professions/:id', (req, res) => {
         }
         res.status(204).send();
     });
+});
+
+// Авторизация пользователя
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const query = 'SELECT * FROM users WHERE username = ? AND password = MD5(?)';
+    db.query(query, [username, password], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (results.length === 0) return res.status(401).json({ error: 'Неверные учетные данные' });
+
+        const user = results[0];
+        const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
+        res.json({ token, role: user.role, username: user.username }); // Добавляем username в ответ
+    });
+});
+
+// Middleware для проверки токена
+function authenticateToken(req, res, next) {
+    const token = req.headers['authorization'];
+    if (!token) return res.status(401).json({ error: 'Токен отсутствует' });
+
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+        if (err) return res.status(403).json({ error: 'Недействительный токен' });
+        req.user = user;
+        next();
+    });
+}
+
+// Пример защищенного маршрута
+app.get('/protected', authenticateToken, (req, res) => {
+    res.json({ message: 'Доступ разрешен', user: req.user });
 });
 
 // Запуск сервера
