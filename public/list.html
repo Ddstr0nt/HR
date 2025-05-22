@@ -56,14 +56,16 @@
       </tbody>
     </table>
     <script>
-          const authButton = document.getElementById('authButton');
+    const authButton = document.getElementById('authButton');
     const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username'); // Получаем имя пользователя
 
     if (token) {
-        authButton.textContent = 'Выйти';
+        authButton.textContent = `Выйти (${username})`; // Отображаем имя пользователя
         authButton.onclick = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('role');
+            localStorage.removeItem('username'); // Удаляем имя пользователя
             window.location.href = 'login.html';
         };
     } else {
@@ -172,6 +174,7 @@
           </td>
         `;
             });
+          applyRoleRestrictions();
           })
           .catch((error) => {
             console.error("Ошибка:", error);
@@ -179,59 +182,63 @@
       }
 
       // Функция для добавления или обновления элемента списка
-      function saveListItem() {
-        const workers_id = document.querySelector(
-          'select[name="workers_id"]'
-        ).value;
-        const actions_id = document.querySelector(
-          'select[name="actions_id"]'
-        ).value;
-        const sum = document.querySelector('input[name="sum"]').value || null;
-        const date = document.querySelector('input[name="date"]').value || null;
+function saveListItem() {
+    const role = localStorage.getItem('role'); // Получаем роль пользователя
 
-        const listData = {
-          workers_id,
-          actions_id,
-          sum,
-          date,
-        };
+    // Проверяем, если роль editor и запись новая (editingListId отсутствует)
+    if (role === 'editor' && !editingListId) {
+        alert('У вас недостаточно прав для добавления новых записей.');
+        return;
+    }
 
-        const method = editingListId ? "PUT" : "POST";
-        const url = editingListId
-          ? `http://localhost:3000/list/${editingListId}`
-          : "http://localhost:3000/list";
+    const workers_id = document.querySelector('select[name="workers_id"]').value;
+    const actions_id = document.querySelector('select[name="actions_id"]').value;
+    const sum = document.querySelector('input[name="sum"]').value || null;
+    const date = document.querySelector('input[name="date"]').value || null;
 
-        fetch(url, {
-          method: method,
-          headers: {
+    const listData = {
+        workers_id,
+        actions_id,
+        sum,
+        date,
+    };
+
+    const method = editingListId ? "PUT" : "POST";
+    const url = editingListId
+        ? `http://localhost:3000/list/${editingListId}`
+        : "http://localhost:3000/list";
+
+    fetch(url, {
+        method: method,
+        headers: {
             "Content-Type": "application/json",
-          },
-          body: JSON.stringify(listData),
-        })
-          .then((response) => {
+        },
+        body: JSON.stringify(listData),
+    })
+        .then((response) => {
             if (!response.ok) {
-              throw new Error("Ошибка при добавлении/обновлении элемента");
+                throw new Error("Ошибка при добавлении/обновлении элемента");
             }
             return response.json();
-          })
-          .then(() => {
+        })
+        .then(() => {
             clearForm();
             loadList();
             editingListId = null; // Сбрасываем ID редактируемого элемента
-          })
-          .catch((error) => {
+        })
+        .catch((error) => {
             console.error("Ошибка:", error);
-          });
-      }
+        });
+}
 
       // Функция для очистки формы
-      function clearForm() {
-        document.querySelector('select[name="workers_id"]').value = "";
-        document.querySelector('select[name="actions_id"]').value = "";
-        document.querySelector('input[name="sum"]').value = "";
-        document.querySelector('input[name="date"]').value = "";
-        addListButton.textContent = "Добавить"; // Сменить текст кнопки обратно
-      }
+function clearForm() {
+    document.querySelector('select[name="workers_id"]').value = "";
+    document.querySelector('select[name="actions_id"]').value = "";
+    document.querySelector('input[name="sum"]').value = "";
+    document.querySelector('input[name="date"]').value = "";
+    addListButton.textContent = "Добавить"; // Сменить текст кнопки обратно
+}
 
       // Функция для удаления элемента списка
       function deleteListItem(id) {
@@ -241,48 +248,69 @@
       }
 
       // Функция для редактирования элемента списка
-      function editListItem(id) {
-        const previouslyHighlightedRow = document.querySelector(".highlight");
-        if (previouslyHighlightedRow) {
-          previouslyHighlightedRow.classList.remove("highlight");
-        }
+function editListItem(id) {
+    const previouslyHighlightedRow = document.querySelector(".highlight");
+    if (previouslyHighlightedRow) {
+        previouslyHighlightedRow.classList.remove("highlight");
+    }
 
-        const row = listTableBody.querySelector(`tr[data-id="${id}"]`);
-        row.classList.add("highlight"); // Подсвечиваем редактируемую строку
+    const row = listTableBody.querySelector(`tr[data-id="${id}"]`);
+    row.classList.add("highlight"); // Подсвечиваем редактируемую строку
 
-        // Получаем данные из строки таблицы
-        const workerId = row.getAttribute("data-worker-id"); // Нужно сохранять этот атрибут при загрузке данных
-        const actionId = row.getAttribute("data-action-id"); // Нужно сохранять этот атрибут при загрузке данных
-        const sum = row.cells[3].innerText.replace(" руб.", "");
+    // Получаем данные из строки таблицы
+    const workerId = row.getAttribute("data-worker-id");
+    const actionId = row.getAttribute("data-action-id");
+    const sum = row.cells[3].innerText.replace(" руб.", "");
 
-        // Преобразуем дату из формата "dd.mm.yyyy" в "yyyy-mm-dd" для input[type="date"]
-        const dateText = row.cells[4].innerText;
-        let dateValue = "";
-        if (dateText !== "Не указана") {
-          const [day, month, year] = dateText.split(".");
-          dateValue = `${year}-${month.padStart(2, "0")}-${day.padStart(
-            2,
-            "0"
-          )}`;
-        }
+    // Преобразуем дату из формата "dd.mm.yyyy" в "yyyy-mm-dd" для input[type="date"]
+    const dateText = row.cells[4].innerText;
+    let dateValue = "";
+    if (dateText !== "Не указана") {
+        const [day, month, year] = dateText.split(".");
+        dateValue = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    }
 
-        // Заполнение формы данными элемента списка
-        document.querySelector('select[name="workers_id"]').value = workerId;
-        document.querySelector('select[name="actions_id"]').value = actionId;
-        document.querySelector('input[name="sum"]').value = sum;
-        document.querySelector('input[name="date"]').value = dateValue;
+    // Заполнение формы данными элемента списка
+    document.querySelector('select[name="workers_id"]').value = workerId;
+    document.querySelector('select[name="actions_id"]').value = actionId;
+    document.querySelector('input[name="sum"]').value = sum;
+    document.querySelector('input[name="date"]').value = dateValue;
 
-        editingListId = id; // Устанавливаем ID редактируемого элемента
-        addListButton.textContent = "Сохранить"; // Меняем текст кнопки на "Сохранить"
+    editingListId = id; // Устанавливаем ID редактируемого элемента
+    addListButton.textContent = "Сохранить"; // Меняем текст кнопки на "Сохранить"
+}
 
-        // Прокручиваем к форме для удобства
-        document.querySelector("thead").scrollIntoView({ behavior: "smooth" });
-      }
+function applyRoleRestrictions() {
+    const role = localStorage.getItem('role'); // Получаем роль пользователя
 
-      // Загрузка данных при загрузке страницы
-      loadWorkers();
-      loadActions();
-      loadList();
+    if (role === 'user') {
+        // Скрываем заголовок колонки "Действия"
+        const actionsColumnHeader = document.querySelector('#listTable thead tr th:last-child');
+        actionsColumnHeader.style.display = 'none';
+
+        // Скрываем все ячейки в колонке "Действия"
+        const actionsColumnCells = document.querySelectorAll('#listTable tbody tr td:last-child');
+        actionsColumnCells.forEach(cell => {
+            cell.style.display = 'none';
+        });
+
+        // Скрываем строку добавления нового элемента
+        const addListRow = document.querySelector('#listTable thead tr:nth-child(2)');
+        addListRow.style.display = 'none';
+    } else if (role === 'editor') {
+        // Скрываем кнопку "Удалить" для роли editor
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
+            button.style.display = 'none';
+        });
+    }
+}
+
+// Вызов функции после загрузки данных
+loadWorkers();
+loadActions();
+loadList();
+applyRoleRestrictions();
 
       // Добавляем обработчик события на кнопку добавления/сохранения элемента списка
       addListButton.addEventListener("click", function (event) {

@@ -1,59 +1,59 @@
- <!DOCTYPE html>
- <html lang="ru">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Управление таблицами</title>
-     <link rel="stylesheet" href="style.css">
- </head>
- <body>
- <nav>
-     <a href="list.html">История сотрудников</a>
-     <a href="index.html">Данные сотрудников</a>
-     <a href="tables.html" class="active">Управление таблицами</a>
-     <button id="authButton" class="auth-button"></button>
- </nav>
- <h1>Управление таблицами</h1>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление таблицами</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+    <a href="list.html">История сотрудников</a>
+    <a href="index.html">Данные сотрудников</a>
+    <a href="tables.html" class="active">Управление таблицами</a>
+    <button id="authButton" class="auth-button"></button>
+</nav>
+<h1>Управление таблицами</h1>
 
- <div class="tables-container">
-     <div class="table-wrapper">
+<div class="tables-container">
+    <div class="table-wrapper">
         
-         <!-- Positions Table -->
-         <table id="positionsTable">
-             <thead>
-                 <tr>
-                     <th>ID</th>
-                     <th>Название должности</th>
-                     <th>Действия</th>
-                 </tr>
-                 <tr>
-                     <td></td>
-                     <td><input type="text" name="position_name" placeholder="Название должности" class="input-field" required></td>
-                     <td><button id="addPositionButton">Добавить</button></td>
-                 </tr>
-             </thead>
-             <tbody> <!-- Данные должностей будут добавлены сюда с помощью JavaScript --> </tbody>
-         </table>
-     </div>
+        <!-- Positions Table -->
+        <table id="positionsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название должности</th>
+                    <th>Действия</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="text" name="position_name" placeholder="Название должности" class="input-field" required></td>
+                    <td><button id="addPositionButton">Добавить</button></td>
+                </tr>
+            </thead>
+            <tbody> <!-- Данные должностей будут добавлены сюда с помощью JavaScript --> </tbody>
+        </table>
+    </div>
 
-     <div class="table-wrapper">
-         <!-- Professions Table -->
-         <table id="professionsTable">
-             <thead>
-                 <tr>
-                     <th>ID</th>
-                     <th>Название профессии</th>
-                     <th>Действия</th>
-                 </tr>
-                 <tr>
-                     <td></td>
-                     <td><input type="text" name="profession_name" placeholder="Название профессии" class="input-field" required></td>
-                     <td><button id="addProfessionButton">Добавить</button></td>
-                 </tr>
-             </thead>
-             <tbody> <!-- Данные профессий будут добавлены сюда с помощью JavaScript --> </tbody>
-         </table>
-     </div>
+    <div class="table-wrapper">
+        <!-- Professions Table -->
+        <table id="professionsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название профессии</th>
+                    <th>Действия</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="text" name="profession_name" placeholder="Название профессии" class="input-field" required></td>
+                    <td><button id="addProfessionButton">Добавить</button></td>
+                </tr>
+            </thead>
+            <tbody> <!-- Данные профессий будут добавлены сюда с помощью JavaScript --> </tbody>
+        </table>
+    </div>
 
  <div class="table-wrapper">
     <!-- Education Table -->
@@ -79,14 +79,16 @@
 
 <script>
     // Проверка роли пользователя
-        const authButton = document.getElementById('authButton');
+    const authButton = document.getElementById('authButton');
     const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username'); // Получаем имя пользователя
 
     if (token) {
-        authButton.textContent = 'Выйти';
+        authButton.textContent = `Выйти (${username})`; // Отображаем имя пользователя
         authButton.onclick = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('role');
+            localStorage.removeItem('username'); // Удаляем имя пользователя
             window.location.href = 'login.html';
         };
     } else {
@@ -126,6 +128,7 @@
                     </td>
                 `;
             });
+            applyRoleRestrictions(); // Применяем ограничения ролей
         } catch (error) {
             alert(error.message);
         }
@@ -150,12 +153,44 @@
                     </td>
                 `;
             });
+         applyRoleRestrictions(); // Применяем ограничения ролей
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+    async function loadEducation() {
+        try {
+            const response = await fetch('http://localhost:3000/api/education');
+            if (!response.ok) throw new Error('Ошибка при загрузке образования');
+            const data = await response.json();
+            educationTableBody.innerHTML = '';
+            data.forEach(education => {
+                const row = educationTableBody.insertRow();
+                row.setAttribute('data-id', education.id);
+                row.innerHTML = `
+                    <td>${education.id}</td>
+                    <td>${education.name}</td>
+                    <td>
+                        <button onclick="editEducation(${education.id})">Изменить</button>
+                        <button class="delete-button" onclick="deleteEducation(${education.id})">Удалить</button>
+                    </td>
+                `;
+            });
+          applyRoleRestrictions();
         } catch (error) {
             alert(error.message);
         }
     }
     // Функция для добавления или обновления должности
     async function savePosition() {
+        const role = localStorage.getItem('role'); // Получаем роль пользователя
+
+        // Проверяем, если роль editor и запись новая (editingPositionId отсутствует)
+        if (role === 'editor' && !editingPositionId) {
+            alert('У вас недостаточно прав для добавления новых записей.');
+            return;
+        }
+
         const name = document.querySelector('input[name="position_name"]').value;
         const positionData = { name };
         const method = editingPositionId ? 'PUT' : 'POST';
@@ -180,6 +215,14 @@
 
     // Функция для добавления или обновления профессии
     async function saveProfession() {
+        const role = localStorage.getItem('role'); // Получаем роль пользователя
+
+        // Проверяем, если роль editor и запись новая (editingProfessionId отсутствует)
+        if (role === 'editor' && !editingProfessionId) {
+            alert('У вас недостаточно прав для добавления новых записей.');
+            return;
+        }
+
         const name = document.querySelector('input[name="profession_name"]').value;
         const professionData = { name };
         const method = editingProfessionId ? 'PUT' : 'POST';
@@ -207,12 +250,14 @@
     if (previouslyHighlightedRow) {
         previouslyHighlightedRow.classList.remove('highlight');
     }
-        const row = document.querySelector(`tr[data-id='${id}']`);
-        row.classList.add('highlight');
-        const name = row.children[1].textContent;
-        document.querySelector('input[name="position_name"]').value = name;
-        editingPositionId = id;
-    }
+
+    const row = document.querySelector(`tr[data-id='${id}']`);
+    row.classList.add('highlight');
+    const name = row.children[1].textContent;
+    document.querySelector('input[name="position_name"]').value = name;
+    editingPositionId = id;
+    addPositionButton.textContent = "Сохранить"; // Меняем текст кнопки на "Сохранить"
+}
 
     // Функция для редактирования профессии
     function editProfession(id) {
@@ -220,12 +265,14 @@
     if (previouslyHighlightedRow) {
         previouslyHighlightedRow.classList.remove('highlight');
     }
-        const row = document.querySelector(`tr[data-id='${id}']`);
-        row.classList.add('highlight');
-        const name = row.children[1].textContent;
-        document.querySelector('input[name="profession_name"]').value = name;
-        editingProfessionId = id;
-    }
+
+    const row = document.querySelector(`tr[data-id='${id}']`);
+    row.classList.add('highlight');
+    const name = row.children[1].textContent;
+    document.querySelector('input[name="profession_name"]').value = name;
+    editingProfessionId = id;
+    addProfessionButton.textContent = "Сохранить"; // Меняем текст кнопки на "Сохранить"
+}
     // Функция для удаления должности
     async function deletePosition(id) {
         try {
@@ -252,30 +299,15 @@
         }
     }
 
-    async function loadEducation() {
-        try {
-            const response = await fetch('http://localhost:3000/api/education');
-            if (!response.ok) throw new Error('Ошибка при загрузке образования');
-            const data = await response.json();
-            educationTableBody.innerHTML = '';
-            data.forEach(education => {
-                const row = educationTableBody.insertRow();
-                row.setAttribute('data-id', education.id);
-                row.innerHTML = `
-                    <td>${education.id}</td>
-                    <td>${education.name}</td>
-                    <td>
-                        <button onclick="editEducation(${education.id})">Изменить</button>
-                        <button class="delete-button" onclick="deleteEducation(${education.id})">Удалить</button>
-                    </td>
-                `;
-            });
-        } catch (error) {
-            alert(error.message);
-        }
-    }
-
     async function saveEducation() {
+        const role = localStorage.getItem('role'); // Получаем роль пользователя
+
+        // Проверяем, если роль editor и запись новая (editingEducationId отсутствует)
+        if (role === 'editor' && !editingEducationId) {
+            alert('У вас недостаточно прав для добавления новых записей.');
+            return;
+        }
+
         const name = document.querySelector('input[name="education_name"]').value;
         const educationData = { name };
         const method = editingEducationId ? 'PUT' : 'POST';
@@ -303,13 +335,14 @@
     if (previouslyHighlightedRow) {
         previouslyHighlightedRow.classList.remove('highlight');
     }
-        const row = document.querySelector(`#educationTable tr[data-id='${id}']`);
-        row.classList.add('highlight'); // Add highlight to the current row
-        row.classList.add('highlight'); // Add highlight to the current row
-        const name = row.children[1].textContent;
-        document.querySelector('input[name="education_name"]').value = name;
-        editingEducationId = id;
-    }
+
+    const row = document.querySelector(`#educationTable tr[data-id='${id}']`);
+    row.classList.add('highlight');
+    const name = row.children[1].textContent;
+    document.querySelector('input[name="education_name"]').value = name;
+    editingEducationId = id;
+    addEducationButton.textContent = "Сохранить"; // Меняем текст кнопки на "Сохранить"
+}
 
     async function deleteEducation(id) {
         try {
@@ -325,16 +358,19 @@
 
     function clearEducationForm() {
         document.querySelector('input[name="education_name"]').value = '';
+        addEducationButton.textContent = "Добавить"; // Сбрасываем текст кнопки
     }
 
     // Функция для очистки формы должности
     function clearPositionForm() {
         document.querySelector('input[name="position_name"]').value = '';
+        addPositionButton.textContent = "Добавить"; // Сбрасываем текст кнопки
     }
 
     // Функция для очистки формы профессии
     function clearProfessionForm() {
         document.querySelector('input[name="profession_name"]').value = '';
+        addProfessionButton.textContent = "Добавить"; // Сбрасываем текст кнопки
     }
 
     // Обработчик события для кнопки добавления должности
@@ -344,12 +380,41 @@
     addProfessionButton.addEventListener('click', saveProfession);
 
     addEducationButton.addEventListener('click', saveEducation);
-    // Загрузка должностей и профессий при загрузке страницы
-    window.onload = function() {
-        loadPositions();
-        loadProfessions();
-        loadEducation();
-    };
+
+    function applyRoleRestrictions() {
+    const role = localStorage.getItem('role'); // Получаем роль пользователя
+
+    if (role === 'user') {
+        // Скрываем колонку "Действия" для всех таблиц
+        const tables = ['positionsTable', 'professionsTable', 'educationTable'];
+        tables.forEach(tableId => {
+            const actionsColumnHeader = document.querySelector(`#${tableId} thead tr th:last-child`);
+            actionsColumnHeader.style.display = 'none';
+
+            const actionsColumnCells = document.querySelectorAll(`#${tableId} tbody tr td:last-child`);
+            actionsColumnCells.forEach(cell => {
+                cell.style.display = 'none';
+            });
+
+            const addRow = document.querySelector(`#${tableId} thead tr:nth-child(2)`);
+            addRow.style.display = 'none';
+        });
+    } else if (role === 'editor') {
+        // Скрываем кнопку "Удалить" для роли editor
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
+            button.style.display = 'none';
+        });
+    }
+}
+
+// Вызов функции после загрузки данных
+window.onload = function() {
+    loadPositions();
+    loadProfessions();
+    loadEducation();
+    applyRoleRestrictions();
+};
 </script>
 </body>
 </html>
