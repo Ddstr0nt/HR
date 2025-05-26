@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отдел кадров</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+      :root {
+        --primary-color: #4e73df;
+        --dark-color: #2c3e50;
+        --light-color: #f8f9fa;
+      }
+      
+      body {
+        background-color: #f5f7fb;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      
+      .navbar {
+        background-color: var(--dark-color);
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        border-radius: 0 0 5px 5px;
+      }
+      
+      .navbar-brand {
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+      
+      .main-content {
+        padding: 20px;
+        margin-top: 20px;
+      }
+      
+      .card {
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+        border: none;
+        transition: transform 0.3s;
+      }
+      
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      
+      .card-header {
+        background-color: var(--dark-color);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+      }
+      
+      .btn {
+        border-radius: 5px;
+        font-weight: 500;
+      }
+
+      .btn-primary {
+        color: white;
+        background-color: var(--dark-color);
+        border-color: var(--dark-color);
+      }
+
+      .btn-primary:hover {
+        background-color: #3a5bc7;
+        border-color: #3a5bc7;
+      }
+      
+      .btn-outline-light {
+        border-color: #dee2e6;
+        color: #dee2e6;
+      }
+      
+      .btn-outline-light:hover {
+        background-color: #e9ecef;
+        color: var(--dark-color);
+      }
+      
+      .nav-link {
+        border-radius: 5px;
+        padding: 8px 12px !important;
+        transition: all 0.3s;
+      }
+      
+      .nav-link:hover, .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .nav-link.active {
+        font-weight: 500;
+      }
+      
+      .welcome-section {
+        background-color: var(--dark-color);
+        color: white;
+        padding: 3rem 0;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+      }
+      
+      .feature-icon {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+      
+      .stat-card {
+        border-left: 4px solid var(--primary-color);
+      }
+      
+      footer {
+        background-color: var(--dark-color);
+        color: var(--light-color);
+      }
+      
+      footer a {
+        color: var(--light-color);
+        text-decoration: none;
+      }
+      
+      footer a:hover {
+        text-decoration: none;
+      }
+
+    .alert ul {
+    list-style: none; /* Убирает точки */
+    padding: 0; /* Убирает отступы */
+    margin: 0; /* Убирает отступы */
+  }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html">
+                <i class="bi bi-people-fill me-2"></i>Отдел кадров
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="home.html">
+                            <i class="bi bi-house-door me-1"></i>Главная
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="list.html">
+                            <i class="bi bi-clock-history me-1"></i>История сотрудников
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="bi bi-person-lines-fill me-1"></i>Данные сотрудников
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tables.html">
+                            <i class="bi bi-table me-1"></i>Управление таблицами
+                        </a>
+                    </li>
+                </ul>
+                <button id="authButton" class="btn btn-outline-light">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>
+                    <span id="authButtonText">Войти</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="welcome-section text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">Добро пожаловать в Отдел кадров</h1>
+            <p class="lead mb-4">Эффективное управление данными сотрудников, их должностями, профессиями и историей поощрений и штрафов.</p>
+            <div id="authSection" class="d-flex justify-content-center">
+                <!-- Контент будет динамически изменяться через JavaScript -->
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-person-lines-fill feature-icon"></i>
+                            <h3 class="card-title">Управление сотрудниками</h3>
+                            <p class="card-text">Полный контроль над данными сотрудников, включая личную информацию, должности и зарплаты.</p>
+                            <a href="index.html" class="btn btn-primary">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-clock-history feature-icon"></i>
+                            <h3 class="card-title">История сотрудников</h3>
+                            <p class="card-text">Отслеживание истории работы, поощрений и взысканий для каждого сотрудника.</p>
+                            <a href="list.html" class="btn btn-primary">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-table feature-icon"></i>
+                            <h3 class="card-title">Управление таблицами</h3>
+                            <p class="card-text">Настройка справочников системы: должности, профессии, образование и другие параметры.</p>
+                            <a href="tables.html" class="btn btn-primary">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="mb-4 text-center">Статистика системы</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card stat-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Сотрудники</h5>
+                            <p class="card-text display-6 fw-bold" id="employeesCount">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Должности</h5>
+                            <p class="card-text display-6 fw-bold" id="positionsCount">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Профессии</h5>
+                            <p class="card-text display-6 fw-bold" id="professionsCount">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Записи истории</h5>
+                            <p class="card-text display-6 fw-bold" id="historyCount">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="py-3 mt-4">
+        <div class="container">
+            <ul class="nav justify-content-center border-bottom border-light pb-3 mb-3">
+                <li class="nav-item"><a href="home.html" class="nav-link px-2 text-light">Главная</a></li>
+                <li class="nav-item"><a href="list.html" class="nav-link px-2 text-light">История сотрудников</a></li>
+                <li class="nav-item"><a href="index.html" class="nav-link px-2 text-light">Данные сотрудников</a></li>
+                <li class="nav-item"><a href="tables.html" class="nav-link px-2 text-light">Управление таблицами</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-light">О нас</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-light">FAQ</a></li>
+            </ul>
+            <p class="text-center text-light mb-0">&copy; 2025 Отдел кадров. Все права защищены.</p>
+            <p class="text-center text-light mb-0">Контакты: <a href="mailto:support@hr-system.com" class="text-light">support@hr-system.com</a></p>
+            <p class="text-center text-light mb-0">Телефон: +7 (495) 123-45-67</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const authButton = document.getElementById('authButton');
+        const authButtonText = document.getElementById('authButtonText');
+        const authSection = document.getElementById('authSection');
+        const token = localStorage.getItem('token');
+        const username = localStorage.getItem('username');
+        const role = localStorage.getItem('role');
+
+        if (token) {
+            // Пользователь авторизован
+            authButtonText.textContent = `Выйти (${username})`;
+            authButton.onclick = () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                localStorage.removeItem('username');
+                window.location.reload();
+            };
+
+            // Отображаем информацию о пользователе
+            authSection.innerHTML = `
+                <div class="alert alert-light" style="max-width: 500px;">
+                    <h4 class="alert-heading">Вы вошли в систему как ${username}</h4>
+                    <p><strong>Ваш уровень доступа:</strong> ${role}</p>
+                    <hr>
+                    <ul class="mb-0">
+                        ${role === 'admin' ? '<li>Вы имеете полный доступ к управлению системой</li>' : ''}
+                        ${role === 'editor' ? '<li>Вы можете редактировать данные сотрудников</li>' : ''}
+                        ${role === 'user' ? '<li>Вы имеете возможность просмотра данных сотрудников</li>' : ''}
+                    </ul>
+                </div>
+            `;
+            
+            // Загружаем статистику
+            loadStatistics();
+        } else {
+            // Пользователь не авторизован
+            authButtonText.textContent = 'Войти';
+            authButton.onclick = () => {
+                window.location.href = 'login.html';
+            };
+
+            // Отображаем форму входа
+            authSection.innerHTML = `
+                <div class="card" style="width: 350px;">
+                    <div class="card-body">
+                        <h4 class="card-title text-center mb-4">Вход в систему</h4>
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <input type="text" name="username" class="form-control" placeholder="Имя пользователя" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" name="password" class="form-control" placeholder="Пароль" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mb-3">Войти</button>
+                            <p class="text-center mb-0">Нет аккаунта? <a href="register.html">Зарегистрироваться</a></p>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            // Обработчик формы входа
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = e.target.username.value;
+                const password = e.target.password.value;
+
+                try {
+                    const response = await fetch('http://localhost:3000/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    if (!response.ok) throw new Error('Ошибка авторизации');
+                    const data = await response.json();
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('role', data.role);
+                    localStorage.setItem('username', data.username);
+                    window.location.reload();
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+        }
+
+        async function loadStatistics() {
+            try {
+                // Загрузка статистики сотрудников
+                const employeesResponse = await fetch('http://localhost:3000/workers/count');
+                if (employeesResponse.ok) {
+                    const data = await employeesResponse.json();
+                    document.getElementById('employeesCount').textContent = data.count;
+                }
+                
+                // Загрузка статистики должностей
+                const positionsResponse = await fetch('http://localhost:3000/api/positions/count');
+                if (positionsResponse.ok) {
+                    const data = await positionsResponse.json();
+                    document.getElementById('positionsCount').textContent = data.count;
+                }
+                
+                // Загрузка статистики профессий
+                const professionsResponse = await fetch('http://localhost:3000/api/professions/count');
+                if (professionsResponse.ok) {
+                    const data = await professionsResponse.json();
+                    document.getElementById('professionsCount').textContent = data.count;
+                }
+                
+                // Загрузка статистики истории
+                const historyResponse = await fetch('http://localhost:3000/history/count');
+                if (historyResponse.ok) {
+                    const data = await historyResponse.json();
+                    document.getElementById('historyCount').textContent = data.count;
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки статистики:', error);
+            }
+        }
+
+    </script>
+</body>
+</html>

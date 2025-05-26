@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
@@ -10,6 +11,7 @@ const SECRET_KEY = '111'; // Замените на свой секретный �
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Создание подключения к базе данных
 const db = mysql.createConnection({
@@ -300,6 +302,76 @@ function authenticateToken(req, res, next) {
 app.get('/protected', authenticateToken, (req, res) => {
     res.json({ message: 'Доступ разрешен', user: req.user });
 });
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/home.html');
+});
+
+// Маршрут для регистрации пользователя
+// ...existing code...
+app.post('/register', (req, res) => {
+    const { username, password, role, specialPassword } = req.body;
+
+    if (!username || !password || !role) {
+        return res.status(400).json({ error: 'Все поля обязательны.' });
+    }
+
+    // Проверка спецпароля для ролей
+    const secretPasswords = {
+        admin: 'adminsecret',
+        editor: 'editorsecret'
+    };
+
+    if (role === 'admin' && specialPassword !== secretPasswords.admin) {
+        return res.status(403).json({ error: 'Неверный специальный пароль для роли admin.' });
+    }
+    if (role === 'editor' && specialPassword !== secretPasswords.editor) {
+        return res.status(403).json({ error: 'Неверный специальный пароль для роли editor.' });
+    }
+
+    // Для user спецпароль не требуется
+    const query = 'INSERT INTO users (username, password, role) VALUES (?, MD5(?), ?)';
+    db.query(query, [username, password, role], (err, results) => {
+        if (err) {
+            console.error('Ошибка при регистрации пользователя:', err);
+            return res.status(500).json({ error: 'Ошибка сервера.' });
+        }
+        res.status(201).json({ message: 'Пользователь успешно зарегистрирован.' });
+    });
+});
+
+// Получение количества сотрудников
+app.get('/workers/count', (req, res) => {
+    db.query('SELECT COUNT(*) AS count FROM workers', (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results[0]);
+    });
+});
+
+// Получение количества должностей
+app.get('/api/positions/count', (req, res) => {
+    db.query('SELECT COUNT(*) AS count FROM position', (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results[0]);
+    });
+});
+
+// Получение количества профессий
+app.get('/api/professions/count', (req, res) => {
+    db.query('SELECT COUNT(*) AS count FROM prof', (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results[0]);
+    });
+});
+
+// Получение количества записей истории
+app.get('/history/count', (req, res) => {
+    db.query('SELECT COUNT(*) AS count FROM list', (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results[0]);
+    });
+});
+
 
 // Запуск сервера
 app.listen(PORT, () => {

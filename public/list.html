@@ -4,84 +4,363 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>История штрафов и поощрений работников</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+      :root {
+        --primary-color: #4e73df;
+        --dark-color: #2c3e50;
+        --light-color: #f8f9fa;
+      }
+      
+      body {
+        background-color: #f5f7fb;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      
+      .navbar {
+        background-color: var(--dark-color);
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        border-radius: 0 0 5px 5px;
+      }
+      
+      .navbar-brand {
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+      
+      .main-content {
+        padding: 20px;
+        margin-top: 20px;
+      }
+      
+      .table-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+        overflow: hidden;
+        padding: 20px;
+      }
+      
+      .table-controls {
+        background-color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+        margin-bottom: 20px;
+      }
+      
+      .table {
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      
+      .table thead th {
+        background-color: var(--dark-color);
+        color: white;
+        border: none;
+      }
+      
+      .table-hover tbody tr:hover {
+        background-color: rgba(78, 115, 223, 0.05);
+      }
+      
+      .sticky-add-row {
+        background-color: #f8f9fa;
+      }
+      
+      .sticky-add-row td {
+        padding: 8px !important;
+      }
+      
+      .sticky-add-row input,
+      .sticky-add-row select {
+        border-radius: 5px !important;
+        border: 1px solid #dee2e6;
+      }
+      
+      .btn {
+        border-radius: 5px;
+        font-weight: 500;
+      }
+
+      .btn-warning {
+        color: var(--primary-color);
+        background-color: white;
+        border-color: var(--primary-color);
+      }
+
+      .btn-warning:hover {
+        color: white;
+        background-color: var(--primary-color);
+        border-color: white;
+      }
+      .delete-button:hover {
+        color: white;
+        background-color: #dc3545;
+        border-color: #dc3545;
+      }
+
+      .delete-button {
+        color: #dc3545;
+        background-color: white;
+        border-color: #dc3545;
+      }
+
+      .btn-primary {
+        color: var(--primary-color);
+        background-color: white;
+        border-color: var(--primary-color);
+      }
+
+      .btn-primary:hover {
+        color: white;
+        background-color: var(--primary-color);
+        border-color: white;
+      }
+      
+      .btn-outline-light {
+        border-color: #dee2e6;
+        color: #dee2e6;
+      }
+      
+      .btn-outline-light:hover {
+        background-color: #e9ecef;
+        color: var(--dark-color);
+      }
+      
+      .highlight {
+        background-color: #afbbf7 !important;
+      }
+      
+      .action-buttons .btn {
+        margin: 0 3px;
+        padding: 5px 10px;
+      }
+
+      .btn-update {
+        background-color: white;
+        color: #4e73df;
+        border-color: #4e73df;
+      }
+
+      .btn-update:hover {
+        background-color: #4e73df;
+        color: white;
+      }
+      
+      .toast {
+        border-radius: 8px;
+      }
+      
+      .form-control, .form-select {
+        border-radius: 5px;
+      }
+      
+      .nav-link {
+        border-radius: 5px;
+        padding: 8px 12px !important;
+        transition: all 0.3s;
+      }
+      
+      .nav-link:hover, .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .nav-link.active {
+        font-weight: 500;
+      }
+
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .main-content {
+        flex: 1;
+      }
+
+      footer {
+        margin-top: auto;
+      }
+    </style>
   </head>
 
   <body>
-    <nav>
-      <a href="list.html" class="active">История сотрудников</a>
-      <a href="index.html">Данные сотрудников</a>
-      <a href="tables.html">Управление таблицами</a>
-      <button id="authButton" class="auth-button"></button>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-people-fill me-2"></i>Отдел кадров
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="home.html">
+                <i class="bi bi-house-door me-1"></i>Главная
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="list.html">
+                <i class="bi bi-clock-history me-1"></i>История сотрудников
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">
+                <i class="bi bi-person-lines-fill me-1"></i>Данные сотрудников
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="tables.html">
+                <i class="bi bi-table me-1"></i>Управление таблицами
+              </a>
+            </li>
+          </ul>
+          <button id="authButton" class="btn btn-outline-light">
+            <i class="bi bi-box-arrow-in-right me-1"></i>
+            <span id="authButtonText">Войти</span>
+          </button>
+        </div>
+      </div>
     </nav>
-    <h1>История штрафов и поощрений работников</h1>
-    <table id="listTable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Работник</th>
-          <th>Действия</th>
-          <th>Сумма</th>
-          <th>Дата</th>
-          <th>Действия</th>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <select name="workers_id" class="input-field" required>
-              <option value="">Выберите работника</option>
-              <!-- Работники будут загружены здесь -->
-            </select>
-          </td>
-          <td>
-            <select name="actions_id" class="input-field" required>
-              <option value="">Выберите действие</option>
-              <!-- Действия будут загружены здесь -->
-            </select>
-          </td>
-          <td>
-            <input
-              type="number"
-              name="sum"
-              placeholder="Сумма"
-              class="input-field"
-            />
-          </td>
-          <td><input type="date" name="date" class="input-field" /></td>
-          <td><button id="addListButton">Добавить</button></td>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Данные списка будут добавлены сюда с помощью JavaScript -->
-      </tbody>
-    </table>
+
+    <div class="container-fluid main-content">
+      <div class="table-controls">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1 class="h4 mb-0">
+            <i class="bi bi-clock-history me-2"></i>История штрафов и поощрений работников
+          </h1>
+          <div class="d-flex">
+            <button class="btn btn-update btn-sm me-2" onclick="loadList()">
+              <i class="bi bi-arrow-clockwise me-1"></i>Обновить
+            </button>
+            <button id="cancelEditButton" class="btn btn-outline-danger btn-sm" style="display: none;" onclick="cancelEdit()">
+            <i class="bi bi-x-lg me-1"></i>Отмена
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0" id="listTable">
+            <thead>
+              <tr>
+                <th class="text-center">ID</th>
+                <th>Работник</th>
+                <th>Действия</th>
+                <th>Сумма</th>
+                <th>Дата</th>
+                <th class="text-center">Действия</th>
+              </tr>
+              <tr class="sticky-add-row">
+                <td class="text-center">
+                  <i class="bi bi-plus-lg text-muted"></i>
+                </td>
+                <td>
+                  <select name="workers_id" class="form-select form-select-sm" required>
+                    <option value="">Выберите работника</option>
+                  </select>
+                </td>
+                <td>
+                  <select name="actions_id" class="form-select form-select-sm" required>
+                    <option value="">Выберите действие</option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name="sum"
+                    placeholder="Сумма"
+                    class="form-control form-control-sm"
+                  />
+                </td>
+                <td><input type="date" name="date" class="form-control form-control-sm" /></td>
+                <td class="text-center">
+                  <button id="addListButton" class="btn btn-primary btn-sm">
+                    <i class="bi"></i> Добавить
+                  </button>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Данные списка будут добавлены сюда с помощью JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto">Уведомление</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="toastMessage">
+            <!-- Сообщение будет вставлено здесь -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    const authButton = document.getElementById('authButton');
-    const token = localStorage.getItem('token');
-    const username = localStorage.getItem('username'); // Получаем имя пользователя
+      // Инициализация Toast
+      const toastLiveExample = document.getElementById('liveToast');
+      const toast = new bootstrap.Toast(toastLiveExample);
+      
+      function showToast(message, isSuccess = true) {
+        const toastBody = document.getElementById('toastMessage');
+        toastBody.textContent = message;
+        toastBody.className = 'toast-body' + (isSuccess ? ' text-success' : ' text-danger');
+        toast.show();
+      }
 
-    if (token) {
-        authButton.textContent = `Выйти (${username})`; // Отображаем имя пользователя
-        authButton.onclick = () => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('role');
-            localStorage.removeItem('username'); // Удаляем имя пользователя
-            window.location.href = 'login.html';
-        };
-    } else {
-        authButton.textContent = 'Войти';
-        authButton.onclick = () => {
-            window.location.href = 'login.html';
-        };
-    }
+      const authButton = document.getElementById('authButton');
+      const authButtonText = document.getElementById('authButtonText');
+      const token = localStorage.getItem('token');
+      const username = localStorage.getItem('username');
 
-      const listTableBody = document
-        .getElementById("listTable")
-        .getElementsByTagName("tbody")[0];
+      if (token) {
+          authButtonText.textContent = `Выйти (${username})`;
+          authButton.onclick = () => {
+              localStorage.removeItem('token');
+              localStorage.removeItem('role');
+              localStorage.removeItem('username');
+              window.location.href = 'login.html';
+          };
+      } else {
+          authButtonText.textContent = 'Войти';
+          authButton.onclick = () => {
+              window.location.href = 'login.html';
+          };
+      }
+
+      const role = localStorage.getItem('role');
+      if (!role) {
+          window.location.href = 'login.html';
+      }
+
+      const listTableBody = document.getElementById("listTable").getElementsByTagName("tbody")[0];
       const addListButton = document.getElementById("addListButton");
-      let editingListId = null; // Переменная для хранения ID редактируемого элемента списка
+      let editingListId = null;
 
-      let workersData = []; // Переменная для хранения данных о работниках
+      let workersData = [];
+      let actionsData = [];
 
       // Функция для загрузки работников в выпадающий список
       function loadWorkers() {
@@ -91,23 +370,21 @@
             return response.json();
           })
           .then((data) => {
-            workersData = data; // Сохраняем данные о работниках
-            const workersSelect = document.querySelector(
-              'select[name="workers_id"]'
-            );
+            workersData = data;
+            const workersSelect = document.querySelector('select[name="workers_id"]');
+            workersSelect.innerHTML = '<option value="">Выберите работника</option>';
             data.forEach((worker) => {
               const option = document.createElement("option");
               option.value = worker.id;
-              option.textContent = `${worker.fam} ${worker.name} ${worker.otch}`; // Предполагая, что у вас есть поля name и fam
+              option.textContent = `${worker.fam} ${worker.name} ${worker.otch}`;
               workersSelect.appendChild(option);
             });
           })
           .catch((error) => {
             console.error("Ошибка:", error);
+            showToast("Ошибка загрузки списка работников", false);
           });
       }
-
-      let actionsData = []; // Переменная для хранения данных о действиях
 
       function loadActions() {
         fetch("http://localhost:3000/api/actions")
@@ -116,19 +393,19 @@
             return response.json();
           })
           .then((data) => {
-            actionsData = data; // Сохраняем данные о действиях
-            const actionsSelect = document.querySelector(
-              'select[name="actions_id"]'
-            );
+            actionsData = data;
+            const actionsSelect = document.querySelector('select[name="actions_id"]');
+            actionsSelect.innerHTML = '<option value="">Выберите действие</option>';
             data.forEach((action) => {
               const option = document.createElement("option");
-              option.value = action.id; // ID действия
-              option.textContent = `${action.name}`; // Имя действия
+              option.value = action.id;
+              option.textContent = `${action.name}`;
               actionsSelect.appendChild(option);
             });
           })
           .catch((error) => {
             console.error("Ошибка:", error);
+            showToast("Ошибка загрузки списка действий", false);
           });
       }
 
@@ -137,186 +414,238 @@
         fetch("http://localhost:3000/list")
           .then((response) => response.json())
           .then((data) => {
-            listTableBody.innerHTML = ""; // Очистка таблицы
+            listTableBody.innerHTML = "";
+            if (data.length === 0) {
+              const row = listTableBody.insertRow();
+              row.innerHTML = `<td colspan="6" class="text-center text-muted py-3">Нет данных о штрафах и поощрениях</td>`;
+              return;
+            }
+            
             data.forEach((item) => {
               const row = listTableBody.insertRow();
-              row.setAttribute("data-id", item.id); // ID записи
-              row.setAttribute("data-worker-id", item.workers_id); // ID работника
-              row.setAttribute("data-action-id", item.actions_id); // ID действия
+              row.setAttribute("data-id", item.id);
+              row.setAttribute("data-worker-id", item.workers_id);
+              row.setAttribute("data-action-id", item.actions_id);
 
-              // Находим имя действия по ID
               const action = actionsData.find((a) => a.id === item.actions_id);
               const actionName = action ? action.name : "Не указано";
 
-              // Находим данные работника по ID
               const worker = workersData.find((w) => w.id === item.workers_id);
               const workerName = worker
                 ? `${worker.fam} ${worker.name} ${worker.otch}`
                 : "Не указано";
 
-              // Форматируем сумму (добавляем руб. если есть значение)
               const sumDisplay = item.sum ? `${item.sum} руб.` : "0 руб.";
-
-              // Форматируем дату (или показываем "Не указана")
               const dateDisplay = item.date
                 ? new Date(item.date).toLocaleDateString("ru-RU")
                 : "Не указана";
 
               row.innerHTML = `
-          <td>${item.id}</td>
-          <td>${workerName}</td>
-          <td>${actionName}</td>
-          <td>${sumDisplay}</td>
-          <td>${dateDisplay}</td>
-          <td>
-            <button onclick="editListItem(${item.id})">Изменить</button>
-            <button class="delete-button" onclick="deleteListItem(${item.id})">Удалить</button>
-          </td>
-        `;
+                <td class="text-center">${item.id}</td>
+                <td>${workerName}</td>
+                <td>${actionName}</td>
+                <td>${sumDisplay}</td>
+                <td>${dateDisplay}</td>
+                <td class="action-buttons text-center">
+                  <button onclick="editListItem(${item.id})" class="btn btn-warning btn-sm">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm delete-button" onclick="deleteListItem(${item.id})">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              `;
             });
-          applyRoleRestrictions();
+            applyRoleRestrictions();
           })
           .catch((error) => {
             console.error("Ошибка:", error);
+            showToast("Ошибка загрузки истории", false);
           });
       }
 
       // Функция для добавления или обновления элемента списка
-function saveListItem() {
-    const role = localStorage.getItem('role'); // Получаем роль пользователя
+      function saveListItem() {
+          const role = localStorage.getItem('role');
+          if (role === 'editor' && !editingListId) {
+              showToast('У вас недостаточно прав для добавления новых записей.', false);
+              return;
+          }
 
-    // Проверяем, если роль editor и запись новая (editingListId отсутствует)
-    if (role === 'editor' && !editingListId) {
-        alert('У вас недостаточно прав для добавления новых записей.');
-        return;
-    }
+          const workers_id = document.querySelector('select[name="workers_id"]').value;
+          const actions_id = document.querySelector('select[name="actions_id"]').value;
+          const sum = document.querySelector('input[name="sum"]').value || null;
+          const date = document.querySelector('input[name="date"]').value || null;
 
-    const workers_id = document.querySelector('select[name="workers_id"]').value;
-    const actions_id = document.querySelector('select[name="actions_id"]').value;
-    const sum = document.querySelector('input[name="sum"]').value || null;
-    const date = document.querySelector('input[name="date"]').value || null;
+          if (!workers_id || !actions_id) {
+              showToast('Выберите работника и действие', false);
+              return;
+          }
 
-    const listData = {
-        workers_id,
-        actions_id,
-        sum,
-        date,
-    };
+          const listData = {
+              workers_id,
+              actions_id,
+              sum,
+              date,
+          };
 
-    const method = editingListId ? "PUT" : "POST";
-    const url = editingListId
-        ? `http://localhost:3000/list/${editingListId}`
-        : "http://localhost:3000/list";
+          const method = editingListId ? "PUT" : "POST";
+          const url = editingListId
+              ? `http://localhost:3000/list/${editingListId}`
+              : "http://localhost:3000/list";
 
-    fetch(url, {
-        method: method,
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(listData),
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Ошибка при добавлении/обновлении элемента");
-            }
-            return response.json();
-        })
-        .then(() => {
-            clearForm();
-            loadList();
-            editingListId = null; // Сбрасываем ID редактируемого элемента
-        })
-        .catch((error) => {
-            console.error("Ошибка:", error);
-        });
-}
+          fetch(url, {
+              method: method,
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify(listData),
+          })
+              .then((response) => {
+                  if (!response.ok) {
+                      throw new Error("Ошибка при добавлении/обновлении элемента");
+                  }
+                  return response.json();
+              })
+              .then(() => {
+                  clearForm();
+                  loadList();
+                  editingListId = null;
+                  addListButton.innerHTML = '<i class="bi"></i> Добавить';
+                  document.getElementById('cancelEditButton').style.display = 'none';
+                  showToast(editingListId ? 'Запись обновлена' : 'Запись добавлена', true);
+              })
+              .catch((error) => {
+                  console.error("Ошибка:", error);
+                  showToast(error.message, false);
+              });
+      }
 
       // Функция для очистки формы
-function clearForm() {
-    document.querySelector('select[name="workers_id"]').value = "";
-    document.querySelector('select[name="actions_id"]').value = "";
-    document.querySelector('input[name="sum"]').value = "";
-    document.querySelector('input[name="date"]').value = "";
-    addListButton.textContent = "Добавить"; // Сменить текст кнопки обратно
-}
+      function clearForm() {
+          document.querySelector('select[name="workers_id"]').value = "";
+          document.querySelector('select[name="actions_id"]').value = "";
+          document.querySelector('input[name="sum"]').value = "";
+          document.querySelector('input[name="date"]').value = "";
+          addListButton.innerHTML = '<i class="bi"></i> Добавить';
+      }
 
       // Функция для удаления элемента списка
       function deleteListItem(id) {
-        fetch(`http://localhost:3000/list/${id}`, {
-          method: "DELETE",
-        }).then(() => loadList());
+          if (!confirm("Вы уверены, что хотите удалить эту запись?")) return;
+          
+          fetch(`http://localhost:3000/list/${id}`, {
+              method: "DELETE",
+          })
+          .then(() => {
+              loadList();
+              showToast('Запись удалена', true);
+          })
+          .catch(error => {
+              console.error("Ошибка:", error);
+              showToast('Ошибка при удалении записи', false);
+          });
       }
 
-      // Функция для редактирования элемента списка
+// Функция для редактирования элемента списка
 function editListItem(id) {
-    const previouslyHighlightedRow = document.querySelector(".highlight");
-    if (previouslyHighlightedRow) {
-        previouslyHighlightedRow.classList.remove("highlight");
-    }
+  const previouslyHighlightedRow = document.querySelector(".highlight");
+  if (previouslyHighlightedRow) previouslyHighlightedRow.classList.remove("highlight");
 
-    const row = listTableBody.querySelector(`tr[data-id="${id}"]`);
-    row.classList.add("highlight"); // Подсвечиваем редактируемую строку
+  const row = listTableBody.querySelector(`tr[data-id="${id}"]`);
+  row.classList.add("highlight");
 
-    // Получаем данные из строки таблицы
-    const workerId = row.getAttribute("data-worker-id");
-    const actionId = row.getAttribute("data-action-id");
-    const sum = row.cells[3].innerText.replace(" руб.", "");
+  const workerId = row.getAttribute("data-worker-id");
+  const actionId = row.getAttribute("data-action-id");
+  const sum = row.cells[3].innerText.replace(" руб.", "");
+  const dateText = row.cells[4].innerText;
+  let dateValue = "";
+  if (dateText !== "Не указана") {
+    const [day, month, year] = dateText.split(".");
+    dateValue = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  }
 
-    // Преобразуем дату из формата "dd.mm.yyyy" в "yyyy-mm-dd" для input[type="date"]
-    const dateText = row.cells[4].innerText;
-    let dateValue = "";
-    if (dateText !== "Не указана") {
-        const [day, month, year] = dateText.split(".");
-        dateValue = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-    }
+  document.querySelector('select[name="workers_id"]').value = workerId;
+  document.querySelector('select[name="actions_id"]').value = actionId;
+  document.querySelector('input[name="sum"]').value = sum;
+  document.querySelector('input[name="date"]').value = dateValue;
 
-    // Заполнение формы данными элемента списка
-    document.querySelector('select[name="workers_id"]').value = workerId;
-    document.querySelector('select[name="actions_id"]').value = actionId;
-    document.querySelector('input[name="sum"]').value = sum;
-    document.querySelector('input[name="date"]').value = dateValue;
-
-    editingListId = id; // Устанавливаем ID редактируемого элемента
-    addListButton.textContent = "Сохранить"; // Меняем текст кнопки на "Сохранить"
+  editingListId = id;
+  document.getElementById('addListButton').innerHTML = '<i class="bi"></i> Сохранить';
+  document.getElementById('cancelEditButton').style.display = 'inline-block';
 }
 
-function applyRoleRestrictions() {
-    const role = localStorage.getItem('role'); // Получаем роль пользователя
-
-    if (role === 'user') {
-        // Скрываем заголовок колонки "Действия"
-        const actionsColumnHeader = document.querySelector('#listTable thead tr th:last-child');
-        actionsColumnHeader.style.display = 'none';
-
-        // Скрываем все ячейки в колонке "Действия"
-        const actionsColumnCells = document.querySelectorAll('#listTable tbody tr td:last-child');
-        actionsColumnCells.forEach(cell => {
-            cell.style.display = 'none';
-        });
-
-        // Скрываем строку добавления нового элемента
-        const addListRow = document.querySelector('#listTable thead tr:nth-child(2)');
-        addListRow.style.display = 'none';
-    } else if (role === 'editor') {
-        // Скрываем кнопку "Удалить" для роли editor
-        const deleteButtons = document.querySelectorAll('.delete-button');
-        deleteButtons.forEach(button => {
-            button.style.display = 'none';
-        });
-    }
+      
+      function cancelEdit() {
+  clearForm();
+  editingListId = null;
+  document.getElementById('cancelEditButton').style.display = 'none';
+  document.getElementById('addListButton').innerHTML = '<i class="bi"></i> Добавить';
+  
+  // Удаляем выделение строки
+  const highlightedRow = document.querySelector(".highlight");
+  if (highlightedRow) highlightedRow.classList.remove("highlight");
 }
 
-// Вызов функции после загрузки данных
-loadWorkers();
-loadActions();
-loadList();
-applyRoleRestrictions();
+// Функция для очистки формы
+function clearForm() {
+  document.querySelector('select[name="workers_id"]').value = "";
+  document.querySelector('select[name="actions_id"]').value = "";
+  document.querySelector('input[name="sum"]').value = "";
+  document.querySelector('input[name="date"]').value = "";
+}
 
-      // Добавляем обработчик события на кнопку добавления/сохранения элемента списка
-      addListButton.addEventListener("click", function (event) {
-        event.preventDefault(); // Предотвращаем отправку формы
-        saveListItem(); // Вызываем функцию сохранения
+      function applyRoleRestrictions() {
+          const role = localStorage.getItem('role');
+          if (!role) return;
+
+          if (role === 'user') {
+              document.querySelectorAll('#listTable th:last-child, #listTable td:last-child').forEach(el => {
+                  el.style.display = 'none';
+              });
+              document.querySelector('#listTable thead tr:nth-child(2)').style.display = 'none';
+          } else if (role === 'editor') {
+              document.querySelectorAll('.delete-button').forEach(button => {
+                  button.style.display = 'none';
+              });
+          }
+      }
+
+      // Инициализация при загрузке страницы
+      document.addEventListener('DOMContentLoaded', () => {
+          loadWorkers();
+          loadActions();
+          loadList();
+          applyRoleRestrictions();
+          
+          addListButton.addEventListener("click", function (event) {
+              event.preventDefault();
+              saveListItem();
+          });
+
+          document.addEventListener("keydown", function (event) {
+              if (event.code === "Enter") {
+                  event.preventDefault();
+                  saveListItem();
+              }
+          });
       });
     </script>
+
+    <footer class="py-3 mt-4" style="background-color: var(--dark-color); color: var(--light-color);">
+      <div class="container">
+        <ul class="nav justify-content-center border-bottom border-light pb-3 mb-3" style="max-width: 2000px; margin: 0 auto;">
+          <li class="nav-item"><a href="home.html" class="nav-link px-2 text-light">Главная</a></li>
+          <li class="nav-item"><a href="list.html" class="nav-link px-2 text-light">История сотрудников</a></li>
+          <li class="nav-item"><a href="index.html" class="nav-link px-2 text-light">Данные сотрудников</a></li>
+          <li class="nav-item"><a href="tables.html" class="nav-link px-2 text-light">Управление таблицами</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-light">О нас</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-light">FAQ</a></li>
+        </ul>
+        <p class="text-center text-light mb-0">&copy; 2025 Отдел кадров. Все права защищены.</p>
+        <p class="text-center text-light mb-0">Контакты: <a href="mailto:support@hr-system.com" class="text-light">support@hr-system.com</a></p>
+        <p class="text-center text-light mb-0">Телефон: +7 (495) 123-45-67</p>
+      </div>
+    </footer>
   </body>
 </html>
