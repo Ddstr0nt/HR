@@ -176,7 +176,7 @@
       }
 
   html, body {
-    height: 100%; /* Устанавливаем высоту для html и body */
+    height: 100%;
   }
 
   body {
@@ -185,11 +185,72 @@
   }
 
   .main-content {
-    flex: 1; /* Заставляет основной контент занимать оставшееся пространство */
+    flex: 1;
   }
 
   footer {
-    margin-top: auto; /* Прижимает футер к низу страницы */
+    margin-top: auto;
+  }
+
+  /* Стили для пагинации */
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .pagination {
+    margin: 0;
+  }
+
+  .page-item.active .page-link {
+    background-color: var(--dark-color);
+    border-color: var(--dark-color);
+  }
+
+  .page-link {
+    color: var(--dark-color);
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .page-link:hover {
+    color: var(--primary-color);
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+  }
+
+  .page-item.disabled .page-link {
+    color: #6c757d;
+  }
+
+  .page-size-selector {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+  }
+
+  .page-size-selector label {
+    margin-right: 10px;
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+
+  .page-size-selector select {
+    width: auto;
+    display: inline-block;
+  }
+
+  .table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+  }
+
+  .table-info {
+    font-size: 0.9rem;
+    color: #6c757d;
   }
     </style>
   </head>
@@ -325,6 +386,30 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Пагинация и информация о странице -->
+        <div class="table-footer">
+          <div class="table-info" id="tableInfo">Показано 0 из 0 записей</div>
+          <div class="d-flex align-items-center">
+            <div class="page-size-selector">
+              <label for="pageSize">Записей на странице:</label>
+              <select class="form-select form-select-sm" id="pageSize">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+            <div class="pagination-container">
+              <nav>
+                <ul class="pagination" id="pagination">
+                  <!-- Пагинация будет добавлена здесь -->
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -383,6 +468,13 @@
       const cancelEditButton = document.getElementById("cancelEditButton");
       let editingWorkerId = null;
 
+      // Переменные для пагинации
+      let currentPage = 1;
+      let totalPages = 1;
+      let pageSize = 10;
+      let totalRecords = 0;
+      let allWorkers = [];
+
       // Функция для форматирования даты
       function formatDate(dateString) {
         if (!dateString) return "Не указано";
@@ -390,53 +482,155 @@
         return new Date(dateString).toLocaleDateString("ru-RU", options);
       }
 
-      // Функция для загрузки работников
-      async function loadWorkers() {
-        try {
-          showToast("Загрузка данных...", true);
-          const response = await fetch("http://localhost:3000/workers");
-          if (!response.ok) throw new Error("Ошибка при загрузке работников");
-          const data = await response.json();
-          workersTableBody.innerHTML = "";
+// Функция для загрузки работников
+async function loadWorkers() {
+  try {
+    showToast("Загрузка данных...", true);
+    const response = await fetch("http://localhost:3000/workers");
+    if (!response.ok) throw new Error("Ошибка при загрузке работников");
+    const data = await response.json();
+    allWorkers = data;
+    totalRecords = data.length;
+    
+    // Обновляем информацию о странице
+    updatePageInfo();
+    
+    // Отображаем данные текущей страницы
+    displayCurrentPageData();
+    
+    // Применяем пагинацию
+    applyPagination();
+  } catch (error) {
+    console.error("Ошибка:", error);
+    showToast(error.message, false);
+  }
+}
+
+      // Функция для отображения данных на текущей странице
+      function displayCurrentPageData() {
+        workersTableBody.innerHTML = "";
+        
+        if (allWorkers.length === 0) {
+          const row = workersTableBody.insertRow();
+          row.innerHTML = `<td colspan="13" class="text-center text-muted py-3">Нет данных о сотрудниках</td>`;
+          return;
+        }
+        
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize, totalRecords);
+        
+        for (let i = startIndex; i < endIndex; i++) {
+          const worker = allWorkers[i];
+          const row = workersTableBody.insertRow();
+          row.setAttribute("data-id", worker.id);
+          row.innerHTML = `
+              <td class="text-center">${worker.id}</td>
+              <td>${worker.fam}</td>
+              <td>${worker.name}</td>
+              <td>${worker.otch}</td>
+              <td>${worker.gender_name}</td>
+              <td>${worker.prof_name}</td>
+              <td>${worker.position_name}</td>
+              <td>${worker.salary.toLocaleString('ru-RU')} руб.</td>
+              <td>${worker.education_name}</td>
+              <td>${formatDate(worker.date_r)}</td>
+              <td>${formatDate(worker.date_hired)}</td>
+              <td>${formatDate(worker.date_fired)}</td>
+              <td class="action-buttons text-center">
+                  <button onclick="editWorker(${worker.id})" class="btn btn-warning btn-sm">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm delete-button" onclick="deleteWorker(${worker.id})">
+                    <i class="bi bi-trash"></i>
+                  </button>
+              </td>
+          `;
+        }
+        
+        applyRoleRestrictions();
+      }
+
+      // Функция для обновления информации о странице
+      function updatePageInfo() {
+        const startIndex = (currentPage - 1) * pageSize + 1;
+        const endIndex = Math.min(currentPage * pageSize, totalRecords);
+        document.getElementById('tableInfo').textContent = 
+          `Показано ${startIndex}-${endIndex} из ${totalRecords} записей`;
+      }
+
+      // Функция для применения пагинации
+      function applyPagination() {
+        totalPages = Math.ceil(totalRecords / pageSize);
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+        
+        if (totalPages <= 1) {
+          return;
+        }
+        
+        // Кнопка "Назад"
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+        prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">&laquo;</a>`;
+        pagination.appendChild(prevLi);
+        
+        // Нумерация страниц
+        const startPage = Math.max(1, currentPage - 2);
+        const endPage = Math.min(totalPages, currentPage + 2);
+        
+        if (startPage > 1) {
+          const firstLi = document.createElement('li');
+          firstLi.className = 'page-item';
+          firstLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(1)">1</a>`;
+          pagination.appendChild(firstLi);
           
-          if (data.length === 0) {
-            const row = workersTableBody.insertRow();
-            row.innerHTML = `<td colspan="13" class="text-center text-muted py-3">Нет данных о сотрудниках</td>`;
-            return;
+          if (startPage > 2) {
+            const dotsLi = document.createElement('li');
+            dotsLi.className = 'page-item disabled';
+            dotsLi.innerHTML = `<span class="page-link">...</span>`;
+            pagination.appendChild(dotsLi);
+          }
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+          const pageLi = document.createElement('li');
+          pageLi.className = `page-item ${i === currentPage ? 'active' : ''}`;
+          pageLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+          pagination.appendChild(pageLi);
+        }
+        
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1) {
+            const dotsLi = document.createElement('li');
+            dotsLi.className = 'page-item disabled';
+            dotsLi.innerHTML = `<span class="page-link">...</span>`;
+            pagination.appendChild(dotsLi);
           }
           
-          data.forEach((worker) => {
-              const row = workersTableBody.insertRow();
-              row.setAttribute("data-id", worker.id);
-              row.innerHTML = `
-                  <td class="text-center">${worker.id}</td>
-                  <td>${worker.fam}</td>
-                  <td>${worker.name}</td>
-                  <td>${worker.otch}</td>
-                  <td>${worker.gender_name}</td>
-                  <td>${worker.prof_name}</td>
-                  <td>${worker.position_name}</td>
-                  <td>${worker.salary.toLocaleString('ru-RU')} руб.</td>
-                  <td>${worker.education_name}</td>
-                  <td>${formatDate(worker.date_r)}</td>
-                  <td>${formatDate(worker.date_hired)}</td>
-                  <td>${formatDate(worker.date_fired)}</td>
-                  <td class="action-buttons text-center">
-                      <button onclick="editWorker(${worker.id})" class="btn btn-warning btn-sm">
-                        <i class="bi bi-pencil"></i>
-                      </button>
-                      <button class="btn btn-danger btn-sm delete-button" onclick="deleteWorker(${worker.id})">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                  </td>
-              `;
-          });
-          applyRoleRestrictions();
-          showToast("Данные успешно загружены", true);
-        } catch (error) {
-          console.error("Ошибка:", error);
-          showToast(error.message, false);
+          const lastLi = document.createElement('li');
+          lastLi.className = 'page-item';
+          lastLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a>`;
+          pagination.appendChild(lastLi);
         }
+        
+        // Кнопка "Вперед"
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+        nextLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">&raquo;</a>`;
+        pagination.appendChild(nextLi);
+      }
+
+      // Функция для изменения страницы
+      function changePage(page) {
+        if (page < 1 || page > totalPages || page === currentPage) return;
+        
+        currentPage = page;
+        displayCurrentPageData();
+        updatePageInfo();
+        applyPagination();
+        
+        // Прокрутка к верху таблицы
+        document.querySelector('.table-container').scrollIntoView({ behavior: 'smooth' });
       }
 
       // Функция для загрузки полов
@@ -706,6 +900,15 @@
             event.preventDefault();
             saveWorker();
           }
+        });
+
+        // Обработчик изменения количества записей на странице
+        document.getElementById('pageSize').addEventListener('change', function() {
+          pageSize = parseInt(this.value);
+          currentPage = 1;
+          displayCurrentPageData();
+          updatePageInfo();
+          applyPagination();
         });
       });
     </script>
