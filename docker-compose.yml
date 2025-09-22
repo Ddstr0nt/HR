@@ -1,0 +1,50 @@
+services:
+  # MySQL база данных
+  mysql:
+    image: mysql:8.0
+    container_name: hr_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ok
+      MYSQL_USER: hr_user
+      MYSQL_PASSWORD: hr_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./ok.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - hr_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Node.js приложение
+  app:
+    build: .
+    container_name: hr_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=ok
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - hr_network
+    volumes:
+      - ./public:/app/public
+
+volumes:
+  mysql_data:
+
+networks:
+  hr_network:
+    driver: bridge

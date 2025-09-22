@@ -15,11 +15,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Создание подключения к базе данных
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', // Замените на ваше имя пользователя
-    password: 'root', // Замените на ваш пароль
-    database: 'ok' // Замените на имя вашей базы данных
+    host: process.env.DB_HOST || (process.env.NODE_ENV === 'production' ? 'mysql' : 'localhost'),
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'root',
+    database: process.env.DB_NAME || 'ok',
+    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306
 });
+
+// Лог конфигурации подключения (без пароля)
+console.log('DB config:', { host: db.config.host, port: db.config.port, user: db.config.user, database: db.config.database });
 
 // Проверка подключения
 db.connect(err => {
@@ -182,7 +186,7 @@ app.delete('/list/:id', (req, res) => {
 
 // Получение всех должностей
 app.get('/api/positions', (req, res) => {
-    db.query('SELECT * FROM position', (err, results) => {
+    db.query('SELECT * FROM `position`', (err, results) => {
         if (err) {
             console.error('Ошибка при получении должностей:', err);
             return res.status(500).json({ error: err.message });
@@ -194,7 +198,7 @@ app.get('/api/positions', (req, res) => {
 // Добавление новой должности
 app.post('/api/positions', (req, res) => {
     const newPosition = req.body;
-    db.query('INSERT INTO position SET ?', newPosition, (err, results) => {
+    db.query('INSERT INTO `position` SET ?', newPosition, (err, results) => {
         if (err) {
             console.error('Ошибка при добавлении должности:', err);
             return res.status(500).json({ error: err.message });
@@ -207,7 +211,7 @@ app.post('/api/positions', (req, res) => {
 app.put('/api/positions/:id', (req, res) => {
     const positionId = req.params.id;
     const updatedPosition = req.body;
-    db.query('UPDATE position SET ? WHERE id = ?', [updatedPosition, positionId], (err) => {
+    db.query('UPDATE `position` SET ? WHERE id = ?', [updatedPosition, positionId], (err) => {
         if (err) {
             console.error('Ошибка при обновлении должности:', err);
             return res.status(500).json({ error: err.message });
@@ -219,7 +223,7 @@ app.put('/api/positions/:id', (req, res) => {
 // Удаление должности
 app.delete('/api/positions/:id', (req, res) => {
     const positionId = req.params.id;
-    db.query('DELETE FROM position WHERE id = ?', positionId, (err) => {
+    db.query('DELETE FROM `position` WHERE id = ?', positionId, (err) => {
         if (err) {
             console.error('Ошибка при удалении должности:', err);
             return res.status(500).json({ error: err.message });
@@ -350,7 +354,7 @@ app.get('/workers/count', (req, res) => {
 
 // Получение количества должностей
 app.get('/api/positions/count', (req, res) => {
-    db.query('SELECT COUNT(*) AS count FROM position', (err, results) => {
+    db.query('SELECT COUNT(*) AS count FROM `position`', (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results[0]);
     });
