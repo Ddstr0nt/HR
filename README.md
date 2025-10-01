@@ -5,27 +5,47 @@
 
 ## Структура проекта
 
-- `server.js`: Основной серверный файл.
-- `package.json`: Файл конфигурации проекта Node.js.
-- `public/`: Каталог с HTML-страницами.
-  - `home.html`: Домашняя страница.
-  - `index.html`: Главная страница.
-  - `list.html`: Страница со списком.
-  - `login.html`: Страница входа.
-  - `register.html`: Страница регистрации.
-  - `tables.html`: Страница с таблицами.
-- `ok.sql`: SQL-скрипт для работы с базой данных.
+Backend:
+- `server.js`: Точка входа приложения, подключает модули маршрутов и обработчик ошибок.
+- `src/config/db.js`: Подключение к базе данных (конфигурация через переменные окружения).
+- `src/middleware/auth.js`: JWT-аутентификация (`authenticateToken`, `signToken`).
+- `src/routes/`:
+  - `auth.js`: Авторизация, регистрация, защищённый маршрут.
+  - `workers.js`: CRUD для работников (с JOIN справочников).
+  - `list.js`: CRUD для истории действий.
+  - `positions.js`, `professions.js`, `education.js`: CRUD для справочников.
+  - `genders.js`, `actions.js`: чтение справочников.
+  - `stats.js`: агрегированные счётчики.
+
+Frontend:
+- `public/`: HTML/CSS/JS (статические файлы).
+  - `home.html`, `index.html`, `list.html`, `tables.html`, `login.html`, `register.html`, `css/styles.css`.
+- `ok.sql`: SQL-скрипт для инициализации БД.
 
 ## Установка и запуск
 
 1. Убедитесь, что у вас установлен Node.js.
-2. Установите зависимости:
+2. Создайте файл `.env` (опционально):
+   ```env
+   PORT=3000
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=root
+   DB_NAME=ok
+   DB_PORT=3306
+   JWT_SECRET=change_me
+   ```
+3. Установите зависимости:
    ```bash
    npm install
    ```
-3. Запустите сервер:
+4. Запустите сервер:
    ```bash
    node server.js
+   ```
+   или для разработки с перезапуском:
+   ```bash
+   npm run dev
    ```
 
 ## Лицензия
