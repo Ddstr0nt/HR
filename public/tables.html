@@ -411,6 +411,22 @@
           </div>
         </div>
       </div>
+    <!-- Confirm Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Подтверждение</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="confirmMessage">Вы уверены?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-danger" id="confirmOkButton">Удалить</button>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
 
     <footer class="py-3 footer-dark">
@@ -440,6 +456,65 @@
         toastBody.textContent = message;
         toastBody.className = 'toast-body' + (isSuccess ? ' text-success' : ' text-danger');
         toast.show();
+      }
+
+      // Модальное подтверждение вместо confirm()
+      function showConfirm(message) {
+        return new Promise((resolve) => {
+          const modalEl = document.getElementById('confirmModal');
+          const messageEl = document.getElementById('confirmMessage');
+          const okBtn = document.getElementById('confirmOkButton');
+          messageEl.textContent = message || 'Подтвердите действие';
+          const modal = new bootstrap.Modal(modalEl);
+
+          const cleanup = () => {
+            okBtn.removeEventListener('click', onOk);
+            modalEl.removeEventListener('hidden.bs.modal', onHide);
+          };
+          const onOk = () => {
+            cleanup();
+            modal.hide();
+            resolve(true);
+          };
+          const onHide = () => {
+            cleanup();
+            resolve(false);
+          };
+
+          okBtn.addEventListener('click', onOk, { once: true });
+          modalEl.addEventListener('hidden.bs.modal', onHide, { once: true });
+          modal.show();
+        });
+      }
+
+      // Loading helpers (spinner + skeleton rows) for each table
+      function setLoading(isLoading) {
+        const updateBtn = document.querySelector('.btn-update');
+        if (!updateBtn) return;
+        if (isLoading) {
+          updateBtn.disabled = true;
+          updateBtn.dataset.originalInner = updateBtn.innerHTML;
+          updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Загрузка';
+        } else {
+          if (updateBtn.dataset.originalInner) {
+            updateBtn.innerHTML = updateBtn.dataset.originalInner;
+            delete updateBtn.dataset.originalInner;
+          }
+          updateBtn.disabled = false;
+        }
+      }
+
+      function renderSkeleton(tableBody, cols) {
+        tableBody.innerHTML = '';
+        const rows = 6;
+        for (let r = 0; r < rows; r++) {
+          const tr = tableBody.insertRow();
+          tr.className = 'skeleton-row';
+          for (let c = 0; c < cols; c++) {
+            const td = tr.insertCell();
+            td.innerHTML = '<div class="skeleton" style="height: 12px;"></div>';
+          }
+        }
       }
 
       const authButton = document.getElementById('authButton');
@@ -489,6 +564,8 @@
       // Функция для загрузки должностей
       async function loadPositions() {
         try {
+          setLoading(true);
+          renderSkeleton(positionsTableBody, 3);
           showToast("Загрузка должностей...", true);
           const response = await fetch('http://localhost:3000/api/positions');
           if (!response.ok) throw new Error('Ошибка при загрузке должностей');
@@ -522,12 +599,14 @@
         } catch (error) {
           console.error("Ошибка:", error);
           showToast(error.message, false);
-        }
+        } finally { setLoading(false); }
       }
 
       // Функция для загрузки профессий
       async function loadProfessions() {
         try {
+          setLoading(true);
+          renderSkeleton(professionsTableBody, 3);
           showToast("Загрузка профессий...", true);
           const response = await fetch('http://localhost:3000/api/professions');
           if (!response.ok) throw new Error('Ошибка при загрузке профессий');
@@ -561,12 +640,14 @@
         } catch (error) {
           console.error("Ошибка:", error);
           showToast(error.message, false);
-        }
+        } finally { setLoading(false); }
       }
 
       // Функция для загрузки образования
       async function loadEducation() {
         try {
+          setLoading(true);
+          renderSkeleton(educationTableBody, 3);
           showToast("Загрузка образования...", true);
           const response = await fetch('http://localhost:3000/api/education');
           if (!response.ok) throw new Error('Ошибка при загрузке образования');
@@ -600,7 +681,7 @@
         } catch (error) {
           console.error("Ошибка:", error);
           showToast(error.message, false);
-        }
+        } finally { setLoading(false); }
       }
 
       // Функция для добавления или обновления должности
@@ -749,7 +830,8 @@ function editEducation(id) {
 
       // Функция для удаления должности
       async function deletePosition(id) {
-        if (!confirm("Вы уверены, что хотите удалить эту должность?")) return;
+        const confirmed = await showConfirm("Вы уверены, что хотите удалить эту должность?");
+        if (!confirmed) return;
         
         try {
           showToast("Удаление должности...", true);
@@ -767,7 +849,8 @@ function editEducation(id) {
 
       // Функция для удаления профессии
       async function deleteProfession(id) {
-        if (!confirm("Вы уверены, что хотите удалить эту профессию?")) return;
+        const confirmed = await showConfirm("Вы уверены, что хотите удалить эту профессию?");
+        if (!confirmed) return;
         
         try {
           showToast("Удаление профессии...", true);
@@ -785,7 +868,8 @@ function editEducation(id) {
 
       // Функция для удаления образования
       async function deleteEducation(id) {
-        if (!confirm("Вы уверены, что хотите удалить это образование?")) return;
+        const confirmed = await showConfirm("Вы уверены, что хотите удалить это образование?");
+        if (!confirmed) return;
         
         try {
           showToast("Удаление образования...", true);
