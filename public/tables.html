@@ -1,237 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Управление таблицами</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <style>
-      :root {
-        --primary-color: #4e73df;
-        --dark-color: #2c3e50;
-        --light-color: #f8f9fa;
-      }
-      
-      body {
-        background-color: #f5f7fb;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-      
-      .navbar {
-        background-color: var(--dark-color);
-        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-        border-radius: 0 0 5px 5px;
-      }
-      
-      .navbar-brand {
-        font-weight: 600;
-        font-size: 1.2rem;
-      }
-      
-      .main-content {
-        padding: 20px;
-        margin-top: 20px;
-        flex: 1;
-      }
-      
-      .table-container {
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
-        overflow: hidden;
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-      
-      .table-controls {
-        background-color: white;
-        padding: 15px 20px;
-        border-radius: 10px;
-        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
-        margin-bottom: 20px;
-      }
-      
-      .table {
-        border-radius: 8px;
-        overflow: hidden;
-      }
-      
-      .table thead th {
-        background-color: var(--dark-color);
-        color: white;
-        border: none;
-      }
-      
-      .table-hover tbody tr:hover {
-        background-color: rgba(78, 115, 223, 0.05);
-      }
-      
-      .sticky-add-row {
-        background-color: #f8f9fa;
-      }
-      
-      .sticky-add-row td {
-        padding: 8px !important;
-      }
-      
-      .sticky-add-row input,
-      .sticky-add-row select {
-        border-radius: 5px !important;
-        border: 1px solid #dee2e6;
-      }
-      
-      .btn {
-        border-radius: 5px;
-        font-weight: 500;
-      }
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' font-size='28' fill='%23ffffff' font-family='Segoe%20UI' text-anchor='middle'%3EHR%3C/text%3E%3C/svg%3E"
+    />
+  </head>
 
-      .btn-warning {
-        color: var(--primary-color);
-        background-color: white;
-        border-color: var(--primary-color);
-      }
-
-      .btn-warning:hover {
-        color: white;
-        background-color: var(--primary-color);
-        border-color: white;
-      }
-      .delete-button:hover {
-        color: white;
-        background-color: #dc3545;
-        border-color: #dc3545;
-      }
-
-      .delete-button {
-        color: #dc3545;
-        background-color: white;
-        border-color: #dc3545;
-      }
-
-      .btn-primary {
-        color: var(--primary-color);
-        background-color: white;
-        border-color: var(--primary-color);
-      }
-
-      .btn-primary:hover {
-        color: white;
-        background-color: var(--primary-color);
-        border-color: white;
-      }
-      
-      .btn-outline-light {
-        border-color: #dee2e6;
-        color: #dee2e6;
-      }
-      
-      .btn-outline-light:hover {
-        background-color: #e9ecef;
-        color: var(--dark-color);
-      }
-      
-      .highlight {
-        background-color: #afbbf7 !important;
-      }
-      
-      .action-buttons .btn {
-        margin: 0 3px;
-        padding: 5px 10px;
-      }
-
-      .btn-update {
-        background-color: white;
-        color: #4e73df;
-        border-color: #4e73df;
-      }
-
-      .btn-update:hover {
-        background-color: #4e73df;
-        color: white;
-      }
-      
-      .toast {
-        border-radius: 8px;
-      }
-      
-      .form-control, .form-select {
-        border-radius: 5px;
-      }
-      
-      .nav-link {
-        border-radius: 5px;
-        padding: 8px 12px !important;
-        transition: all 0.3s;
-      }
-      
-      .nav-link:hover, .nav-link.active {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-      
-      .nav-link.active {
-        font-weight: 500;
-      }
-
-      footer {
-        background-color: var(--dark-color);
-        color: var(--light-color);
-        margin-top: auto;
-      }
-
-      .tables-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-        gap: 20px;
-      }
-
-      .table-card {
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
-        overflow: hidden;
-      }
-
-      .table-card-header {
-        background-color: var(--dark-color);
-        color: white;
-        padding: 10px 15px;
-        font-weight: 500;
-      }
-
-      .table-card-body {
-        padding: 15px;
-      }
-
-      .table-card table {
-        margin-bottom: 0;
-      }
-
-      .table-card table thead th {
-        background-color: #e9ecef;
-        color: var(--dark-color);
-      }
-
-            /* Добавляем стиль для кнопки отмены */
-      .btn-outline-danger {
-        color: #dc3545;
-        background-color: white;
-        border-color: #dc3545;
-      }
-
-      .btn-outline-danger:hover {
-        color: white;
-        background-color: #dc3545;
-        border-color: white;
-      }
-    </style>
-</head>
-
-<body>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark mb-4">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -286,12 +75,20 @@
             <i class="bi bi-table me-2"></i>Управление таблицами
           </h1>
           <div class="d-flex">
-            <button class="btn btn-update btn-sm me-2" onclick="loadAllTables()">
+            <button
+              class="btn btn-update btn-sm me-2"
+              onclick="loadAllTables()"
+            >
               <i class="bi bi-arrow-clockwise me-1"></i>Обновить
             </button>
-  <button id="cancelEditButton" class="btn btn-outline-danger btn-sm" style="display: none;" onclick="cancelEdit()">
-    <i class="bi bi-x-lg me-1"></i>Отмена
-  </button>
+            <button
+              id="cancelEditButton"
+              class="btn btn-outline-danger btn-sm"
+              style="display: none"
+              onclick="cancelEdit()"
+            >
+              <i class="bi bi-x-lg me-1"></i>Отмена
+            </button>
           </div>
         </div>
       </div>
@@ -304,7 +101,10 @@
           </div>
           <div class="table-card-body">
             <div class="table-responsive">
-              <table class="table table-sm table-hover align-middle mb-0" id="positionsTable">
+              <table
+                class="table table-sm table-hover align-middle mb-0"
+                id="positionsTable"
+              >
                 <thead>
                   <tr>
                     <th class="text-center">ID</th>
@@ -315,9 +115,20 @@
                     <td class="text-center">
                       <i class="bi bi-plus-lg text-muted"></i>
                     </td>
-                    <td><input type="text" name="position_name" placeholder="Название должности" class="form-control form-control-sm" required></td>
+                    <td>
+                      <input
+                        type="text"
+                        name="position_name"
+                        placeholder="Название должности"
+                        class="form-control form-control-sm"
+                        required
+                      />
+                    </td>
                     <td class="text-center">
-                      <button id="addPositionButton" class="btn btn-primary btn-sm">
+                      <button
+                        id="addPositionButton"
+                        class="btn btn-primary btn-sm"
+                      >
                         <i class="bi"></i> Добавить
                       </button>
                     </td>
@@ -338,7 +149,10 @@
           </div>
           <div class="table-card-body">
             <div class="table-responsive">
-              <table class="table table-sm table-hover align-middle mb-0" id="professionsTable">
+              <table
+                class="table table-sm table-hover align-middle mb-0"
+                id="professionsTable"
+              >
                 <thead>
                   <tr>
                     <th class="text-center">ID</th>
@@ -349,9 +163,20 @@
                     <td class="text-center">
                       <i class="bi bi-plus-lg text-muted"></i>
                     </td>
-                    <td><input type="text" name="profession_name" placeholder="Название профессии" class="form-control form-control-sm" required></td>
+                    <td>
+                      <input
+                        type="text"
+                        name="profession_name"
+                        placeholder="Название профессии"
+                        class="form-control form-control-sm"
+                        required
+                      />
+                    </td>
                     <td class="text-center">
-                      <button id="addProfessionButton" class="btn btn-primary btn-sm">
+                      <button
+                        id="addProfessionButton"
+                        class="btn btn-primary btn-sm"
+                      >
                         <i class="bi"></i> Добавить
                       </button>
                     </td>
@@ -372,7 +197,10 @@
           </div>
           <div class="table-card-body">
             <div class="table-responsive">
-              <table class="table table-sm table-hover align-middle mb-0" id="educationTable">
+              <table
+                class="table table-sm table-hover align-middle mb-0"
+                id="educationTable"
+              >
                 <thead>
                   <tr>
                     <th class="text-center">ID</th>
@@ -383,9 +211,20 @@
                     <td class="text-center">
                       <i class="bi bi-plus-lg text-muted"></i>
                     </td>
-                    <td><input type="text" name="education_name" placeholder="Введите образование" class="form-control form-control-sm" required></td>
+                    <td>
+                      <input
+                        type="text"
+                        name="education_name"
+                        placeholder="Введите образование"
+                        class="form-control form-control-sm"
+                        required
+                      />
+                    </td>
                     <td class="text-center">
-                      <button id="addEducationButton" class="btn btn-primary btn-sm">
+                      <button
+                        id="addEducationButton"
+                        class="btn btn-primary btn-sm"
+                      >
                         <i class="bi"></i> Добавить
                       </button>
                     </td>
@@ -401,46 +240,102 @@
       </div>
 
       <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div
+          id="liveToast"
+          class="toast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           <div class="toast-header">
             <strong class="me-auto">Уведомление</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="toast-body" id="toastMessage">
             <!-- Сообщение будет вставлено здесь -->
           </div>
         </div>
       </div>
-    <!-- Confirm Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Подтверждение</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body" id="confirmMessage">Вы уверены?</div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button type="button" class="btn btn-danger" id="confirmOkButton">Удалить</button>
+      <!-- Confirm Modal -->
+      <div
+        class="modal fade"
+        id="confirmModal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Подтверждение</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body" id="confirmMessage">Вы уверены?</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Отмена
+              </button>
+              <button type="button" class="btn btn-danger" id="confirmOkButton">
+                Удалить
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    </div>
 
-    <footer class="py-3 footer-dark">
+    <footer class="py-3 mt-4 footer-dark">
       <div class="container">
-        <ul class="nav justify-content-center border-bottom border-light pb-3 mb-3">
-          <li class="nav-item"><a href="home.html" class="nav-link px-2 text-light">Главная</a></li>
-          <li class="nav-item"><a href="list.html" class="nav-link px-2 text-light">История сотрудников</a></li>
-          <li class="nav-item"><a href="index.html" class="nav-link px-2 text-light">Данные сотрудников</a></li>
-          <li class="nav-item"><a href="tables.html" class="nav-link px-2 text-light">Управление таблицами</a></li>
-          <li class="nav-item"><a href="#" class="nav-link px-2 text-light">О нас</a></li>
-          <li class="nav-item"><a href="#" class="nav-link px-2 text-light">FAQ</a></li>
+        <ul
+          class="nav justify-content-center border-bottom border-light pb-3 mb-3"
+        >
+          <li class="nav-item">
+            <a href="home.html" class="nav-link px-2 text-light">Главная</a>
+          </li>
+          <li class="nav-item">
+            <a href="list.html" class="nav-link px-2 text-light"
+              >История сотрудников</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="index.html" class="nav-link px-2 text-light"
+              >Данные сотрудников</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="tables.html" class="nav-link px-2 text-light"
+              >Управление таблицами</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link px-2 text-light">О нас</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link px-2 text-light">FAQ</a>
+          </li>
         </ul>
-        <p class="text-center text-light mb-0">&copy; 2025 Отдел кадров. Все права защищены.</p>
-        <p class="text-center text-light mb-0">Контакты: <a href="mailto:support@hr-system.com" class="text-light">support@hr-system.com</a></p>
+        <p class="text-center text-light mb-0">
+          &copy; 2025 Отдел кадров. Все права защищены.
+        </p>
+        <p class="text-center text-light mb-0">
+          Контакты:
+          <a href="mailto:support@hr-system.com" class="text-light"
+            >support@hr-system.com</a
+          >
+        </p>
         <p class="text-center text-light mb-0">Телефон: +7 (495) 123-45-67</p>
       </div>
     </footer>
@@ -448,28 +343,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       // Инициализация Toast
-      const toastLiveExample = document.getElementById('liveToast');
+      const toastLiveExample = document.getElementById("liveToast");
       const toast = new bootstrap.Toast(toastLiveExample);
-      
+
       function showToast(message, isSuccess = true) {
-        const toastBody = document.getElementById('toastMessage');
+        const toastBody = document.getElementById("toastMessage");
         toastBody.textContent = message;
-        toastBody.className = 'toast-body' + (isSuccess ? ' text-success' : ' text-danger');
+        toastBody.className =
+          "toast-body" + (isSuccess ? " text-success" : " text-danger");
         toast.show();
       }
 
       // Модальное подтверждение вместо confirm()
       function showConfirm(message) {
         return new Promise((resolve) => {
-          const modalEl = document.getElementById('confirmModal');
-          const messageEl = document.getElementById('confirmMessage');
-          const okBtn = document.getElementById('confirmOkButton');
-          messageEl.textContent = message || 'Подтвердите действие';
+          const modalEl = document.getElementById("confirmModal");
+          const messageEl = document.getElementById("confirmMessage");
+          const okBtn = document.getElementById("confirmOkButton");
+          messageEl.textContent = message || "Подтвердите действие";
           const modal = new bootstrap.Modal(modalEl);
 
           const cleanup = () => {
-            okBtn.removeEventListener('click', onOk);
-            modalEl.removeEventListener('hidden.bs.modal', onHide);
+            okBtn.removeEventListener("click", onOk);
+            modalEl.removeEventListener("hidden.bs.modal", onHide);
           };
           const onOk = () => {
             cleanup();
@@ -481,20 +377,21 @@
             resolve(false);
           };
 
-          okBtn.addEventListener('click', onOk, { once: true });
-          modalEl.addEventListener('hidden.bs.modal', onHide, { once: true });
+          okBtn.addEventListener("click", onOk, { once: true });
+          modalEl.addEventListener("hidden.bs.modal", onHide, { once: true });
           modal.show();
         });
       }
 
       // Loading helpers (spinner + skeleton rows) for each table
       function setLoading(isLoading) {
-        const updateBtn = document.querySelector('.btn-update');
+        const updateBtn = document.querySelector(".btn-update");
         if (!updateBtn) return;
         if (isLoading) {
           updateBtn.disabled = true;
           updateBtn.dataset.originalInner = updateBtn.innerHTML;
-          updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Загрузка';
+          updateBtn.innerHTML =
+            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Загрузка';
         } else {
           if (updateBtn.dataset.originalInner) {
             updateBtn.innerHTML = updateBtn.dataset.originalInner;
@@ -505,11 +402,11 @@
       }
 
       function renderSkeleton(tableBody, cols) {
-        tableBody.innerHTML = '';
+        tableBody.innerHTML = "";
         const rows = 6;
         for (let r = 0; r < rows; r++) {
           const tr = tableBody.insertRow();
-          tr.className = 'skeleton-row';
+          tr.className = "skeleton-row";
           for (let c = 0; c < cols; c++) {
             const td = tr.insertCell();
             td.innerHTML = '<div class="skeleton" style="height: 12px;"></div>';
@@ -517,71 +414,87 @@
         }
       }
 
-      const authButton = document.getElementById('authButton');
-      const authButtonText = document.getElementById('authButtonText');
-      const token = localStorage.getItem('token');
-      const username = localStorage.getItem('username');
+      const authButton = document.getElementById("authButton");
+      const authButtonText = document.getElementById("authButtonText");
+      const token = localStorage.getItem("token");
+      const username = localStorage.getItem("username");
 
       if (token) {
-          authButtonText.textContent = `Выйти (${username})`;
-          authButton.onclick = () => {
-              localStorage.removeItem('token');
-              localStorage.removeItem('role');
-              localStorage.removeItem('username');
-              window.location.href = 'login.html';
-          };
+        authButtonText.textContent = `Выйти (${username})`;
+        authButton.onclick = () => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
+          localStorage.removeItem("username");
+          window.location.href = "login.html";
+        };
       } else {
-          authButtonText.textContent = 'Войти';
-          authButton.onclick = () => {
-              window.location.href = 'login.html';
-          };
+        authButtonText.textContent = "Войти";
+        authButton.onclick = () => {
+          window.location.href = "login.html";
+        };
       }
 
-      const role = localStorage.getItem('role');
+      const role = localStorage.getItem("role");
       if (!role) {
-          window.location.href = 'login.html';
+        window.location.href = "login.html";
       }
 
-      const positionsTableBody = document.getElementById('positionsTable').getElementsByTagName('tbody')[0];
-      const addPositionButton = document.getElementById('addPositionButton');
+      const positionsTableBody = document
+        .getElementById("positionsTable")
+        .getElementsByTagName("tbody")[0];
+      const addPositionButton = document.getElementById("addPositionButton");
       let editingPositionId = null;
 
-      const professionsTableBody = document.getElementById('professionsTable').getElementsByTagName('tbody')[0];
-      const addProfessionButton = document.getElementById('addProfessionButton');
+      const professionsTableBody = document
+        .getElementById("professionsTable")
+        .getElementsByTagName("tbody")[0];
+      const addProfessionButton = document.getElementById(
+        "addProfessionButton"
+      );
       let editingProfessionId = null;
 
-      const educationTableBody = document.getElementById('educationTable').getElementsByTagName('tbody')[0];
-      const addEducationButton = document.getElementById('addEducationButton');
+      const educationTableBody = document
+        .getElementById("educationTable")
+        .getElementsByTagName("tbody")[0];
+      const addEducationButton = document.getElementById("addEducationButton");
       let editingEducationId = null;
 
       // Функция для загрузки всех таблиц
-      function loadAllTables() {
-        loadPositions();
-        loadProfessions();
-        loadEducation();
+      async function loadAllTables() {
+        try {
+          setLoading(true);
+          await Promise.all([
+            loadPositions(),
+            loadProfessions(),
+            loadEducation(),
+          ]);
+        } catch (error) {
+          console.error("Ошибка при загрузке таблиц:", error);
+          showToast("Ошибка при загрузке данных", false);
+        } finally {
+          setLoading(false);
+        }
       }
 
       // Функция для загрузки должностей
       async function loadPositions() {
         try {
-          setLoading(true);
           renderSkeleton(positionsTableBody, 3);
-          showToast("Загрузка должностей...", true);
-          const response = await fetch('http://localhost:3000/api/positions');
-          if (!response.ok) throw new Error('Ошибка при загрузке должностей');
+          const response = await fetch("http://localhost:3000/api/positions");
+          if (!response.ok) throw new Error("Ошибка при загрузке должностей");
           const data = await response.json();
-          positionsTableBody.innerHTML = '';
-          
+          positionsTableBody.innerHTML = "";
+
           if (data.length === 0) {
             const row = positionsTableBody.insertRow();
             row.innerHTML = `<td colspan="3" class="text-center text-muted py-3">Нет данных о должностях</td>`;
             return;
           }
-          
-          data.forEach(position => {
-              const row = positionsTableBody.insertRow();
-              row.setAttribute('data-id', position.id);
-              row.innerHTML = `
+
+          data.forEach((position) => {
+            const row = positionsTableBody.insertRow();
+            row.setAttribute("data-id", position.id);
+            row.innerHTML = `
                   <td class="text-center">${position.id}</td>
                   <td>${position.name}</td>
                   <td class="action-buttons text-center">
@@ -595,34 +508,32 @@
               `;
           });
           applyRoleRestrictions();
-          showToast("Должности успешно загружены", true);
         } catch (error) {
           console.error("Ошибка:", error);
           showToast(error.message, false);
-        } finally { setLoading(false); }
+          throw error; // Передаем ошибку дальше для обработки в loadAllTables
+        }
       }
 
       // Функция для загрузки профессий
       async function loadProfessions() {
         try {
-          setLoading(true);
           renderSkeleton(professionsTableBody, 3);
-          showToast("Загрузка профессий...", true);
-          const response = await fetch('http://localhost:3000/api/professions');
-          if (!response.ok) throw new Error('Ошибка при загрузке профессий');
+          const response = await fetch("http://localhost:3000/api/professions");
+          if (!response.ok) throw new Error("Ошибка при загрузке профессий");
           const data = await response.json();
-          professionsTableBody.innerHTML = '';
-          
+          professionsTableBody.innerHTML = "";
+
           if (data.length === 0) {
             const row = professionsTableBody.insertRow();
             row.innerHTML = `<td colspan="3" class="text-center text-muted py-3">Нет данных о профессиях</td>`;
             return;
           }
-          
-          data.forEach(profession => {
-              const row = professionsTableBody.insertRow();
-              row.setAttribute('data-id', profession.id);
-              row.innerHTML = `
+
+          data.forEach((profession) => {
+            const row = professionsTableBody.insertRow();
+            row.setAttribute("data-id", profession.id);
+            row.innerHTML = `
                   <td class="text-center">${profession.id}</td>
                   <td>${profession.name}</td>
                   <td class="action-buttons text-center">
@@ -636,34 +547,32 @@
               `;
           });
           applyRoleRestrictions();
-          showToast("Профессии успешно загружены", true);
         } catch (error) {
           console.error("Ошибка:", error);
           showToast(error.message, false);
-        } finally { setLoading(false); }
+          throw error; // Передаем ошибку дальше для обработки в loadAllTables
+        }
       }
 
       // Функция для загрузки образования
       async function loadEducation() {
         try {
-          setLoading(true);
           renderSkeleton(educationTableBody, 3);
-          showToast("Загрузка образования...", true);
-          const response = await fetch('http://localhost:3000/api/education');
-          if (!response.ok) throw new Error('Ошибка при загрузке образования');
+          const response = await fetch("http://localhost:3000/api/education");
+          if (!response.ok) throw new Error("Ошибка при загрузке образования");
           const data = await response.json();
-          educationTableBody.innerHTML = '';
-          
+          educationTableBody.innerHTML = "";
+
           if (data.length === 0) {
             const row = educationTableBody.insertRow();
             row.innerHTML = `<td colspan="3" class="text-center text-muted py-3">Нет данных об образовании</td>`;
             return;
           }
-          
-          data.forEach(education => {
-              const row = educationTableBody.insertRow();
-              row.setAttribute('data-id', education.id);
-              row.innerHTML = `
+
+          data.forEach((education) => {
+            const row = educationTableBody.insertRow();
+            row.setAttribute("data-id", education.id);
+            row.innerHTML = `
                   <td class="text-center">${education.id}</td>
                   <td>${education.name}</td>
                   <td class="action-buttons text-center">
@@ -677,168 +586,238 @@
               `;
           });
           applyRoleRestrictions();
-          showToast("Образование успешно загружено", true);
         } catch (error) {
           console.error("Ошибка:", error);
           showToast(error.message, false);
-        } finally { setLoading(false); }
+          throw error; // Передаем ошибку дальше для обработки в loadAllTables
+        }
       }
 
       // Функция для добавления или обновления должности
       async function savePosition() {
-        const name = document.querySelector('input[name="position_name"]').value.trim();
+        const name = document
+          .querySelector('input[name="position_name"]')
+          .value.trim();
 
         // Проверка на пустое поле
         if (!name) {
-            showToast('Название должности не может быть пустым.', false);
-            return;
+          showToast("Название должности не может быть пустым.", false);
+          return;
         }
 
         const positionData = { name };
-        const method = editingPositionId ? 'PUT' : 'POST';
-        const url = editingPositionId ? `http://localhost:3000/api/positions/${editingPositionId}` : 'http://localhost:3000/api/positions';
+        const method = editingPositionId ? "PUT" : "POST";
+        const url = editingPositionId
+          ? `http://localhost:3000/api/positions/${editingPositionId}`
+          : "http://localhost:3000/api/positions";
 
         try {
-            showToast(editingPositionId ? "Обновление должности..." : "Добавление должности...", true);
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(positionData)
-            });
-            if (!response.ok) throw new Error(editingPositionId ? 'Ошибка при обновлении должности' : 'Ошибка при добавлении должности');
-            clearPositionForm();
-            loadPositions();
-            editingPositionId = null;
-            showToast(editingPositionId ? "Должность обновлена" : "Должность добавлена", true);
+          showToast(
+            editingPositionId
+              ? "Обновление должности..."
+              : "Добавление должности...",
+            true
+          );
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(positionData),
+          });
+          if (!response.ok)
+            throw new Error(
+              editingPositionId
+                ? "Ошибка при обновлении должности"
+                : "Ошибка при добавлении должности"
+            );
+          clearPositionForm();
+          loadPositions();
+          editingPositionId = null;
+          showToast(
+            editingPositionId ? "Должность обновлена" : "Должность добавлена",
+            true
+          );
         } catch (error) {
-            console.error("Ошибка:", error);
-            showToast(error.message, false);
+          console.error("Ошибка:", error);
+          showToast(error.message, false);
         }
       }
 
       // Функция для добавления или обновления профессии
       async function saveProfession() {
-        const name = document.querySelector('input[name="profession_name"]').value.trim();
+        const name = document
+          .querySelector('input[name="profession_name"]')
+          .value.trim();
 
         // Проверка на пустое поле
         if (!name) {
-            showToast('Название профессии не может быть пустым.', false);
-            return;
+          showToast("Название профессии не может быть пустым.", false);
+          return;
         }
 
         const professionData = { name };
-        const method = editingProfessionId ? 'PUT' : 'POST';
-        const url = editingProfessionId ? `http://localhost:3000/api/professions/${editingProfessionId}` : 'http://localhost:3000/api/professions';
+        const method = editingProfessionId ? "PUT" : "POST";
+        const url = editingProfessionId
+          ? `http://localhost:3000/api/professions/${editingProfessionId}`
+          : "http://localhost:3000/api/professions";
 
         try {
-            showToast(editingProfessionId ? "Обновление профессии..." : "Добавление профессии...", true);
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(professionData)
-            });
-            if (!response.ok) throw new Error(editingProfessionId ? 'Ошибка при обновлении профессии' : 'Ошибка при добавлении профессии');
-            clearProfessionForm();
-            loadProfessions();
-            editingProfessionId = null;
-            showToast(editingProfessionId ? "Профессия обновлена" : "Профессия добавлена", true);
+          showToast(
+            editingProfessionId
+              ? "Обновление профессии..."
+              : "Добавление профессии...",
+            true
+          );
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(professionData),
+          });
+          if (!response.ok)
+            throw new Error(
+              editingProfessionId
+                ? "Ошибка при обновлении профессии"
+                : "Ошибка при добавлении профессии"
+            );
+          clearProfessionForm();
+          loadProfessions();
+          editingProfessionId = null;
+          showToast(
+            editingProfessionId ? "Профессия обновлена" : "Профессия добавлена",
+            true
+          );
         } catch (error) {
-            console.error("Ошибка:", error);
-            showToast(error.message, false);
+          console.error("Ошибка:", error);
+          showToast(error.message, false);
         }
       }
 
       // Функция для добавления или обновления образования
       async function saveEducation() {
-        const name = document.querySelector('input[name="education_name"]').value.trim();
+        const name = document
+          .querySelector('input[name="education_name"]')
+          .value.trim();
 
         // Проверка на пустое поле
         if (!name) {
-            showToast('Название образования не может быть пустым.', false);
-            return;
+          showToast("Название образования не может быть пустым.", false);
+          return;
         }
 
         const educationData = { name };
-        const method = editingEducationId ? 'PUT' : 'POST';
-        const url = editingEducationId ? `http://localhost:3000/api/education/${editingEducationId}` : 'http://localhost:3000/api/education';
+        const method = editingEducationId ? "PUT" : "POST";
+        const url = editingEducationId
+          ? `http://localhost:3000/api/education/${editingEducationId}`
+          : "http://localhost:3000/api/education";
 
         try {
-            showToast(editingEducationId ? "Обновление образования..." : "Добавление образования...", true);
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(educationData)
-            });
-            if (!response.ok) throw new Error(editingEducationId ? 'Ошибка при обновлении образования' : 'Ошибка при добавлении образования');
-            clearEducationForm();
-            loadEducation();
-            editingEducationId = null;
-            showToast(editingEducationId ? "Образование обновлено" : "Образование добавлено", true);
+          showToast(
+            editingEducationId
+              ? "Обновление образования..."
+              : "Добавление образования...",
+            true
+          );
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(educationData),
+          });
+          if (!response.ok)
+            throw new Error(
+              editingEducationId
+                ? "Ошибка при обновлении образования"
+                : "Ошибка при добавлении образования"
+            );
+          clearEducationForm();
+          loadEducation();
+          editingEducationId = null;
+          showToast(
+            editingEducationId
+              ? "Образование обновлено"
+              : "Образование добавлено",
+            true
+          );
         } catch (error) {
-            console.error("Ошибка:", error);
-            showToast(error.message, false);
+          console.error("Ошибка:", error);
+          showToast(error.message, false);
         }
       }
 
-// Функция для редактирования должности
-function editPosition(id) {
-  const previouslyHighlightedRow = document.querySelector('.highlight');
-  if (previouslyHighlightedRow) previouslyHighlightedRow.classList.remove('highlight');
+      // Функция для редактирования должности
+      function editPosition(id) {
+        const previouslyHighlightedRow = document.querySelector(".highlight");
+        if (previouslyHighlightedRow)
+          previouslyHighlightedRow.classList.remove("highlight");
 
-  const row = document.querySelector(`#positionsTable tr[data-id='${id}']`);
-  row.classList.add('highlight');
-  const name = row.children[1].textContent;
-  document.querySelector('input[name="position_name"]').value = name;
-  editingPositionId = id;
-  addPositionButton.innerHTML = '<i class="bi"></i> Сохранить';
-  document.getElementById('cancelEditButton').style.display = 'inline-block'; // Показываем кнопку "Отмена"
-}
+        const row = document.querySelector(
+          `#positionsTable tr[data-id='${id}']`
+        );
+        row.classList.add("highlight");
+        const name = row.children[1].textContent;
+        document.querySelector('input[name="position_name"]').value = name;
+        editingPositionId = id;
+        addPositionButton.innerHTML = '<i class="bi"></i> Сохранить';
+        document.getElementById("cancelEditButton").style.display =
+          "inline-block"; // Показываем кнопку "Отмена"
+      }
 
-// Функция для редактирования профессии
-function editProfession(id) {
-  const previouslyHighlightedRow = document.querySelector('.highlight');
-  if (previouslyHighlightedRow) previouslyHighlightedRow.classList.remove('highlight');
+      // Функция для редактирования профессии
+      function editProfession(id) {
+        const previouslyHighlightedRow = document.querySelector(".highlight");
+        if (previouslyHighlightedRow)
+          previouslyHighlightedRow.classList.remove("highlight");
 
-  const row = document.querySelector(`#professionsTable tr[data-id='${id}']`);
-  row.classList.add('highlight');
-  const name = row.children[1].textContent;
-  document.querySelector('input[name="profession_name"]').value = name;
-  editingProfessionId = id;
-  addProfessionButton.innerHTML = '<i class="bi"></i> Сохранить';
-  document.getElementById('cancelEditButton').style.display = 'inline-block'; // Показываем кнопку "Отмена"
-}
+        const row = document.querySelector(
+          `#professionsTable tr[data-id='${id}']`
+        );
+        row.classList.add("highlight");
+        const name = row.children[1].textContent;
+        document.querySelector('input[name="profession_name"]').value = name;
+        editingProfessionId = id;
+        addProfessionButton.innerHTML = '<i class="bi"></i> Сохранить';
+        document.getElementById("cancelEditButton").style.display =
+          "inline-block"; // Показываем кнопку "Отмена"
+      }
 
-// Функция для редактирования образования
-function editEducation(id) {
-  const previouslyHighlightedRow = document.querySelector('.highlight');
-  if (previouslyHighlightedRow) previouslyHighlightedRow.classList.remove('highlight');
+      // Функция для редактирования образования
+      function editEducation(id) {
+        const previouslyHighlightedRow = document.querySelector(".highlight");
+        if (previouslyHighlightedRow)
+          previouslyHighlightedRow.classList.remove("highlight");
 
-  const row = document.querySelector(`#educationTable tr[data-id='${id}']`);
-  row.classList.add('highlight');
-  const name = row.children[1].textContent;
-  document.querySelector('input[name="education_name"]').value = name;
-  editingEducationId = id;
-  addEducationButton.innerHTML = '<i class="bi"></i> Сохранить';
-  document.getElementById('cancelEditButton').style.display = 'inline-block'; // Показываем кнопку "Отмена"
-}
+        const row = document.querySelector(
+          `#educationTable tr[data-id='${id}']`
+        );
+        row.classList.add("highlight");
+        const name = row.children[1].textContent;
+        document.querySelector('input[name="education_name"]').value = name;
+        editingEducationId = id;
+        addEducationButton.innerHTML = '<i class="bi"></i> Сохранить';
+        document.getElementById("cancelEditButton").style.display =
+          "inline-block"; // Показываем кнопку "Отмена"
+      }
 
       // Функция для удаления должности
       async function deletePosition(id) {
-        const confirmed = await showConfirm("Вы уверены, что хотите удалить эту должность?");
+        const confirmed = await showConfirm(
+          "Вы уверены, что хотите удалить эту должность?"
+        );
         if (!confirmed) return;
-        
+
         try {
           showToast("Удаление должности...", true);
-          const response = await fetch(`http://localhost:3000/api/positions/${id}`, {
-              method: 'DELETE'
-          });
-          if (!response.ok) throw new Error('Ошибка при удалении должности');
+          const response = await fetch(
+            `http://localhost:3000/api/positions/${id}`,
+            {
+              method: "DELETE",
+            }
+          );
+          if (!response.ok) throw new Error("Ошибка при удалении должности");
           loadPositions();
           showToast("Должность удалена", true);
         } catch (error) {
@@ -849,15 +828,20 @@ function editEducation(id) {
 
       // Функция для удаления профессии
       async function deleteProfession(id) {
-        const confirmed = await showConfirm("Вы уверены, что хотите удалить эту профессию?");
+        const confirmed = await showConfirm(
+          "Вы уверены, что хотите удалить эту профессию?"
+        );
         if (!confirmed) return;
-        
+
         try {
           showToast("Удаление профессии...", true);
-          const response = await fetch(`http://localhost:3000/api/professions/${id}`, {
-              method: 'DELETE'
-          });
-          if (!response.ok) throw new Error('Ошибка при удалении профессии');
+          const response = await fetch(
+            `http://localhost:3000/api/professions/${id}`,
+            {
+              method: "DELETE",
+            }
+          );
+          if (!response.ok) throw new Error("Ошибка при удалении профессии");
           loadProfessions();
           showToast("Профессия удалена", true);
         } catch (error) {
@@ -868,15 +852,20 @@ function editEducation(id) {
 
       // Функция для удаления образования
       async function deleteEducation(id) {
-        const confirmed = await showConfirm("Вы уверены, что хотите удалить это образование?");
+        const confirmed = await showConfirm(
+          "Вы уверены, что хотите удалить это образование?"
+        );
         if (!confirmed) return;
-        
+
         try {
           showToast("Удаление образования...", true);
-          const response = await fetch(`http://localhost:3000/api/education/${id}`, {
-              method: 'DELETE'
-          });
-          if (!response.ok) throw new Error('Ошибка при удалении образования');
+          const response = await fetch(
+            `http://localhost:3000/api/education/${id}`,
+            {
+              method: "DELETE",
+            }
+          );
+          if (!response.ok) throw new Error("Ошибка при удалении образования");
           loadEducation();
           showToast("Образование удалено", true);
         } catch (error) {
@@ -886,88 +875,99 @@ function editEducation(id) {
       }
 
       // Функция для отмены редактирования
-function cancelEdit() {
-  clearForm(); // Очистить форму
-  editingPositionId = null; // Сбросить ID редактируемой записи
-  editingProfessionId = null;
-  editingEducationId = null;
+      function cancelEdit() {
+        clearForm(); // Очистить форму
+        editingPositionId = null; // Сбросить ID редактируемой записи
+        editingProfessionId = null;
+        editingEducationId = null;
 
-  // Скрыть кнопку "Отмена"
-  document.getElementById('cancelEditButton').style.display = 'none';
+        // Скрыть кнопку "Отмена"
+        document.getElementById("cancelEditButton").style.display = "none";
 
-  // Сбросить текст кнопки добавления
-  addPositionButton.innerHTML = '<i class="bi"></i> Добавить';
-  addProfessionButton.innerHTML = '<i class="bi"></i> Добавить';
-  addEducationButton.innerHTML = '<i class="bi"></i> Добавить';
+        // Сбросить текст кнопки добавления
+        addPositionButton.innerHTML = '<i class="bi"></i> Добавить';
+        addProfessionButton.innerHTML = '<i class="bi"></i> Добавить';
+        addEducationButton.innerHTML = '<i class="bi"></i> Добавить';
 
-  // Убрать выделение строки
-  const highlightedRows = document.querySelectorAll('.highlight');
-  highlightedRows.forEach(row => row.classList.remove('highlight'));
-}
-
+        // Убрать выделение строки
+        const highlightedRows = document.querySelectorAll(".highlight");
+        highlightedRows.forEach((row) => row.classList.remove("highlight"));
+      }
 
       // Функция для очистки формы должности
       function clearPositionForm() {
-        document.querySelector('input[name="position_name"]').value = '';
+        document.querySelector('input[name="position_name"]').value = "";
         addPositionButton.innerHTML = '<i class="bi"></i> Добавить';
-        const highlightedRow = document.querySelector("#positionsTable .highlight");
+        const highlightedRow = document.querySelector(
+          "#positionsTable .highlight"
+        );
         if (highlightedRow) highlightedRow.classList.remove("highlight");
       }
 
       // Функция для очистки формы профессии
       function clearProfessionForm() {
-        document.querySelector('input[name="profession_name"]').value = '';
+        document.querySelector('input[name="profession_name"]').value = "";
         addProfessionButton.innerHTML = '<i class="bi"></i> Добавить';
-        const highlightedRow = document.querySelector("#professionsTable .highlight");
+        const highlightedRow = document.querySelector(
+          "#professionsTable .highlight"
+        );
         if (highlightedRow) highlightedRow.classList.remove("highlight");
       }
 
       // Функция для очистки формы образования
       function clearEducationForm() {
-        document.querySelector('input[name="education_name"]').value = '';
+        document.querySelector('input[name="education_name"]').value = "";
         addEducationButton.innerHTML = '<i class="bi"></i> Добавить';
-        const highlightedRow = document.querySelector("#educationTable .highlight");
+        const highlightedRow = document.querySelector(
+          "#educationTable .highlight"
+        );
         if (highlightedRow) highlightedRow.classList.remove("highlight");
       }
 
       // Функция для очистки форм
-function clearForm() {
-  // Очистка формы должностей
-  document.querySelector('input[name="position_name"]').value = '';
-  
-  // Очистка формы профессий
-  document.querySelector('input[name="profession_name"]').value = '';
-  
-  // Очистка формы образования
-  document.querySelector('input[name="education_name"]').value = '';
-}
+      function clearForm() {
+        // Очистка формы должностей
+        document.querySelector('input[name="position_name"]').value = "";
+
+        // Очистка формы профессий
+        document.querySelector('input[name="profession_name"]').value = "";
+
+        // Очистка формы образования
+        document.querySelector('input[name="education_name"]').value = "";
+      }
 
       // Функция для скрытия элементов интерфейса в зависимости от роли
       function applyRoleRestrictions() {
-        const role = localStorage.getItem('role');
+        const role = localStorage.getItem("role");
         if (!role) return;
 
-        const tables = ['positionsTable', 'professionsTable', 'educationTable'];
-        
-        if (role === 'user') {
-          // Скрываем колонку "Действия" и строку добавления для всех таблиц
-          tables.forEach(tableId => {
-            const actionsColumnHeader = document.querySelector(`#${tableId} thead tr th:last-child`);
-            if (actionsColumnHeader) actionsColumnHeader.style.display = 'none';
+        const tables = ["positionsTable", "professionsTable", "educationTable"];
 
-            const actionsColumnCells = document.querySelectorAll(`#${tableId} tbody tr td:last-child`);
-            actionsColumnCells.forEach(cell => {
-              cell.style.display = 'none';
+        if (role === "user") {
+          // Скрываем колонку "Действия" и строку добавления для всех таблиц
+          tables.forEach((tableId) => {
+            const actionsColumnHeader = document.querySelector(
+              `#${tableId} thead tr th:last-child`
+            );
+            if (actionsColumnHeader) actionsColumnHeader.style.display = "none";
+
+            const actionsColumnCells = document.querySelectorAll(
+              `#${tableId} tbody tr td:last-child`
+            );
+            actionsColumnCells.forEach((cell) => {
+              cell.style.display = "none";
             });
 
-            const addRow = document.querySelector(`#${tableId} thead tr:nth-child(2)`);
-            if (addRow) addRow.style.display = 'none';
+            const addRow = document.querySelector(
+              `#${tableId} thead tr:nth-child(2)`
+            );
+            if (addRow) addRow.style.display = "none";
           });
-        } else if (role === 'editor') {
+        } else if (role === "editor") {
           // Скрываем кнопки удаления для роли editor
-          const deleteButtons = document.querySelectorAll('.delete-button');
-          deleteButtons.forEach(button => {
-            button.style.display = 'none';
+          const deleteButtons = document.querySelectorAll(".delete-button");
+          deleteButtons.forEach((button) => {
+            button.style.display = "none";
           });
         }
       }
@@ -989,32 +989,38 @@ function clearForm() {
       });
 
       // Обработчики событий для нажатия Enter в полях ввода
-      document.querySelector('input[name="position_name"]').addEventListener("keydown", function (event) {
-        if (event.code === "Enter") {
-          event.preventDefault();
-          savePosition();
-        }
-      });
+      document
+        .querySelector('input[name="position_name"]')
+        .addEventListener("keydown", function (event) {
+          if (event.code === "Enter") {
+            event.preventDefault();
+            savePosition();
+          }
+        });
 
-      document.querySelector('input[name="profession_name"]').addEventListener("keydown", function (event) {
-        if (event.code === "Enter") {
-          event.preventDefault();
-          saveProfession();
-        }
-      });
+      document
+        .querySelector('input[name="profession_name"]')
+        .addEventListener("keydown", function (event) {
+          if (event.code === "Enter") {
+            event.preventDefault();
+            saveProfession();
+          }
+        });
 
-      document.querySelector('input[name="education_name"]').addEventListener("keydown", function (event) {
-        if (event.code === "Enter") {
-          event.preventDefault();
-          saveEducation();
-        }
-      });
+      document
+        .querySelector('input[name="education_name"]')
+        .addEventListener("keydown", function (event) {
+          if (event.code === "Enter") {
+            event.preventDefault();
+            saveEducation();
+          }
+        });
 
       // Инициализация при загрузке страницы
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener("DOMContentLoaded", () => {
         loadAllTables();
         applyRoleRestrictions();
       });
     </script>
-</body>
+  </body>
 </html>

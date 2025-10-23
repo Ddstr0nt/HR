@@ -4,11 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Управление работниками</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' font-size='28' fill='%23ffffff' font-family='Segoe%20UI' text-anchor='middle'%3EHR%3C/text%3E%3C/svg%3E">
-    
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' font-size='28' fill='%23ffffff' font-family='Segoe%20UI' text-anchor='middle'%3EHR%3C/text%3E%3C/svg%3E"
+    />
   </head>
 
   <body>
@@ -69,7 +78,11 @@
             <button class="btn btn-update btn-sm me-2" onclick="loadWorkers()">
               <i class="bi bi-arrow-clockwise me-1"></i>Обновить
             </button>
-            <button id="cancelEditButton" class="btn btn-outline-danger btn-sm" style="display: none;">
+            <button
+              id="cancelEditButton"
+              class="btn btn-outline-danger btn-sm"
+              style="display: none"
+            >
               <i class="bi bi-x-lg me-1"></i>Отмена
             </button>
           </div>
@@ -78,7 +91,10 @@
 
       <div class="table-container">
         <div class="table-responsive">
-          <table class="table table-sm table-hover align-middle mb-0" id="workersTable">
+          <table
+            class="table table-sm table-hover align-middle mb-0"
+            id="workersTable"
+          >
             <thead>
               <tr>
                 <th class="text-center">ID</th>
@@ -99,37 +115,103 @@
                 <td class="text-center">
                   <i class="bi bi-plus-lg text-muted"></i>
                 </td>
-                <td><input type="text" name="fam" placeholder="Фамилия" class="form-control form-control-sm" required /></td>
-                <td><input type="text" name="name" placeholder="Имя" class="form-control form-control-sm" required /></td>
-                <td><input type="text" name="otch" placeholder="Отчество" class="form-control form-control-sm" required /></td>
                 <td>
-                  <select name="gender_id" class="form-select form-select-sm" required>
+                  <input
+                    type="text"
+                    name="fam"
+                    placeholder="Фамилия"
+                    class="form-control form-control-sm"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Имя"
+                    class="form-control form-control-sm"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="otch"
+                    placeholder="Отчество"
+                    class="form-control form-control-sm"
+                    required
+                  />
+                </td>
+                <td>
+                  <select
+                    name="gender_id"
+                    class="form-select form-select-sm"
+                    required
+                  >
                     <option value="">Выберите пол</option>
                   </select>
                 </td>
                 <td>
-                  <select name="prof_id" class="form-select form-select-sm" required>
+                  <select
+                    name="prof_id"
+                    class="form-select form-select-sm"
+                    required
+                  >
                     <option value="">Выберите профессию</option>
                   </select>
                 </td>
                 <td>
-                  <select name="position_id" class="form-select form-select-sm" required>
+                  <select
+                    name="position_id"
+                    class="form-select form-select-sm"
+                    required
+                  >
                     <option value="">Выберите должность</option>
                   </select>
                 </td>
                 <td>
                   <div class="input-group input-group-sm">
-                    <input type="number" name="salary" placeholder="Зарплата" class="form-control" required />
+                    <input
+                      type="number"
+                      name="salary"
+                      placeholder="Зарплата"
+                      class="form-control"
+                      required
+                    />
                   </div>
                 </td>
                 <td>
-                  <select name="education_id" class="form-select form-select-sm" required>
+                  <select
+                    name="education_id"
+                    class="form-select form-select-sm"
+                    required
+                  >
                     <option value="">Выберите образование</option>
                   </select>
                 </td>
-                <td><input type="date" name="date_r" class="form-control form-control-sm" required /></td>
-                <td><input type="date" name="date_hired" class="form-control form-control-sm" required /></td>
-                <td><input type="date" name="date_fired" class="form-control form-control-sm" /></td>
+                <td>
+                  <input
+                    type="date"
+                    name="date_r"
+                    class="form-control form-control-sm"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="date"
+                    name="date_hired"
+                    class="form-control form-control-sm"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="date"
+                    name="date_fired"
+                    class="form-control form-control-sm"
+                  />
+                </td>
                 <td class="text-center">
                   <button id="addWorkerButton" class="btn btn-primary btn-sm">
                     <i class="bi"></i> Добавить
@@ -169,10 +251,21 @@
       </div>
 
       <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div
+          id="liveToast"
+          class="toast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           <div class="toast-header">
             <strong class="me-auto">Уведомление</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="toast-body" id="toastMessage">
             <!-- Сообщение будет вставлено здесь -->
@@ -181,17 +274,35 @@
       </div>
 
       <!-- Confirm Modal -->
-      <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+      <div
+        class="modal fade"
+        id="confirmModal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Подтверждение</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
             <div class="modal-body" id="confirmMessage">Вы уверены?</div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-              <button type="button" class="btn btn-danger" id="confirmOkButton">Удалить</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Отмена
+              </button>
+              <button type="button" class="btn btn-danger" id="confirmOkButton">
+                Удалить
+              </button>
             </div>
           </div>
         </div>
@@ -201,28 +312,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       // Инициализация Toast
-      const toastLiveExample = document.getElementById('liveToast');
+      const toastLiveExample = document.getElementById("liveToast");
       const toast = new bootstrap.Toast(toastLiveExample);
-      
+
       function showToast(message, isSuccess = true) {
-        const toastBody = document.getElementById('toastMessage');
+        const toastBody = document.getElementById("toastMessage");
         toastBody.textContent = message;
-        toastBody.className = 'toast-body' + (isSuccess ? ' text-success' : ' text-danger');
+        toastBody.className =
+          "toast-body" + (isSuccess ? " text-success" : " text-danger");
         toast.show();
       }
 
       // Модальное подтверждение вместо confirm()
       function showConfirm(message) {
         return new Promise((resolve) => {
-          const modalEl = document.getElementById('confirmModal');
-          const messageEl = document.getElementById('confirmMessage');
-          const okBtn = document.getElementById('confirmOkButton');
-          messageEl.textContent = message || 'Подтвердите действие';
+          const modalEl = document.getElementById("confirmModal");
+          const messageEl = document.getElementById("confirmMessage");
+          const okBtn = document.getElementById("confirmOkButton");
+          messageEl.textContent = message || "Подтвердите действие";
           const modal = new bootstrap.Modal(modalEl);
 
           const cleanup = () => {
-            okBtn.removeEventListener('click', onOk);
-            modalEl.removeEventListener('hidden.bs.modal', onHide);
+            okBtn.removeEventListener("click", onOk);
+            modalEl.removeEventListener("hidden.bs.modal", onHide);
           };
           const onOk = () => {
             cleanup();
@@ -234,20 +346,21 @@
             resolve(false);
           };
 
-          okBtn.addEventListener('click', onOk, { once: true });
-          modalEl.addEventListener('hidden.bs.modal', onHide, { once: true });
+          okBtn.addEventListener("click", onOk, { once: true });
+          modalEl.addEventListener("hidden.bs.modal", onHide, { once: true });
           modal.show();
         });
       }
 
       // Loading helpers (spinner + skeleton rows)
       function setLoading(isLoading) {
-        const updateBtn = document.querySelector('.btn-update');
+        const updateBtn = document.querySelector(".btn-update");
         if (!updateBtn) return;
         if (isLoading) {
           updateBtn.disabled = true;
           updateBtn.dataset.originalInner = updateBtn.innerHTML;
-          updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Загрузка';
+          updateBtn.innerHTML =
+            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Загрузка';
         } else {
           if (updateBtn.dataset.originalInner) {
             updateBtn.innerHTML = updateBtn.dataset.originalInner;
@@ -258,12 +371,12 @@
       }
 
       function renderSkeletonRows() {
-        workersTableBody.innerHTML = '';
+        workersTableBody.innerHTML = "";
         const rows = 8; // number of skeleton rows
         const cols = 13; // columns including actions
         for (let r = 0; r < rows; r++) {
           const tr = workersTableBody.insertRow();
-          tr.className = 'skeleton-row';
+          tr.className = "skeleton-row";
           for (let c = 0; c < cols; c++) {
             const td = tr.insertCell();
             td.innerHTML = '<div class="skeleton" style="height: 12px;"></div>';
@@ -271,32 +384,34 @@
         }
       }
 
-      const authButton = document.getElementById('authButton');
-      const authButtonText = document.getElementById('authButtonText');
-      const token = localStorage.getItem('token');
-      const username = localStorage.getItem('username');
+      const authButton = document.getElementById("authButton");
+      const authButtonText = document.getElementById("authButtonText");
+      const token = localStorage.getItem("token");
+      const username = localStorage.getItem("username");
 
       if (token) {
-          authButtonText.textContent = `Выйти (${username})`;
-          authButton.onclick = () => {
-              localStorage.removeItem('token');
-              localStorage.removeItem('role');
-              localStorage.removeItem('username');
-              window.location.href = 'login.html';
-          };
+        authButtonText.textContent = `Выйти (${username})`;
+        authButton.onclick = () => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
+          localStorage.removeItem("username");
+          window.location.href = "login.html";
+        };
       } else {
-          authButtonText.textContent = 'Войти';
-          authButton.onclick = () => {
-              window.location.href = 'login.html';
-          };
+        authButtonText.textContent = "Войти";
+        authButton.onclick = () => {
+          window.location.href = "login.html";
+        };
       }
 
-      const role = localStorage.getItem('role');
+      const role = localStorage.getItem("role");
       if (!role) {
-          window.location.href = 'login.html';
+        window.location.href = "login.html";
       }
 
-      const workersTableBody = document.getElementById("workersTable").getElementsByTagName("tbody")[0];
+      const workersTableBody = document
+        .getElementById("workersTable")
+        .getElementsByTagName("tbody")[0];
       const addWorkerButton = document.getElementById("addWorkerButton");
       const cancelEditButton = document.getElementById("cancelEditButton");
       let editingWorkerId = null;
@@ -315,47 +430,46 @@
         return new Date(dateString).toLocaleDateString("ru-RU", options);
       }
 
-// Функция для загрузки работников
-async function loadWorkers() {
-  try {
-    setLoading(true);
-    renderSkeletonRows();
-    showToast("Загрузка данных...", true);
-    const response = await fetch("http://localhost:3000/workers");
-    if (!response.ok) throw new Error("Ошибка при загрузке работников");
-    const data = await response.json();
-    allWorkers = data;
-    totalRecords = data.length;
-    
-    // Обновляем информацию о странице
-    updatePageInfo();
-    
-    // Отображаем данные текущей страницы
-    displayCurrentPageData();
-    
-    // Применяем пагинацию
-    applyPagination();
-  } catch (error) {
-    console.error("Ошибка:", error);
-    showToast(error.message, false);
-  } finally {
-    setLoading(false);
-  }
-}
+      // Функция для загрузки работников
+      async function loadWorkers() {
+        try {
+          setLoading(true);
+          renderSkeletonRows();
+          const response = await fetch("http://localhost:3000/workers");
+          if (!response.ok) throw new Error("Ошибка при загрузке работников");
+          const data = await response.json();
+          allWorkers = data;
+          totalRecords = data.length;
+
+          // Обновляем информацию о странице
+          updatePageInfo();
+
+          // Отображаем данные текущей страницы
+          displayCurrentPageData();
+
+          // Применяем пагинацию
+          applyPagination();
+        } catch (error) {
+          console.error("Ошибка:", error);
+          showToast(error.message, false);
+        } finally {
+          setLoading(false);
+        }
+      }
 
       // Функция для отображения данных на текущей странице
       function displayCurrentPageData() {
         workersTableBody.innerHTML = "";
-        
+
         if (allWorkers.length === 0) {
           const row = workersTableBody.insertRow();
           row.innerHTML = `<td colspan="13" class="text-center text-muted py-3">Нет данных о сотрудниках</td>`;
           return;
         }
-        
+
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = Math.min(startIndex + pageSize, totalRecords);
-        
+
         for (let i = startIndex; i < endIndex; i++) {
           const worker = allWorkers[i];
           const row = workersTableBody.insertRow();
@@ -368,22 +482,26 @@ async function loadWorkers() {
               <td>${worker.gender_name}</td>
               <td>${worker.prof_name}</td>
               <td>${worker.position_name}</td>
-              <td>${worker.salary.toLocaleString('ru-RU')} руб.</td>
+              <td>${worker.salary.toLocaleString("ru-RU")} руб.</td>
               <td>${worker.education_name}</td>
               <td>${formatDate(worker.date_r)}</td>
               <td>${formatDate(worker.date_hired)}</td>
               <td>${formatDate(worker.date_fired)}</td>
               <td class="action-buttons text-center">
-                  <button onclick="editWorker(${worker.id})" class="btn btn-warning btn-sm">
+                  <button onclick="editWorker(${
+                    worker.id
+                  })" class="btn btn-warning btn-sm">
                     <i class="bi bi-pencil"></i>
                   </button>
-                  <button class="btn btn-danger btn-sm delete-button" onclick="deleteWorker(${worker.id})">
+                  <button class="btn btn-danger btn-sm delete-button" onclick="deleteWorker(${
+                    worker.id
+                  })">
                     <i class="bi bi-trash"></i>
                   </button>
               </td>
           `;
         }
-        
+
         applyRoleRestrictions();
       }
 
@@ -391,83 +509,92 @@ async function loadWorkers() {
       function updatePageInfo() {
         const startIndex = (currentPage - 1) * pageSize + 1;
         const endIndex = Math.min(currentPage * pageSize, totalRecords);
-        document.getElementById('tableInfo').textContent = 
-          `Показано ${startIndex}-${endIndex} из ${totalRecords} записей`;
+        document.getElementById(
+          "tableInfo"
+        ).textContent = `Показано ${startIndex}-${endIndex} из ${totalRecords} записей`;
       }
 
       // Функция для применения пагинации
       function applyPagination() {
         totalPages = Math.ceil(totalRecords / pageSize);
-        const pagination = document.getElementById('pagination');
-        pagination.innerHTML = '';
-        
+        const pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
+
         if (totalPages <= 1) {
           return;
         }
-        
+
         // Кнопка "Назад"
-        const prevLi = document.createElement('li');
-        prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
-        prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">&laquo;</a>`;
+        const prevLi = document.createElement("li");
+        prevLi.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+        prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${
+          currentPage - 1
+        })">&laquo;</a>`;
         pagination.appendChild(prevLi);
-        
+
         // Нумерация страниц
         const startPage = Math.max(1, currentPage - 2);
         const endPage = Math.min(totalPages, currentPage + 2);
-        
+
         if (startPage > 1) {
-          const firstLi = document.createElement('li');
-          firstLi.className = 'page-item';
+          const firstLi = document.createElement("li");
+          firstLi.className = "page-item";
           firstLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(1)">1</a>`;
           pagination.appendChild(firstLi);
-          
+
           if (startPage > 2) {
-            const dotsLi = document.createElement('li');
-            dotsLi.className = 'page-item disabled';
+            const dotsLi = document.createElement("li");
+            dotsLi.className = "page-item disabled";
             dotsLi.innerHTML = `<span class="page-link">...</span>`;
             pagination.appendChild(dotsLi);
           }
         }
-        
+
         for (let i = startPage; i <= endPage; i++) {
-          const pageLi = document.createElement('li');
-          pageLi.className = `page-item ${i === currentPage ? 'active' : ''}`;
+          const pageLi = document.createElement("li");
+          pageLi.className = `page-item ${i === currentPage ? "active" : ""}`;
           pageLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
           pagination.appendChild(pageLi);
         }
-        
+
         if (endPage < totalPages) {
           if (endPage < totalPages - 1) {
-            const dotsLi = document.createElement('li');
-            dotsLi.className = 'page-item disabled';
+            const dotsLi = document.createElement("li");
+            dotsLi.className = "page-item disabled";
             dotsLi.innerHTML = `<span class="page-link">...</span>`;
             pagination.appendChild(dotsLi);
           }
-          
-          const lastLi = document.createElement('li');
-          lastLi.className = 'page-item';
+
+          const lastLi = document.createElement("li");
+          lastLi.className = "page-item";
           lastLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a>`;
           pagination.appendChild(lastLi);
         }
-        
+
         // Кнопка "Вперед"
-        const nextLi = document.createElement('li');
-        nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
-        nextLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">&raquo;</a>`;
+        const nextLi = document.createElement("li");
+        nextLi.className = `page-item ${
+          currentPage === totalPages ? "disabled" : ""
+        }`;
+        nextLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${
+          currentPage + 1
+        })">&raquo;</a>`;
         pagination.appendChild(nextLi);
       }
 
       // Функция для изменения страницы
       function changePage(page) {
         if (page < 1 || page > totalPages || page === currentPage) return;
-        
+
         currentPage = page;
         displayCurrentPageData();
         updatePageInfo();
         applyPagination();
-        
+
         // Прокрутка к верху таблицы
-        document.querySelector('.table-container').scrollIntoView({ behavior: 'smooth' });
+        document
+          .querySelector(".table-container")
+          .scrollIntoView({ behavior: "smooth" });
       }
 
       // Функция для загрузки полов
@@ -476,7 +603,9 @@ async function loadWorkers() {
           const response = await fetch("http://localhost:3000/api/genders");
           if (!response.ok) throw new Error("Ошибка при загрузке полов");
           const data = await response.json();
-          const genderSelect = document.querySelector('select[name="gender_id"]');
+          const genderSelect = document.querySelector(
+            'select[name="gender_id"]'
+          );
           genderSelect.innerHTML = '<option value="">Выберите пол</option>';
           data.forEach((gender) => {
             const option = document.createElement("option");
@@ -514,8 +643,11 @@ async function loadWorkers() {
           const response = await fetch("http://localhost:3000/api/positions");
           if (!response.ok) throw new Error("Ошибка при загрузке должностей");
           const data = await response.json();
-          const positionSelect = document.querySelector('select[name="position_id"]');
-          positionSelect.innerHTML = '<option value="">Выберите должность</option>';
+          const positionSelect = document.querySelector(
+            'select[name="position_id"]'
+          );
+          positionSelect.innerHTML =
+            '<option value="">Выберите должность</option>';
           data.forEach((position) => {
             const option = document.createElement("option");
             option.value = position.id;
@@ -533,8 +665,11 @@ async function loadWorkers() {
           const response = await fetch("http://localhost:3000/api/education");
           if (!response.ok) throw new Error("Ошибка при загрузке образования");
           const data = await response.json();
-          const educationSelect = document.querySelector('select[name="education_id"]');
-          educationSelect.innerHTML = '<option value="">Выберите образование</option>';
+          const educationSelect = document.querySelector(
+            'select[name="education_id"]'
+          );
+          educationSelect.innerHTML =
+            '<option value="">Выберите образование</option>';
           data.forEach((edu) => {
             const option = document.createElement("option");
             option.value = edu.id;
@@ -548,38 +683,73 @@ async function loadWorkers() {
 
       // Функция для добавления или обновления работника
       async function saveWorker() {
-        const role = localStorage.getItem('role');
-        if (role === 'editor' && !editingWorkerId) {
-          showToast("У вас недостаточно прав для добавления новых записей", false);
+        const role = localStorage.getItem("role");
+        if (role === "editor" && !editingWorkerId) {
+          showToast(
+            "У вас недостаточно прав для добавления новых записей",
+            false
+          );
           return;
         }
 
         const fam = document.querySelector('input[name="fam"]').value;
         const name = document.querySelector('input[name="name"]').value;
         const otch = document.querySelector('input[name="otch"]').value;
-        const gender_id = document.querySelector('select[name="gender_id"]').value;
+        const gender_id = document.querySelector(
+          'select[name="gender_id"]'
+        ).value;
         const prof_id = document.querySelector('select[name="prof_id"]').value;
-        const position_id = document.querySelector('select[name="position_id"]').value;
+        const position_id = document.querySelector(
+          'select[name="position_id"]'
+        ).value;
         const salary = document.querySelector('input[name="salary"]').value;
-        const education_id = document.querySelector('select[name="education_id"]').value;
+        const education_id = document.querySelector(
+          'select[name="education_id"]'
+        ).value;
         const date_r = document.querySelector('input[name="date_r"]').value;
-        const date_hired = document.querySelector('input[name="date_hired"]').value;
-        const date_fired = document.querySelector('input[name="date_fired"]').value;
+        const date_hired = document.querySelector(
+          'input[name="date_hired"]'
+        ).value;
+        const date_fired = document.querySelector(
+          'input[name="date_fired"]'
+        ).value;
 
         // Валидация обязательных полей
-        if (!fam || !name || !otch || !gender_id || !prof_id || !position_id || !salary || !education_id || !date_r || !date_hired) {
+        if (
+          !fam ||
+          !name ||
+          !otch ||
+          !gender_id ||
+          !prof_id ||
+          !position_id ||
+          !salary ||
+          !education_id ||
+          !date_r ||
+          !date_hired
+        ) {
           showToast("Заполните все обязательные поля", false);
           return;
         }
 
         const workerData = {
-          fam, name, otch, gender_id, prof_id, position_id, salary, education_id, date_r, date_hired
+          fam,
+          name,
+          otch,
+          gender_id,
+          prof_id,
+          position_id,
+          salary,
+          education_id,
+          date_r,
+          date_hired,
         };
 
         if (date_fired) workerData.date_fired = date_fired;
 
         const method = editingWorkerId ? "PUT" : "POST";
-        const url = editingWorkerId ? `http://localhost:3000/workers/${editingWorkerId}` : "http://localhost:3000/workers";
+        const url = editingWorkerId
+          ? `http://localhost:3000/workers/${editingWorkerId}`
+          : "http://localhost:3000/workers";
 
         try {
           const response = await fetch(url, {
@@ -587,15 +757,25 @@ async function loadWorkers() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(workerData),
           });
-          
-          if (!response.ok) throw new Error(editingWorkerId ? "Ошибка при обновлении работника" : "Ошибка при добавлении работника");
-          
+
+          if (!response.ok)
+            throw new Error(
+              editingWorkerId
+                ? "Ошибка при обновлении работника"
+                : "Ошибка при добавлении работника"
+            );
+
           clearForm();
           loadWorkers();
           editingWorkerId = null;
           addWorkerButton.innerHTML = '<i class="bi "></i> Добавить';
-          cancelEditButton.style.display = 'none';
-          showToast(editingWorkerId ? "Данные сотрудника обновлены" : "Сотрудник добавлен", true);
+          cancelEditButton.style.display = "none";
+          showToast(
+            editingWorkerId
+              ? "Данные сотрудника обновлены"
+              : "Сотрудник добавлен",
+            true
+          );
         } catch (error) {
           console.error("Ошибка:", error);
           showToast(error.message, false);
@@ -622,15 +802,17 @@ async function loadWorkers() {
         clearForm();
         editingWorkerId = null;
         addWorkerButton.innerHTML = '<i class="bi"></i> Добавить';
-        cancelEditButton.style.display = 'none';
-        
+        cancelEditButton.style.display = "none";
+
         const highlightedRow = document.querySelector(".highlight");
         if (highlightedRow) highlightedRow.classList.remove("highlight");
       }
 
       // Функция для удаления работника
       async function deleteWorker(id) {
-        const confirmed = await showConfirm("Вы уверены, что хотите удалить этого сотрудника?");
+        const confirmed = await showConfirm(
+          "Вы уверены, что хотите удалить этого сотрудника?"
+        );
         if (!confirmed) return;
         try {
           const response = await fetch(`http://localhost:3000/workers/${id}`, {
@@ -648,7 +830,8 @@ async function loadWorkers() {
       // Функция для редактирования работника
       function editWorker(id) {
         const previouslyHighlightedRow = document.querySelector(".highlight");
-        if (previouslyHighlightedRow) previouslyHighlightedRow.classList.remove("highlight");
+        if (previouslyHighlightedRow)
+          previouslyHighlightedRow.classList.remove("highlight");
 
         const row = workersTableBody.querySelector(`tr[data-id="${id}"]`);
         row.classList.add("highlight");
@@ -662,9 +845,11 @@ async function loadWorkers() {
         const position_name = cells[6].innerText;
         const salary = cells[7].innerText.replace(/[^\d]/g, "");
         const education_name = cells[8].innerText;
-        const date_r = cells[9].innerText.split('.').reverse().join('-');
-        const date_hired = cells[10].innerText.split('.').reverse().join('-');
-        const date_fired = cells[11].innerText.includes("Не указано") ? "" : cells[11].innerText.split('.').reverse().join('-');
+        const date_r = cells[9].innerText.split(".").reverse().join("-");
+        const date_hired = cells[10].innerText.split(".").reverse().join("-");
+        const date_fired = cells[11].innerText.includes("Не указано")
+          ? ""
+          : cells[11].innerText.split(".").reverse().join("-");
 
         document.querySelector('input[name="fam"]').value = fam;
         document.querySelector('input[name="name"]').value = name;
@@ -681,7 +866,7 @@ async function loadWorkers() {
 
         editingWorkerId = id;
         addWorkerButton.innerHTML = '<i class="bi"></i> Сохранить';
-        cancelEditButton.style.display = 'inline-block';
+        cancelEditButton.style.display = "inline-block";
       }
 
       // Вспомогательная функция для установки выбранного значения в select
@@ -698,40 +883,46 @@ async function loadWorkers() {
 
       // Функция для скрытия колонки "Действия" для роли user
       function applyRoleRestrictions() {
-        const role = localStorage.getItem('role');
+        const role = localStorage.getItem("role");
         if (!role) return;
 
-        if (role === 'user') {
-          document.querySelectorAll('#workersTable th:last-child, #workersTable td:last-child').forEach(el => {
-            el.style.display = 'none';
-          });
-          document.querySelector('#workersTable thead tr:nth-child(2)').style.display = 'none';
-        } else if (role === 'editor') {
-          document.querySelectorAll('.delete-button').forEach(button => {
-            button.style.display = 'none';
+        if (role === "user") {
+          document
+            .querySelectorAll(
+              "#workersTable th:last-child, #workersTable td:last-child"
+            )
+            .forEach((el) => {
+              el.style.display = "none";
+            });
+          document.querySelector(
+            "#workersTable thead tr:nth-child(2)"
+          ).style.display = "none";
+        } else if (role === "editor") {
+          document.querySelectorAll(".delete-button").forEach((button) => {
+            button.style.display = "none";
           });
         }
       }
 
       // Инициализация при загрузке страницы
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener("DOMContentLoaded", () => {
         loadWorkers();
         loadGenders();
         loadProfessions();
         loadPositions();
         loadEducation();
         applyRoleRestrictions();
-        
+
         addWorkerButton.addEventListener("click", (event) => {
           event.preventDefault();
           saveWorker();
         });
-        
+
         cancelEditButton.addEventListener("click", (event) => {
           event.preventDefault();
           cancelEdit();
         });
-        
+
         document.addEventListener("keydown", (event) => {
           if (event.code === "Enter") {
             event.preventDefault();
@@ -740,29 +931,59 @@ async function loadWorkers() {
         });
 
         // Обработчик изменения количества записей на странице
-        document.getElementById('pageSize').addEventListener('change', function() {
-          pageSize = parseInt(this.value);
-          currentPage = 1;
-          displayCurrentPageData();
-          updatePageInfo();
-          applyPagination();
-        });
+        document
+          .getElementById("pageSize")
+          .addEventListener("change", function () {
+            pageSize = parseInt(this.value);
+            currentPage = 1;
+            displayCurrentPageData();
+            updatePageInfo();
+            applyPagination();
+          });
       });
     </script>
-<footer class="py-3 mt-4 footer-dark">
-  <div class="container">
-    <ul class="nav justify-content-center border-bottom border-light pb-3 mb-3" style="max-width: 2000px; margin: 0 auto;">
-      <li class="nav-item"><a href="home.html" class="nav-link px-2 text-light">Главная</a></li>
-      <li class="nav-item"><a href="list.html" class="nav-link px-2 text-light">История сотрудников</a></li>
-      <li class="nav-item"><a href="index.html" class="nav-link px-2 text-light">Данные сотрудников</a></li>
-      <li class="nav-item"><a href="tables.html" class="nav-link px-2 text-light">Управление таблицами</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-light">О нас</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-light">FAQ</a></li>
-    </ul>
-      <p class="text-center text-light mb-0">&copy; 2025 Отдел кадров. Все права защищены.</p>
-      <p class="text-center text-light mb-0">Контакты: <a href="mailto:support@hr-system.com" class="text-light">support@hr-system.com</a></p>
-      <p class="text-center text-light mb-0">Телефон: +7 (495) 123-45-67</p>
-  </div>
-</footer>
+    <footer class="py-3 mt-4 footer-dark">
+      <div class="container">
+        <ul
+          class="nav justify-content-center border-bottom border-light pb-3 mb-3"
+          style="max-width: 2000px; margin: 0 auto"
+        >
+          <li class="nav-item">
+            <a href="home.html" class="nav-link px-2 text-light">Главная</a>
+          </li>
+          <li class="nav-item">
+            <a href="list.html" class="nav-link px-2 text-light"
+              >История сотрудников</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="index.html" class="nav-link px-2 text-light"
+              >Данные сотрудников</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="tables.html" class="nav-link px-2 text-light"
+              >Управление таблицами</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link px-2 text-light">О нас</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link px-2 text-light">FAQ</a>
+          </li>
+        </ul>
+        <p class="text-center text-light mb-0">
+          &copy; 2025 Отдел кадров. Все права защищены.
+        </p>
+        <p class="text-center text-light mb-0">
+          Контакты:
+          <a href="mailto:support@hr-system.com" class="text-light"
+            >support@hr-system.com</a
+          >
+        </p>
+        <p class="text-center text-light mb-0">Телефон: +7 (495) 123-45-67</p>
+      </div>
+    </footer>
   </body>
 </html>

@@ -1,95 +1,108 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Регистрация</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232c3e50'/%3E%3Ctext x='50%25' y='55%25' font-size='28' fill='%23ffffff' font-family='Segoe%20UI' text-anchor='middle'%3EHR%3C/text%3E%3C/svg%3E"
+    />
     <style>
-        :root {
-            --primary-color: #4e73df;
-            --dark-color: #2c3e50;
-            --light-color: #f8f9fa;
-        }
-        
-        body {
-            background-color: #f5f7fb;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
-        .navbar {
-            background-color: var(--dark-color);
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-            border-radius: 0 0 5px 5px;
-        }
-        
-        .navbar-brand {
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-        
-        .register-container {
-            max-width: 500px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
-        }
-        
-        .form-control, .form-select {
-            border-radius: 5px;
-            padding: 0.75rem 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .btn-primary {
-            background-color: var(--dark-color);
-            border-color: var(--dark-color);
-            width: 100%;
-            padding: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .btn-outline-secondary {
-            width: 100%;
-            padding: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .error {
-            color: #dc3545;
-            margin-top: 1rem;
-            text-align: center;
-        }
-        
-        .nav-link {
-            border-radius: 5px;
-            padding: 8px 12px !important;
-            transition: all 0.3s;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        footer {
-            background-color: var(--dark-color);
-            color: var(--light-color);
-            margin-top: auto;
-        }
-        
-        #specialPassword {
-            display: none;
-        }
+      :root {
+        --primary-color: #4e73df;
+        --dark-color: #2c3e50;
+        --light-color: #f8f9fa;
+      }
+
+      body {
+        background-color: #f5f7fb;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .navbar {
+        background-color: var(--dark-color);
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        border-radius: 0 0 5px 5px;
+      }
+
+      .navbar-brand {
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+
+      .register-container {
+        max-width: 500px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+      }
+
+      .form-control,
+      .form-select {
+        border-radius: 5px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .btn-primary {
+        background-color: var(--dark-color);
+        border-color: var(--dark-color);
+        width: 100%;
+        padding: 0.75rem;
+        font-weight: 500;
+      }
+
+      .btn-outline-secondary {
+        width: 100%;
+        padding: 0.75rem;
+        font-weight: 500;
+      }
+
+      .error {
+        color: #dc3545;
+        margin-top: 1rem;
+        text-align: center;
+      }
+
+      .nav-link {
+        border-radius: 5px;
+        padding: 8px 12px !important;
+        transition: all 0.3s;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      footer {
+        background-color: var(--dark-color);
+        color: var(--light-color);
+        margin-top: auto;
+      }
+
+      #specialPassword {
+        display: none;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark mb-4">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -134,97 +147,162 @@
     </nav>
 
     <div class="container">
-        <div class="register-container">
-            <h1 class="h4 mb-4 text-center"><i class="bi bi-person-plus me-2"></i>Регистрация</h1>
-            <form id="registerForm">
-                <div class="mb-3">
-                    <input type="text" class="form-control" name="username" placeholder="Имя пользователя" required>
-                </div>
-                <div class="mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="Пароль" required>
-                </div>
-                <div class="mb-3">
-                    <input type="password" class="form-control" name="confirmPassword" placeholder="Подтвердите пароль" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Выберите уровень доступа:</label>
-                    <select class="form-select" name="role" id="roleSelect" required>
-                        <option value="user">Пользователь</option>
-                        <option value="editor">Редактор</option>
-                        <option value="admin">Администратор</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <input type="password" class="form-control" name="specialPassword" id="specialPassword" placeholder="Спец. пароль для роли">
-                </div>
-                <button type="submit" class="btn btn-primary mb-3">Зарегистрироваться</button>
-                <button type="button" onclick="window.location.href='login.html'" class="btn btn-outline-secondary">
-                    Войти
-                </button>
-                <p id="errorMessage" class="error"></p>
-            </form>
-        </div>
+      <div class="register-container">
+        <h1 class="h4 mb-4 text-center">
+          <i class="bi bi-person-plus me-2"></i>Регистрация
+        </h1>
+        <form id="registerForm">
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              placeholder="Имя пользователя"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              placeholder="Пароль"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <input
+              type="password"
+              class="form-control"
+              name="confirmPassword"
+              placeholder="Подтвердите пароль"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Выберите уровень доступа:</label>
+            <select class="form-select" name="role" id="roleSelect" required>
+              <option value="user">Пользователь</option>
+              <option value="editor">Редактор</option>
+              <option value="admin">Администратор</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <input
+              type="password"
+              class="form-control"
+              name="specialPassword"
+              id="specialPassword"
+              placeholder="Спец. пароль для роли"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary mb-3">
+            Зарегистрироваться
+          </button>
+          <button
+            type="button"
+            onclick="window.location.href='login.html'"
+            class="btn btn-outline-secondary"
+          >
+            Войти
+          </button>
+          <p id="errorMessage" class="error"></p>
+        </form>
+      </div>
     </div>
 
     <footer class="py-3 mt-4 footer-dark">
-        <div class="container">
-            <ul class="nav justify-content-center border-bottom border-light pb-3 mb-3">
-                <li class="nav-item"><a href="home.html" class="nav-link px-2 text-light">Главная</a></li>
-                <li class="nav-item"><a href="list.html" class="nav-link px-2 text-light">История сотрудников</a></li>
-                <li class="nav-item"><a href="index.html" class="nav-link px-2 text-light">Данные сотрудников</a></li>
-                <li class="nav-item"><a href="tables.html" class="nav-link px-2 text-light">Управление таблицами</a></li>
-            </ul>
-      <p class="text-center text-light mb-0">&copy; 2025 Отдел кадров. Все права защищены.</p>
-      <p class="text-center text-light mb-0">Контакты: <a href="mailto:support@hr-system.com" class="text-light">support@hr-system.com</a></p>
-      <p class="text-center text-light mb-0">Телефон: +7 (495) 123-45-67</p>
-        </div>
+      <div class="container">
+        <ul
+          class="nav justify-content-center border-bottom border-light pb-3 mb-3"
+        >
+          <li class="nav-item">
+            <a href="home.html" class="nav-link px-2 text-light">Главная</a>
+          </li>
+          <li class="nav-item">
+            <a href="list.html" class="nav-link px-2 text-light"
+              >История сотрудников</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="index.html" class="nav-link px-2 text-light"
+              >Данные сотрудников</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="tables.html" class="nav-link px-2 text-light"
+              >Управление таблицами</a
+            >
+          </li>
+        </ul>
+        <p class="text-center text-light mb-0">
+          &copy; 2025 Отдел кадров. Все права защищены.
+        </p>
+        <p class="text-center text-light mb-0">
+          Контакты:
+          <a href="mailto:support@hr-system.com" class="text-light"
+            >support@hr-system.com</a
+          >
+        </p>
+        <p class="text-center text-light mb-0">Телефон: +7 (495) 123-45-67</p>
+      </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Показывать поле спецпароля только для editor и admin
-        document.getElementById('roleSelect').addEventListener('change', function() {
-            const special = document.getElementById('specialPassword');
-            if (this.value === 'admin' || this.value === 'editor') {
-                special.style.display = 'block';
-                special.required = true;
-            } else {
-                special.style.display = 'none';
-                special.required = false;
-                special.value = '';
-            }
+      // Показывать поле спецпароля только для editor и admin
+      document
+        .getElementById("roleSelect")
+        .addEventListener("change", function () {
+          const special = document.getElementById("specialPassword");
+          if (this.value === "admin" || this.value === "editor") {
+            special.style.display = "block";
+            special.required = true;
+          } else {
+            special.style.display = "none";
+            special.required = false;
+            special.value = "";
+          }
         });
-    
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = e.target.username.value;
-            const password = e.target.password.value;
-            const confirmPassword = e.target.confirmPassword.value;
-            const role = e.target.role.value;
-            const specialPassword = e.target.specialPassword.value;
-        
-            if (password !== confirmPassword) {
-                document.getElementById('errorMessage').textContent = 'Пароли не совпадают.';
-                return;
+
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const username = e.target.username.value;
+          const password = e.target.password.value;
+          const confirmPassword = e.target.confirmPassword.value;
+          const role = e.target.role.value;
+          const specialPassword = e.target.specialPassword.value;
+
+          if (password !== confirmPassword) {
+            document.getElementById("errorMessage").textContent =
+              "Пароли не совпадают.";
+            return;
+          }
+
+          try {
+            const response = await fetch("http://localhost:3000/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                username,
+                password,
+                role,
+                specialPassword,
+              }),
+            });
+
+            if (!response.ok) {
+              const err = await response.json();
+              throw new Error(err.error || "Ошибка регистрации");
             }
-        
-            try {
-                const response = await fetch('http://localhost:3000/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password, role, specialPassword })
-                });
-        
-                if (!response.ok) {
-                    const err = await response.json();
-                    throw new Error(err.error || 'Ошибка регистрации');
-                }
-                alert('Регистрация прошла успешно. Теперь вы можете войти.');
-                window.location.href = 'login.html';
-            } catch (error) {
-                document.getElementById('errorMessage').textContent = error.message;
-            }
+            alert("Регистрация прошла успешно. Теперь вы можете войти.");
+            window.location.href = "login.html";
+          } catch (error) {
+            document.getElementById("errorMessage").textContent = error.message;
+          }
         });
     </script>
-</body>
+  </body>
 </html>
